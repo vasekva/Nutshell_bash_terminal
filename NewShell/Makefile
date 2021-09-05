@@ -31,15 +31,17 @@ OBJS_NAME	=	$(SRCS_NAME:.c=.o) $(BUILTIN_SRCS:.c=.o)
 SRCS		=	$(addprefix $(SRCS_DIR), $(SRCS_NAME)) $(addprefix $(BULTIN_DIR), $(BUILTIN_SRCS))
 OBJS		=	$(addprefix $(OBJS_DIR), $(OBJS_NAME))
 
-CC			=	gcc -g -lreadline
+CC			=	gcc -g
 CFLAGS		=	-Wall -Wextra -Werror -g
+
+.PHONY:			all	clean	fclean	re
 
 all: 			$(NAME)
 
 $(NAME):		$(OBJS)
 				@echo "\033[1m\033[35m===	COMPILATION MINISHELL...			\033[1m==="
 				@$(MAKE)	-C			$(LIBFT_DIR)
-				@$(CC)	$(LIBRARY)	$(OBJS)	-o $(NAME)
+				@$(CC)	$(LIBRARY)	$(OBJS)	-o $(NAME) -lreadline
 				@echo "\033[1m\033[35m===	MINISHELL COMPILATION WAS \033[32mSUCCESFULL		\033[1m\033[35m===\n"
 
 $(OBJS):		$(SRCS)
@@ -72,5 +74,3 @@ fclean:			clean
 				@echo	"\033[1m\033[35m===	ALL CREATED FILES HAVE BEEN \033[32mDELETED SUCCESSFULLY \033[1m\033[35m==="
 
 re:				fclean all
-
-.PHONY:			all	clean	fclean	re

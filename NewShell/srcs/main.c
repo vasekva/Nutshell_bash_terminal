@@ -55,7 +55,7 @@ static void	signal_handler(int signal)
 	{
 		printf("\b\b  \n");
 		rl_on_new_line();
-		//rl_replace_line("", 0); TODO: решить проблему с отсутствием функции
+//		rl_replace_line("", 0); TODO: решить проблему с отсутствием функции
 		rl_redisplay();
 	}
 	if (signal == SIGQUIT)
@@ -68,6 +68,7 @@ static void	signal_handler(int signal)
 int	main(int argc, char **argv, char **envp)
 {
 	t_loginfo	shell;
+	int i;
 	char		*prompt;
 
 	(void)argc;
@@ -86,9 +87,14 @@ int	main(int argc, char **argv, char **envp)
 		if (prompt[0])
 			add_history(prompt);
 		shell.commands->command = ft_split(prompt, ' ');
-		while (shell.commands->command[shell.commands->num_args] != NULL)
+		i = 0;
+		printf("%d\n", shell.commands->num_args);
+		shell.commands->num_args = 0;
+		while (shell.commands->command[shell.commands->num_args])
+		{
 			shell.commands->num_args++;
-		printf("|||| %d\n", ft_start_shell(shell.commands));
+		}
+		ft_start_shell(shell.commands);
 		ft_free_data(shell.commands, prompt);
 	}
 	return (0);

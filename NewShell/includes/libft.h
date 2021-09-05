@@ -17,7 +17,8 @@
 
 char	*ft_strchr(const char *str, int c);
 char	*ft_strdup(const char *s1);
-char	*ft_strjoin(char *remainder, char *buff, int flag);
+
+char	*ft_strjoin(char *s1, char *s2, int flag);
 size_t	ft_strlen(const char *s);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 int		ft_strncmp_old(const char *s1, const char *s2, size_t n);

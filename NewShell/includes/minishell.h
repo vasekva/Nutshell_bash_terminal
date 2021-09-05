@@ -39,13 +39,13 @@
 typedef struct s_loginfo	t_loginfo;
 typedef struct s_cmd		t_cmd;
 
-typedef struct s_cmd
+struct s_cmd
 {
 	char	**command;
 	char	**envp_copy;
 	int		num_args;
 	t_cmd	*next;
-}				t_cmd;
+};
 
 struct s_loginfo
 {
