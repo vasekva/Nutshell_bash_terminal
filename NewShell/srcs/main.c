@@ -65,10 +65,30 @@ static void	signal_handler(int signal)
 	}
 }
 
+int	start_logic(t_loginfo *shell, char *line)
+{
+	line = readline(shell->title);
+	if (!line)
+	{
+		write(2, " \b\b exit\n", 9);
+		exit(-1);
+	}
+	if (line[0])
+		add_history(line);
+	shell->commands->command = ft_split(line, ' ');
+	if (!shell->commands->command)
+		printf("SPLIT ERROR \n");
+	while (shell->commands->command[shell->commands->num_args])
+		shell->commands->num_args++;
+	if (shell->commands->command[0])
+		ft_start_shell(shell->commands);
+	ft_free_data(shell->commands, line);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_loginfo	shell;
-	char		*prompt;
+	char		*line;
 
 	(void)argc;
 	(void)argv;
@@ -77,24 +97,28 @@ int	main(int argc, char **argv, char **envp)
 	init_logs(&shell, envp);
 	while (1)
 	{
-		prompt = readline(shell.title);
-		if (!prompt)
-		{
-			write(2, " \b\b exit\n", 9);
-			exit(-1);
-		}
-		if (prompt[0])
-			add_history(prompt);
-		shell.commands->command = ft_split(prompt, ' ');
-
-		if (!shell.commands->command)
-			printf("SPLIT ERROR \n");
-
-		while (shell.commands->command[shell.commands->num_args])
-			shell.commands->num_args++;
-
-		ft_start_shell(shell.commands);
-		ft_free_data(shell.commands, prompt);
+		start_logic(&shell, line);
+//		line = readline(shell.title);
+//		if (!line)
+//		{
+//			write(2, " \b\b exit\n", 9);
+//			exit(-1);
+//		}
+//		if (line[0])
+//			add_history(line);
+//		shell.commands->command = ft_split(line, ' ');
+//		if (!shell.commands->command)
+//			printf("SPLIT ERROR \n");
+//
+//		printf("|%s|\n", &shell.commands->command[0]);
+//		while (shell.commands->command[shell.commands->num_args])
+//			shell.commands->num_args++;
+//		printf("|%s|\n", &shell.commands->command[0]);
+//
+//		ft_start_shell(shell.commands);
+//		printf("|%s|\n", &shell.commands->command[0]);
+//		printf("|%s|\n", &shell.commands->command[1]);
+//		ft_free_data(shell.commands, line);
 	}
 	return (0);
 }

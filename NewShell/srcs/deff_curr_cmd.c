@@ -35,17 +35,16 @@ int	is_bin_cmd(t_cmd *s_cmd)
 	char	*try_cmd;
 
 	tmp_str = env_get_value_by_key(s_cmd->envp_copy, "PATH");
-	paths = ft_split(tmp_str, ':'); //TODO: проверка ft_split()
-
+	paths = ft_split(tmp_str, ':');
+	if (!paths)
+		printf("Error ft_split in is_bin_cmd()\n");
 	int i = -1;
 	while (paths[++i])
 	{
 		try_cmd = ft_strjoin(paths[i], "/", -1);
 		try_cmd = ft_strjoin(try_cmd, s_cmd->command[0], -1);
-
 		if (execve(try_cmd, &s_cmd->command[0], s_cmd->envp_copy) != -1)
 			return (1);
-//			printf("%s\n", try_cmd);
 	}
 	//TODO: free array
 	//TODO: разобраться почему программа закрывается при успешном execve()
@@ -75,8 +74,8 @@ int	deff_curr_cmd(t_cmd *s_cmd)
 	}
 	else
 	{
-//		if (is_bin_cmd(s_cmd))
-//			return (1); //todo: sega tut
+		if (is_bin_cmd(s_cmd))
+			return (1); //todo: sega tut
 		printf("%s: command not found\n", cmd);
 		return (0);
 	}
