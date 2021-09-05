@@ -68,7 +68,6 @@ static void	signal_handler(int signal)
 int	main(int argc, char **argv, char **envp)
 {
 	t_loginfo	shell;
-	int i;
 	char		*prompt;
 
 	(void)argc;
@@ -87,13 +86,13 @@ int	main(int argc, char **argv, char **envp)
 		if (prompt[0])
 			add_history(prompt);
 		shell.commands->command = ft_split(prompt, ' ');
-		i = 0;
-		printf("%d\n", shell.commands->num_args);
-		shell.commands->num_args = 0;
+
+		if (!shell.commands->command)
+			printf("SPLIT ERROR \n");
+
 		while (shell.commands->command[shell.commands->num_args])
-		{
 			shell.commands->num_args++;
-		}
+
 		ft_start_shell(shell.commands);
 		ft_free_data(shell.commands, prompt);
 	}

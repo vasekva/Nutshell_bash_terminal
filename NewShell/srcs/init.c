@@ -36,7 +36,7 @@
  * Копирует массив переменных окружения в
  * отдельный двумерный массив для удобства изменения
  */
-static int	ft_copy_env(t_cmd *s_cmd, char **env)
+static int	ft_copy_env(char **envp_copy, char **env)
 {
 	int	i;
 
@@ -45,18 +45,18 @@ static int	ft_copy_env(t_cmd *s_cmd, char **env)
 	{
 		i++;
 	}
-	s_cmd->envp_copy = (char **)malloc(sizeof(s_cmd->envp_copy) * i + 1);
-	if (!s_cmd->envp_copy)
+	envp_copy = (char **)malloc(sizeof(envp_copy) * i + 1);
+	if (!envp_copy)
 		exception(ONE);
 	i = 0;
 	while (env[i])
 	{
-		s_cmd->envp_copy[i] = ft_strdup(env[i]);
-		if (!s_cmd->envp_copy[i])
+		envp_copy[i] = ft_strdup(env[i]);
+		if (!envp_copy[i])
 			exception(TWO);
 		i++;
 	}
-	s_cmd->envp_copy[i] = NULL;
+	envp_copy[i] = NULL;
 	return (0);
 }
 
@@ -66,9 +66,10 @@ void	init_logs(t_loginfo *shell, char *envp[])
 	shell->commands = malloc(sizeof(shell->commands));
 	if (!shell->title || !shell->commands)
 		exception(ONE);
-	shell->commands->num_args = 0;
-	shell->commands->command = NULL;
 	shell->commands->envp_copy = NULL;
+	ft_copy_env(shell->commands->envp_copy, envp);
+
+	shell->commands->command = NULL;
+	shell->commands->num_args = 0;
 	shell->commands->next = NULL;
-	ft_copy_env(shell->commands, envp);
 }

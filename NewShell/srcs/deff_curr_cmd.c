@@ -75,8 +75,8 @@ int	deff_curr_cmd(t_cmd *s_cmd)
 	}
 	else
 	{
-		if (is_bin_cmd(s_cmd))
-			return (1);
+//		if (is_bin_cmd(s_cmd))
+//			return (1); //todo: sega tut
 		printf("%s: command not found\n", cmd);
 		return (0);
 	}
