@@ -1,0 +1,7 @@
+*cmake-build-debug
+*.idea
+mini/
+objs/
+minishell
+*libft.a
+CMakeLists.txt
