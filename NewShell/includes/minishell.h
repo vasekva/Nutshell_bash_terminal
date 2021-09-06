@@ -22,6 +22,11 @@
 # include <stdlib.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <signal.h>
+# include <dirent.h>
+
+# include <sys/stat.h>
+//# include <sys/types.h>
 
 # include "libft.h"
 # include "exceptions.h"
@@ -57,6 +62,9 @@ struct s_loginfo
 //void	arr_free(char **array);
 
 int		get_next_line(int fd, char **line);
+
+void	ft_execve(t_cmd *s_cmd);
+
 
 int		deff_curr_cmd(t_cmd *s_cmd);
 void	exception(char *str);

@@ -16,6 +16,7 @@ SRCS_NAME	=	get_next_line.c		\
 				utils_for_array_2.c	\
 				utils_for_array_3.c	\
 				init.c				\
+				ft_execve.c			\
 
 BUILTIN_SRCS	=	ft_echo.c		\
 					ft_echo_utils.c	\

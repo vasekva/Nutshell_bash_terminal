@@ -16,5 +16,8 @@
 # define ONE "Malloc error!"
 # define TWO "Strdup malloc error!"
 # define THREE "No such file or directory"
+# define FOUR "Fork error!"
+# define FIVE	"Command not found!"
+
 
 #endif

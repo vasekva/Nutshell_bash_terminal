@@ -28,32 +28,53 @@ int	is_builtin(char	*cmd)
 		return (0);
 }
 
-int	is_bin_cmd(t_cmd *s_cmd)
+char	*get_cmd(t_cmd *s_cmd, char *path)
 {
-	char	**paths;
-	char	*tmp_str;
-	char	*try_cmd;
+	char	*cmd;
 	char	*tmp_point;
 
-	tmp_str = env_get_value_by_key(s_cmd->envp_copy, "PATH");
-	paths = ft_split(tmp_str, ':');
-	if (!paths)
-		printf("Error ft_split in is_bin_cmd()\n");
-	int i = -1;
-	while (paths[++i])
-	{
-		try_cmd = ft_strjoin(paths[i], "/", -1);
-		tmp_point = try_cmd;
-		try_cmd = ft_strjoin(try_cmd, s_cmd->command[0], -1);
-		free(tmp_point);
-		if (execve(try_cmd, &s_cmd->command[0], s_cmd->envp_copy) != -1)
+	cmd = ft_strjoin(path, "/", -1);
+	tmp_point = cmd;
+	cmd = ft_strjoin(cmd, s_cmd->command[0], -1); //todo: check join
+	free(tmp_point);
+	return (cmd);
+}
+
+int	is_bin_cmd(t_cmd *s_cmd, char *path)
+{
+	char	*cmd;
+	int		status;
+	pid_t	pid;
+	int		i;
+
+	int ret;
+	status = 0;
+	i = -1;
+	printf("PID IN CMD: %d\n", getpid());
+
+		cmd = get_cmd(s_cmd, path);
+		pid = fork();
+//		printf("PID: %d\n", getpid());
+		if (pid == -1)
+			exception(FOUR);
+		else if (pid > 0)
+		{
+			printf("WAITMAIN: %d\n", getpid());
+			waitpid(pid, &status, 0);
+			free(cmd);
 			return (1);
-		free(try_cmd);
-	}
-	arr_free(paths);
-	//TODO: free array
-	//TODO: разобраться почему программа закрывается при успешном execve()
+		}
+		else
+		{
+			printf("PID1: %d I: %d\n", getpid(), i);
+			ret = execve(cmd, &s_cmd->command[0], s_cmd->envp_copy);
+			printf("PID2: %d\n", getpid());
+			exit(EXIT_FAILURE);
+		}
+		printf("GETPID: %d\n", getpid());
+		exit(1);
 	return (0);
+//	}
 }
 
 int	deff_curr_cmd(t_cmd *s_cmd)
@@ -61,6 +82,7 @@ int	deff_curr_cmd(t_cmd *s_cmd)
 	char	*cmd;
 
 	cmd = s_cmd->command[0];
+	printf("MAIN %d\n", getpid());
 	if (is_builtin(cmd))
 	{
 		if (ft_strncmp(cmd, "echo", ft_strlen(cmd)) == 0)
@@ -79,9 +101,6 @@ int	deff_curr_cmd(t_cmd *s_cmd)
 	}
 	else
 	{
-		if (is_bin_cmd(s_cmd))
-			return (1); //todo: sega tut
-		printf("%s: command not found\n", cmd);
-		return (0);
+		ft_execve(s_cmd);
 	}
 }
