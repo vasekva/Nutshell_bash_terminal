@@ -63,10 +63,10 @@ struct s_loginfo
 
 int		get_next_line(int fd, char **line);
 
-void	ft_execve(t_cmd *s_cmd);
+void	ft_execve(t_loginfo *shell);
 
 
-int		deff_curr_cmd(t_cmd *s_cmd);
+int		deff_curr_cmd(t_loginfo *shell);
 void	exception(char *str);
 int		ft_cd(t_cmd *s_cmd);
 int		ft_echo(t_cmd *s_cmd);

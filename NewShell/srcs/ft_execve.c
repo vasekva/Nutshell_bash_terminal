@@ -22,7 +22,7 @@ char	*verify_dir(char *path, char *cmd)
 	return (NULL);
 }
 
-char	*def_dir(t_cmd *s_cmd)
+char	*def_dir(t_loginfo *shell)
 {
 	int		i;
 	char	**paths;
@@ -30,11 +30,11 @@ char	*def_dir(t_cmd *s_cmd)
 	char	*tmp;
 
 	i = -1;
-	tmp = env_get_value_by_key(s_cmd->envp_copy, "PATH");
-	paths = ft_split(tmp, ':');
+	tmp = env_get_value_by_key(shell->commands->envp_copy, "PATH");
+	paths = ft_split(tmp, ':'); // todo: check split
 	while (paths[++i])
 	{
-		tmp = verify_dir(paths[i], s_cmd->command[0]);
+		tmp = verify_dir(paths[i], shell->commands->command[0]);
 		if (tmp)
 		{
 			line = ft_strjoin(paths[i], tmp, -1);
@@ -43,29 +43,36 @@ char	*def_dir(t_cmd *s_cmd)
 			return (line);
 		}
 	}
-	if (paths)
-		arr_free(paths);
+	arr_free(paths);
 	return (tmp);
 }
 
-void	ft_execute(t_cmd *s_cmd, char *path)
+void	print_message(t_loginfo *shell)
+{
+	printf("minishell: ");
+	printf("%s: command not found\n", shell->commands->command[0]);
+//	write(1, "\n", 1);
+}
+
+void	ft_execute(t_loginfo *shell, char *path)
 {
 	pid_t	forks;
 
 	forks = fork();
 	if (forks == 0)
 	{
-		execve(path, &s_cmd->command[0], s_cmd->envp_copy);
-		exception(FIVE);
+		execve(path, &shell->commands->command[0], shell->commands->envp_copy);
+		print_message(shell);
+//		exception(FIVE);
 		exit(1);
 	}
 	forks = wait(&forks);
 }
 
-void	ft_execve(t_cmd *s_cmd)
+void	ft_execve(t_loginfo *shell)
 {
 	char	*path;
 
-	path = def_dir(s_cmd);
-	ft_execute(s_cmd, path);
+	path = def_dir(shell);
+	ft_execute(shell, path);
 }

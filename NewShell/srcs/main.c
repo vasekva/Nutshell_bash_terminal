@@ -30,11 +30,11 @@
  * Запускает функцию в которой определяется команда,
  * которую необходимо выполнить
  */
-int	ft_start_shell(t_cmd *s_cmd)
+int	ft_start_shell(t_loginfo *shell)
 {
-	if (s_cmd)
+	if (shell->commands)
 	{
-		if (!deff_curr_cmd(s_cmd))
+		if (!deff_curr_cmd(shell))
 			return (0);
 		else
 			return (1);
@@ -76,7 +76,7 @@ int	start_logic(t_loginfo *shell, char *line)
 	while (shell->commands->command[shell->commands->num_args])
 		shell->commands->num_args++;
 	if (shell->commands->command[0])
-		ft_start_shell(shell->commands);
+		ft_start_shell(shell);
 }
 
 int	main(int argc, char **argv, char **envp)

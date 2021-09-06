@@ -77,30 +77,29 @@ int	is_bin_cmd(t_cmd *s_cmd, char *path)
 //	}
 }
 
-int	deff_curr_cmd(t_cmd *s_cmd)
+int	deff_curr_cmd(t_loginfo *shell)
 {
 	char	*cmd;
 
-	cmd = s_cmd->command[0];
-	printf("MAIN %d\n", getpid());
+	cmd = shell->commands->command[0];
 	if (is_builtin(cmd))
 	{
 		if (ft_strncmp(cmd, "echo", ft_strlen(cmd)) == 0)
-			ft_echo(s_cmd);
+			ft_echo(shell->commands);
 		if (ft_strncmp(cmd, "cd", ft_strlen(cmd)) == 0)
-			ft_cd(s_cmd);
+			ft_cd(shell->commands);
 		if (ft_strncmp(cmd, "pwd", ft_strlen(cmd)) == 0)
 			ft_pwd();
 		if (ft_strncmp(cmd, "unset", ft_strlen(cmd)) == 0)
-			ft_unset(s_cmd);
+			ft_unset(shell->commands);
 		if (ft_strncmp(cmd, "env", ft_strlen(cmd)) == 0)
-			ft_env(s_cmd);
+			ft_env(shell->commands);
 		if (ft_strncmp(cmd, "export", ft_strlen(cmd)) == 0)
-			ft_export(s_cmd);
+			ft_export(shell->commands);
 		return (1);
 	}
 	else
 	{
-		ft_execve(s_cmd);
+		ft_execve(shell);
 	}
 }
