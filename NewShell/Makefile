@@ -1,24 +1,23 @@
 NAME		=	minishell
 
-INCLUDES	=	-I ./includes/
-LIBFT_DIR	=	./libft/
-LIBRARY		=	./libft/libft.a
-SRCS_DIR	=	./srcs/
-BULTIN_DIR	=	./srcs/builtins/
-OBJS_DIR	=	./objs/
+INCLUDES		=	-I ./includes/
+LIBFT_DIR		=	./libft/
+LIBRARY			=	./libft/libft.a
+SRCS_DIR		=	./srcs/
+COMMANDS_DIR	=	./srcs/commands/
+OBJS_DIR		=	./objs/
 
-SRCS_NAME	=	get_next_line.c		\
-				exception.c			\
-				main.c				\
-				deff_curr_cmd.c		\
-				array_resize.c		\
-				utils_for_array_1.c	\
-				utils_for_array_2.c	\
-				utils_for_array_3.c	\
-				init.c				\
-				ft_execve.c			\
+SRCS_NAME		=	get_next_line.c		\
+					exception.c			\
+					main.c				\
+					deff_curr_cmd.c		\
+					array_resize.c		\
+					utils_for_array_1.c	\
+					utils_for_array_2.c	\
+					utils_for_array_3.c	\
+					init.c				\
 
-BUILTIN_SRCS	=	ft_echo.c		\
+COMMANDS_SRCS	=	ft_echo.c		\
 					ft_echo_utils.c	\
                  	ft_cd.c			\
                   	ft_pwd.c		\
@@ -26,10 +25,12 @@ BUILTIN_SRCS	=	ft_echo.c		\
 					ft_unset.c		\
 					ft_env.c		\
 					ft_env_utils.c	\
+					ft_execve.c		\
+					ft_exit.c		\
 
-OBJS_NAME	=	$(SRCS_NAME:.c=.o) $(BUILTIN_SRCS:.c=.o)
+OBJS_NAME	=	$(SRCS_NAME:.c=.o) $(COMMANDS_SRCS:.c=.o)
 
-SRCS		=	$(addprefix $(SRCS_DIR), $(SRCS_NAME)) $(addprefix $(BULTIN_DIR), $(BUILTIN_SRCS))
+SRCS		=	$(addprefix $(SRCS_DIR), $(SRCS_NAME)) $(addprefix $(COMMANDS_DIR), $(COMMANDS_SRCS))
 OBJS		=	$(addprefix $(OBJS_DIR), $(OBJS_NAME))
 
 CC			=	gcc -g

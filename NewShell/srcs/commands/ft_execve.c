@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-char	*verify_dir(char *path, char *cmd)
+static char	*check_directory(char *path, char *cmd)
 {
 	DIR				*direct;
 	struct dirent	*dir_file;
@@ -22,11 +22,11 @@ char	*verify_dir(char *path, char *cmd)
 	return (NULL);
 }
 
-char	*def_dir(t_loginfo *shell)
+static char	*define_of_dir(t_loginfo *shell)
 {
 	int		i;
 	char	**paths;
-	char	*line;
+	char	*cmd;
 	char	*tmp;
 
 	i = -1;
@@ -34,26 +34,26 @@ char	*def_dir(t_loginfo *shell)
 	paths = ft_split(tmp, ':'); // todo: check split
 	while (paths[++i])
 	{
-		tmp = verify_dir(paths[i], shell->commands->command[0]);
+		tmp = check_directory(paths[i], shell->commands->command[0]);
 		if (tmp)
 		{
-			line = ft_strjoin(paths[i], tmp, -1);
+			cmd = ft_strjoin(paths[i], tmp, -1);
 			free(tmp);
 			arr_free(paths);
-			return (line);
+			return (cmd);
 		}
 	}
 	arr_free(paths);
 	return (tmp);
 }
 
-void	print_message(t_loginfo *shell)
+static void	print_message(t_loginfo *shell)
 {
 	printf("minishell: ");
 	printf("%s: command not found\n", shell->commands->command[0]);
 }
 
-void	ft_execute(t_loginfo *shell, char *command)
+static void	execute(t_loginfo *shell, char *command)
 {
 	pid_t	forks;
 
@@ -71,9 +71,9 @@ void	ft_execve(t_loginfo *shell)
 {
 	char	*cmd;
 
-	cmd = def_dir(shell);
+	cmd = define_of_dir(shell);
 	if (cmd)
-		ft_execute(shell, cmd);
+		execute(shell, cmd);
 	else
-		ft_execute(shell, shell->commands->command[0]);
+		execute(shell, shell->commands->command[0]);
 }

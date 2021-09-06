@@ -64,7 +64,7 @@ struct s_loginfo
 int		get_next_line(int fd, char **line);
 
 void	ft_execve(t_loginfo *shell);
-
+void	ft_exit(t_cmd *s_cmd);
 
 int		deff_curr_cmd(t_loginfo *shell);
 void	exception(char *str);
