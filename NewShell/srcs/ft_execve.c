@@ -51,19 +51,17 @@ void	print_message(t_loginfo *shell)
 {
 	printf("minishell: ");
 	printf("%s: command not found\n", shell->commands->command[0]);
-//	write(1, "\n", 1);
 }
 
-void	ft_execute(t_loginfo *shell, char *path)
+void	ft_execute(t_loginfo *shell, char *command)
 {
 	pid_t	forks;
 
 	forks = fork();
 	if (forks == 0)
 	{
-		execve(path, &shell->commands->command[0], shell->commands->envp_copy);
+		execve(command, &shell->commands->command[0], shell->commands->envp_copy);
 		print_message(shell);
-//		exception(FIVE);
 		exit(1);
 	}
 	forks = wait(&forks);
@@ -71,8 +69,11 @@ void	ft_execute(t_loginfo *shell, char *path)
 
 void	ft_execve(t_loginfo *shell)
 {
-	char	*path;
+	char	*cmd;
 
-	path = def_dir(shell);
-	ft_execute(shell, path);
+	cmd = def_dir(shell);
+	if (cmd)
+		ft_execute(shell, cmd);
+	else
+		ft_execute(shell, shell->commands->command[0]);
 }
