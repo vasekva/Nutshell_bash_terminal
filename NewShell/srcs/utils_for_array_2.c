@@ -12,6 +12,20 @@
 
 #include "minishell.h"
 
+//void	arr_free(char **array)
+//{
+//	int	i;
+//
+//	i = -1;
+//	while (array[++i] != NULL)
+//	{
+//		free(array[i]);
+//		array[i] = NULL;
+//	}
+//	free(array);
+//	array = NULL;
+//}
+
 char	**arr_copy(char **array)
 {
 	char	**tmp_array;

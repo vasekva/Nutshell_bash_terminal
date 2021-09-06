@@ -54,7 +54,7 @@ struct s_loginfo
 	t_cmd	*commands;
 };
 
-void	fr_free_array(char **array);
+//void	arr_free(char **array);
 
 int		get_next_line(int fd, char **line);
 
@@ -82,7 +82,7 @@ char	**array_resize(char **src, int flag);
 int		arr_get_str_ind(t_cmd *cmd, char *str);
 void	arr_add_var(t_cmd *s_cmd, char *key, char *value);
 void	arr_swap_strings(char **array, int first, int second);
-char	**arr_free(char **array);
+void	arr_free(char **array);
 char	**arr_sort(char **array);
 
 /*

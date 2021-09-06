@@ -87,7 +87,7 @@ char	**arr_sort(char **array)
 	return (sort_array);
 }
 
-char	**arr_free(char **array)
+void	arr_free(char **array)
 {
 	int	ind;
 
@@ -106,5 +106,4 @@ char	**arr_free(char **array)
 		free(array);
 		array = NULL;
 	}
-	return (NULL);
 }

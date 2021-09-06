@@ -33,6 +33,7 @@ int	is_bin_cmd(t_cmd *s_cmd)
 	char	**paths;
 	char	*tmp_str;
 	char	*try_cmd;
+	char	*tmp_point;
 
 	tmp_str = env_get_value_by_key(s_cmd->envp_copy, "PATH");
 	paths = ft_split(tmp_str, ':');
@@ -42,10 +43,14 @@ int	is_bin_cmd(t_cmd *s_cmd)
 	while (paths[++i])
 	{
 		try_cmd = ft_strjoin(paths[i], "/", -1);
+		tmp_point = try_cmd;
 		try_cmd = ft_strjoin(try_cmd, s_cmd->command[0], -1);
+		free(tmp_point);
 		if (execve(try_cmd, &s_cmd->command[0], s_cmd->envp_copy) != -1)
 			return (1);
+		free(try_cmd);
 	}
+	arr_free(paths);
 	//TODO: free array
 	//TODO: разобраться почему программа закрывается при успешном execve()
 	return (0);

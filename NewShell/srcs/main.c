@@ -12,19 +12,19 @@
 
 #include "minishell.h"
 
-void	fr_free_array(char **array)
-{
-	int	i;
-
-	i = -1;
-	while (array[++i] != NULL)
-	{
-		free(array[i]);
-		array[i] = NULL;
-	}
-	free(array);
-	array = NULL;
-}
+//void	fr_free_array(t_loginfo *shell)
+//{
+//	int	i;
+//
+//	i = -1;
+//	while (shell->commands->command[++i] != NULL)
+//	{
+//		free(shell->commands->command[i]);
+//		shell->commands->command[i] = NULL;
+//	}
+//	free(shell->commands->command);
+//	shell->commands->command = NULL;
+//}
 
 /*
  * Запускает функцию в которой определяется команда,
@@ -42,11 +42,14 @@ int	ft_start_shell(t_cmd *s_cmd)
 	return (0);
 }
 
-void	ft_free_data(t_cmd	*s_cmd, char *str)
+void	ft_free_data(t_loginfo *shell, char *line)
 {
-	fr_free_array(s_cmd->command);
-	free(str);
-	s_cmd->num_args = 0;
+	free(line);
+	line = NULL;
+//	fr_free_array(shell);
+	arr_free(shell->commands->command);
+	shell->commands->num_args = 0;
+	shell->commands->next = NULL;
 }
 
 static void	signal_handler(int signal)
@@ -67,14 +70,6 @@ static void	signal_handler(int signal)
 
 int	start_logic(t_loginfo *shell, char *line)
 {
-	line = readline(shell->title);
-	if (!line)
-	{
-		write(2, " \b\b exit\n", 9);
-		exit(-1);
-	}
-	if (line[0])
-		add_history(line);
 	shell->commands->command = ft_split(line, ' ');
 	if (!shell->commands->command)
 		printf("SPLIT ERROR \n");
@@ -82,13 +77,12 @@ int	start_logic(t_loginfo *shell, char *line)
 		shell->commands->num_args++;
 	if (shell->commands->command[0])
 		ft_start_shell(shell->commands);
-	ft_free_data(shell->commands, line);
 }
 
 int	main(int argc, char **argv, char **envp)
 {
 	t_loginfo	shell;
-	char		*line;
+	char 		*line;
 
 	(void)argc;
 	(void)argv;
@@ -97,30 +91,16 @@ int	main(int argc, char **argv, char **envp)
 	init_logs(&shell, envp);
 	while (1)
 	{
+		line = readline(shell.title);
+		if (!line)
+		{
+			write(2, " \b\b exit\n", 9);
+			exit(-1);
+		}
+		if (line[0])
+			add_history(line);
 		start_logic(&shell, line);
-//		line = readline(shell.title);
-//		if (!line)
-//		{
-//			write(2, " \b\b exit\n", 9);
-//			exit(-1);
-//		}
-//		if (line[0])
-//			add_history(line);
-//		shell.commands->command = ft_split(line, ' ');
-//		if (!shell.commands->command)
-//			printf("SPLIT ERROR \n");
-//
-//		printf("|%s|\n", &shell.commands->command[0]);
-//		while (shell.commands->command[shell.commands->num_args])
-//			shell.commands->num_args++;
-//		printf("|%s|\n", &shell.commands->command[0]);
-//
-//		ft_start_shell(shell.commands);
-//		printf("|%s|\n", &shell.commands->command[0]);
-//		printf("|%s|\n", &shell.commands->command[1]);
-//		ft_free_data(shell.commands, line);
+		ft_free_data(&shell, line);
 	}
 	return (0);
 }
-
-//TODO: объяснить Маше свой strjoin()
