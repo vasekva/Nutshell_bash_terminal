@@ -12,20 +12,6 @@
 
 #include "minishell.h"
 
-//void	fr_free_array(t_loginfo *shell)
-//{
-//	int	i;
-//
-//	i = -1;
-//	while (shell->commands->command[++i] != NULL)
-//	{
-//		free(shell->commands->command[i]);
-//		shell->commands->command[i] = NULL;
-//	}
-//	free(shell->commands->command);
-//	shell->commands->command = NULL;
-//}
-
 /*
  * Запускает функцию в которой определяется команда,
  * которую необходимо выполнить
@@ -46,7 +32,6 @@ void	ft_free_data(t_loginfo *shell, char *line)
 {
 	free(line);
 	line = NULL;
-//	fr_free_array(shell);
 	arr_free(shell->commands->command);
 	shell->commands->num_args = 0;
 	shell->commands->next = NULL;
@@ -58,7 +43,7 @@ static void	signal_handler(int signal)
 	{
 		printf("\b\b  \n");
 		rl_on_new_line();
-//		rl_replace_line("", 0); TODO: решить проблему с отсутствием функции
+		rl_replace_line("", 0); //TODO: решить проблему с отсутствием функции
 		rl_redisplay();
 	}
 	if (signal == SIGQUIT)

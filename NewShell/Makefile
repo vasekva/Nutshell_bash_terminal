@@ -36,6 +36,14 @@ OBJS		=	$(addprefix $(OBJS_DIR), $(OBJS_NAME))
 CC			=	gcc -g
 CFLAGS		=	-Wall -Wextra -Werror -g
 
+OS_NAME	= $(shell uname -s | tr A-Z a-z)
+
+ifeq	($(OS_NAME), linux)
+			RL_FLAGS	= -lreadline
+else
+			RL_FLAGS	=	-L/Users/$(USER)/.brew/Cellar/readline/8.1/lib -lreadline
+endif
+
 .PHONY:			all	clean	fclean	re
 
 all: 			$(NAME)
@@ -43,7 +51,7 @@ all: 			$(NAME)
 $(NAME):		$(OBJS)
 				@echo "\033[1m\033[35m===	COMPILATION MINISHELL...			\033[1m==="
 				@$(MAKE)	-C			$(LIBFT_DIR)
-				@$(CC)	$(LIBRARY)	$(OBJS)	-o $(NAME) -lreadline
+				@$(CC)	$(LIBRARY)	$(OBJS)	-o $(NAME) $(RL_FLAGS)
 				@echo "\033[1m\033[35m===	MINISHELL COMPILATION WAS \033[32mSUCCESFULL		\033[1m\033[35m===\n"
 
 $(OBJS):		$(SRCS)
