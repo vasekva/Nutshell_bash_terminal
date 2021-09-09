@@ -68,6 +68,7 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_loginfo	shell;
 	char 		*line;
+	char 		*formatted_line;
 
 	(void)argc;
 	(void)argv;
@@ -84,7 +85,11 @@ int	main(int argc, char **argv, char **envp)
 		}
 		if (line[0])
 			add_history(line);
-		start_logic(&shell, line);
+		formatted_line = lexer(&shell, line);
+		start_logic(&shell, formatted_line);
+
+//		start_logic(&shell, line); /* without parsing */
+
 		ft_free_data(&shell, line);
 	}
 	return (0);

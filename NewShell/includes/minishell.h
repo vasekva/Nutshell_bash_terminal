@@ -116,4 +116,10 @@ void	swap_values(t_loginfo *shell, char *key_fst, char *key_scnd);
  */
 void	init_logs(t_loginfo *shell, char *envp[]);
 
+/*
+ * PARSER
+ */
+char	*lexer(t_loginfo *shell, char *line);
+char	*ft_dollar_replacer(const char *line, int i_left, int i_right, char *part_to_replace);
+
 #endif

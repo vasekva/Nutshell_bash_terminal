@@ -5,6 +5,7 @@ LIBFT_DIR		=	./libft/
 LIBRARY			=	./libft/libft.a
 SRCS_DIR		=	./srcs/
 COMMANDS_DIR	=	./srcs/commands/
+PARSER_DIR		=	./srcs/parser/
 OBJS_DIR		=	./objs/
 
 SRCS_NAME		=	get_next_line.c		\
@@ -28,9 +29,12 @@ COMMANDS_SRCS	=	ft_echo.c		\
 					ft_execve.c		\
 					ft_exit.c		\
 
-OBJS_NAME	=	$(SRCS_NAME:.c=.o) $(COMMANDS_SRCS:.c=.o)
+PARSER_SRCS		=	ft_lexer.c			\
+					ft_lexer_utils.c	\
 
-SRCS		=	$(addprefix $(SRCS_DIR), $(SRCS_NAME)) $(addprefix $(COMMANDS_DIR), $(COMMANDS_SRCS))
+OBJS_NAME	=	$(SRCS_NAME:.c=.o) $(COMMANDS_SRCS:.c=.o) $(PARSER_SRCS:.c=.o)
+
+SRCS		=	$(addprefix $(SRCS_DIR), $(SRCS_NAME)) $(addprefix $(COMMANDS_DIR), $(COMMANDS_SRCS)) $(addprefix $(PARSER_DIR), $(PARSER_SRCS))
 OBJS		=	$(addprefix $(OBJS_DIR), $(OBJS_NAME))
 
 CC			=	gcc -g
