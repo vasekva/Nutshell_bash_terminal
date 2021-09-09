@@ -30,7 +30,7 @@ static char	*define_of_dir(t_loginfo *shell)
 	char	*tmp;
 
 	i = -1;
-	tmp = env_get_value_by_key(shell->commands->envp_copy, "PATH");
+	tmp = env_get_value_by_key(shell->envp_copy, "PATH");
 	paths = ft_split(tmp, ':'); // todo: check split
 	while (paths[++i])
 	{
@@ -60,7 +60,7 @@ static void	execute(t_loginfo *shell, char *command)
 	forks = fork();
 	if (forks == 0)
 	{
-		execve(command, &shell->commands->command[0], shell->commands->envp_copy);
+		execve(command, &shell->commands->command[0], shell->envp_copy);
 		print_message(shell);
 		exit(1);
 	}

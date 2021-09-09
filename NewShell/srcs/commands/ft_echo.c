@@ -97,12 +97,14 @@ static int	has_delete_nline(t_cmd *s_cmd)
 	return (-1);
 }
 
-int	ft_echo(t_cmd *s_cmd)
+int	ft_echo(t_loginfo *shell)
 {
 	int		ind;
 	int		flag;
 	char	*first_arg;
+	t_cmd	*s_cmd;
 
+	s_cmd = shell->commands;
 	// Если команда 'echo' без параметров
 	if (!s_cmd->command[1])
 		return (write(1, "\n", 1));

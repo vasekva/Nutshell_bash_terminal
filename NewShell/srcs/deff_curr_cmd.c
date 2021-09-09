@@ -37,19 +37,19 @@ int	deff_curr_cmd(t_loginfo *shell)
 	if (is_builtin(cmd))
 	{
 		if (ft_strncmp(cmd, "echo", ft_strlen(cmd)) == 0)
-			ft_echo(shell->commands);
+			ft_echo(shell);
 		if (ft_strncmp(cmd, "cd", ft_strlen(cmd)) == 0)
-			ft_cd(shell->commands);
+			ft_cd(shell);
 		if (ft_strncmp(cmd, "pwd", ft_strlen(cmd)) == 0)
 			ft_pwd();
 		if (ft_strncmp(cmd, "unset", ft_strlen(cmd)) == 0)
-			ft_unset(shell->commands);
+			ft_unset(shell);
 		if (ft_strncmp(cmd, "env", ft_strlen(cmd)) == 0)
-			ft_env(shell->commands);
+			ft_env(shell);
 		if (ft_strncmp(cmd, "export", ft_strlen(cmd)) == 0)
-			ft_export(shell->commands);
+			ft_export(shell);
 		if (ft_strncmp(cmd, "exit", ft_strlen(cmd)) == 0)
-			ft_exit(shell->commands); //todo: определить с каким кодом должна закрываться программа
+			ft_exit(shell); //todo: определить с каким кодом должна закрываться программа
 		return (1);
 	}
 	else

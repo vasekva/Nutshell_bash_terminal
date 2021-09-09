@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-char	*get_value(t_cmd *s_cmd, char *key)
+char	*get_value(t_loginfo *shell, char *key)
 {
 	char	*new_value;
 	char	*str;
@@ -20,13 +20,13 @@ char	*get_value(t_cmd *s_cmd, char *key)
 	int		i;
 
 	i = 0;
-	ind = arr_get_str_ind(s_cmd, key);
+	ind = arr_get_str_ind(shell, key);
 	new_value = NULL;
 	str = NULL;
 	if (ind >= 0)
 	{
-		str = s_cmd->envp_copy[ind];
-		while (s_cmd->envp_copy[ind][i] != '=')
+		str = shell->envp_copy[ind];
+		while (shell->envp_copy[ind][i] != '=')
 		{
 			i++;
 		}
@@ -39,36 +39,36 @@ char	*get_value(t_cmd *s_cmd, char *key)
 	}
 }
 
-void	copy_value(t_cmd *s_cmd, char *src, char *dst)
+void	copy_value(t_loginfo *shell, char *src, char *dst)
 {
 	int		i_dst;
 	char	*appended_str;
 	char	*tmp_str;
 
-	i_dst = arr_get_str_ind(s_cmd, dst);
+	i_dst = arr_get_str_ind(shell, dst);
 	appended_str = ft_strjoin(dst, "=", 3);
-	appended_str = ft_strjoin(appended_str, get_value(s_cmd, src), 2);
-	tmp_str = s_cmd->envp_copy[i_dst];
-	s_cmd->envp_copy[i_dst] = ft_strdup(appended_str);
+	appended_str = ft_strjoin(appended_str, get_value(shell, src), 2);
+	tmp_str = shell->envp_copy[i_dst];
+	shell->envp_copy[i_dst] = ft_strdup(appended_str);
 	free(appended_str);
 	free(tmp_str);
 }
 
-void	swap_values(t_cmd *s_cmd, char *key_fst, char *key_scnd)
+void	swap_values(t_loginfo *shell, char *key_fst, char *key_scnd)
 {
 	char	*first_value;
 	char	*tmp_str;
 	int		ind;
 
-	first_value = get_value(s_cmd, key_fst);
-	copy_value(s_cmd, key_scnd, key_fst);
-	ind = arr_get_str_ind(s_cmd, key_scnd);
-	tmp_str = s_cmd->envp_copy[ind];
-	s_cmd->envp_copy[ind] = replace_value(s_cmd, key_scnd, first_value);
+	first_value = get_value(shell, key_fst);
+	copy_value(shell, key_scnd, key_fst);
+	ind = arr_get_str_ind(shell, key_scnd);
+	tmp_str = shell->envp_copy[ind];
+	shell->envp_copy[ind] = replace_value(shell, key_scnd, first_value);
 	free(tmp_str);
 }
 
-char	*replace_value(t_cmd *s_cmd, char *key, char *new_value)
+char	*replace_value(t_loginfo *shell, char *key, char *new_value)
 {
 	char	*new_pair;
 

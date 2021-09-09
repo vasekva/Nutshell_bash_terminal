@@ -19,14 +19,14 @@ static int	get_envp_copy(t_loginfo *shell, char *envp[])
 	length = 0;
 	while (envp[length])
 		length++;
-	shell->commands->envp_copy = (char **)malloc(sizeof(char*) * length + 1);
-	if (!shell->commands->envp_copy)
+	shell->envp_copy = (char **)malloc(sizeof(char*) * length + 1);
+	if (!shell->envp_copy)
 		return (0);
-	shell->commands->envp_copy[length] = NULL;
+	shell->envp_copy[length] = NULL;
 	while (--length >= 0)
 	{
-		shell->commands->envp_copy[length] = ft_strdup(envp[length]);
-		if (!shell->commands->envp_copy[length])
+		shell->envp_copy[length] = ft_strdup(envp[length]);
+		if (!shell->envp_copy[length])
 			return (0);
 	}
 	return (1);
@@ -66,7 +66,7 @@ void	init_logs(t_loginfo *shell, char *envp[])
 	shell->commands = malloc(sizeof(shell->commands));
 	if (!shell->title || !shell->commands)
 		exception(ONE);
-	shell->commands->envp_copy = NULL;
+	shell->envp_copy = NULL;
 	get_envp_copy(shell, envp);
 //	ft_copy_env(shell->commands, envp);
 	shell->commands->command = NULL;

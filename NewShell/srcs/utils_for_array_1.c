@@ -12,15 +12,15 @@
 
 #include "minishell.h"
 
-int	arr_get_str_ind(t_cmd *s_cmd, char *str)
+int	arr_get_str_ind(t_loginfo *shell, char *str)
 {
 	int	ind;
 
 	ind = 0;
 	str = ft_strjoin(str, "=", 3);
-	while (s_cmd->envp_copy[ind])
+	while (shell->envp_copy[ind])
 	{
-		if (ft_strncmp_old(str, s_cmd->envp_copy[ind], ft_strlen(str)) == 0)
+		if (ft_strncmp_old(str, shell->envp_copy[ind], ft_strlen(str)) == 0)
 		{
 			free(str);
 			return (ind);
@@ -31,7 +31,7 @@ int	arr_get_str_ind(t_cmd *s_cmd, char *str)
 	return (-1);
 }
 
-void	arr_add_var(t_cmd *s_cmd, char *key, char *value)
+void	arr_add_var(t_loginfo *shell, char *key, char *value)
 {
 	int		len;
 	char	*tmp_str;
@@ -39,12 +39,12 @@ void	arr_add_var(t_cmd *s_cmd, char *key, char *value)
 	len = 0;
 	tmp_str = ft_strjoin(key, "=", 3);
 	tmp_str = ft_strjoin(tmp_str, value, 0);
-	while (s_cmd->envp_copy[len])
+	while (shell->envp_copy[len])
 	{
 		len++;
 	}
-	s_cmd->envp_copy = array_resize(s_cmd->envp_copy, 1);
-	s_cmd->envp_copy[len] = ft_strdup(tmp_str);
+	shell->envp_copy = array_resize(shell->envp_copy, 1);
+	shell->envp_copy[len] = ft_strdup(tmp_str);
 	free(tmp_str);
 }
 

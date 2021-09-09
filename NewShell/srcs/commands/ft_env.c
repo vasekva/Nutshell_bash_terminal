@@ -12,14 +12,14 @@
 
 #include "minishell.h"
 
-void	ft_env(t_cmd *s_cmd)
+void	ft_env(t_loginfo *shell)
 {
 	int	i;
 
 	i = 0;
-	while (s_cmd->envp_copy[i])
+	while (shell->envp_copy[i])
 	{
-		printf("%s\n", s_cmd->envp_copy[i]);
+		printf("%s\n", shell->envp_copy[i]);
 		i++;
 	}
 }

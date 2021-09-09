@@ -12,55 +12,57 @@
 
 #include "minishell.h"
 
-void	cd_minus(t_cmd *s_cmd)
+void	cd_minus(t_loginfo *shell)
 {
-	if (arr_get_str_ind(s_cmd, "OLDPWD") == -1)
+	if (arr_get_str_ind(shell, "OLDPWD") == -1)
 	{
 		printf("OLDPWD not set\n");
 		return ;
 	}
 }
 
-void	cd_with_params(t_cmd *s_cmd)
+void	cd_with_params(t_loginfo *shell)
 {
 	char	*first_arg;
 
-	first_arg = s_cmd->envp_copy[1];
+	first_arg = shell->envp_copy[1];
 	if (first_arg[0] == '-')
 	{
-		cd_minus(s_cmd);
+		cd_minus(shell);
 	}
 }
 
-int	ft_cd(t_cmd *s_cmd)
+int	ft_cd(t_loginfo *shell)
 {
 	char	*tmp_cwd;
 	char	*cmd;
+	t_cmd	*s_cmd;
 
 	tmp_cwd = NULL;
+	s_cmd = shell->commands;
 	cmd = s_cmd->command[1];
-	if (s_cmd->num_args == 2 && (char)cmd == '-')
+	if (s_cmd->num_args == 2 && cmd[0] == '-')
 	{
-		cd_minus(s_cmd);
+		cd_minus(shell);
 		return (0);
 	}
 	if (!cmd || ft_strncmp(cmd, "--", 2))
 	{
-		if (arr_get_str_ind(s_cmd, "HOME") < 0)
+		if (arr_get_str_ind(shell, "HOME") < 0)
 		{
 			return (0);
 		}
-		else if (arr_get_str_ind(s_cmd, "PWD") < 0)
+		else if (arr_get_str_ind(shell, "PWD") < 0)
 		{
 			tmp_cwd = getcwd(NULL, 0);
-			arr_add_var(s_cmd, "PWD", tmp_cwd);
+			arr_add_var(shell, "PWD", tmp_cwd);
 		}
 		else
-			copy_value(s_cmd, "HOME", "PWD");
+			copy_value(shell, "HOME", "PWD");
 	}
 	else
 	{
-		cd_with_params(s_cmd);
+		cd_with_params(shell);
 	}
 	return (0);
 }

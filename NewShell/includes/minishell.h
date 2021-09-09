@@ -48,7 +48,6 @@ typedef struct s_cmd		t_cmd;
 struct s_cmd
 {
 	char	**command;
-	char	**envp_copy;
 	int		num_args;
 	t_cmd	*next;
 };
@@ -56,6 +55,7 @@ struct s_cmd
 struct s_loginfo
 {
 	char	*title;
+	char	**envp_copy;
 
 	t_cmd	*commands;
 };
@@ -64,21 +64,18 @@ struct s_loginfo
 
 int		get_next_line(int fd, char **line);
 
-void	ft_execve(t_loginfo *shell);
-void	ft_exit(t_cmd *s_cmd);
 
 int		deff_curr_cmd(t_loginfo *shell);
 void	exception(char *str);
-int		ft_cd(t_cmd *s_cmd);
-int		ft_echo(t_cmd *s_cmd);
-void	ft_env(t_cmd *s_cmd);
-void	ft_pwd(void);
-void	ft_unset(t_cmd *s_cmd);
 
-/*
-** FT_EXPORT.C
-*/
-void	ft_export(t_cmd *s_cmd);
+int		ft_cd(t_loginfo *shell);
+int		ft_echo(t_loginfo *shell);
+void	ft_env(t_loginfo *shell);
+void	ft_execve(t_loginfo *shell);
+void	ft_exit(t_loginfo *shell);
+void	ft_export(t_loginfo *shell);
+void	ft_pwd(void);
+void	ft_unset(t_loginfo *shell);
 
 /*
 ** ARRAY_RESIZE.C
@@ -88,8 +85,8 @@ char	**array_resize(char **src, int flag);
 /*
 ** UTILS_FOR_ARRAY_1.C
 */
-int		arr_get_str_ind(t_cmd *cmd, char *str);
-void	arr_add_var(t_cmd *s_cmd, char *key, char *value);
+int		arr_get_str_ind(t_loginfo *shell, char *str);
+void	arr_add_var(t_loginfo *shell, char *key, char *value);
 void	arr_swap_strings(char **array, int first, int second);
 void	arr_free(char **array);
 char	**arr_sort(char **array);
@@ -109,10 +106,10 @@ char *env_get_value_by_key(char **array, char *key);
 /*
 ** FT_ENV_UTILS.C
 */
-char	*get_value(t_cmd *s_cmd, char *key);
-char	*replace_value(t_cmd *s_cmd, char *key, char *new_value);
-void	copy_value(t_cmd *s_cmd, char *src, char *dst);
-void	swap_values(t_cmd *s_cmd, char *key_fst, char *key_scnd);
+char	*get_value(t_loginfo *shell, char *key);
+char	*replace_value(t_loginfo *shell, char *key, char *new_value);
+void	copy_value(t_loginfo *shell, char *src, char *dst);
+void	swap_values(t_loginfo *shell, char *key_fst, char *key_scnd);
 
 /*
  * INIT.C

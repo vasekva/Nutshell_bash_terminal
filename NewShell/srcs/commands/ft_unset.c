@@ -12,25 +12,27 @@
 
 #include "minishell.h"
 
-void	ft_unset(t_cmd *s_cmd)
+void	ft_unset(t_loginfo *shell)
 {
 	int		i;
 	int		ind;
 	char	*tmp_str;
+	t_cmd	*s_cmd;
 
 	i = 1;
 	ind = 0;
 	tmp_str = NULL;
+	s_cmd = shell->commands;
 	while (s_cmd->command[i])
 	{
-		ind = arr_get_str_ind(s_cmd, s_cmd->command[i]);
+		ind = arr_get_str_ind(shell, s_cmd->command[i]);
 		if (ind >= 0)
 		{
-			tmp_str = s_cmd->envp_copy[ind];
-			s_cmd->envp_copy[ind] = ft_strdup("\0");
+			tmp_str = shell->envp_copy[ind];
+			shell->envp_copy[ind] = ft_strdup("\0");
 			free(tmp_str);
 		}
 		i++;
 	}
-	s_cmd->envp_copy = array_resize(s_cmd->envp_copy, -1);
+	shell->envp_copy = array_resize(shell->envp_copy, -1);
 }
