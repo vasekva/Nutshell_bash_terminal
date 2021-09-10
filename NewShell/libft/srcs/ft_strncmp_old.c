@@ -28,5 +28,7 @@ int	ft_strncmp_old(const char *s1, const char *s2, size_t n)
 		p_s1++;
 		p_s2++;
 	}
+	if (*p_s1 != '=' || *p_s2 != '\0')
+		return (2);
 	return (0);
 }

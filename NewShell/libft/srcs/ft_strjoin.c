@@ -31,18 +31,20 @@ char	*ft_strjoin(char *s1, char *s2, int flag)
 {
 	char			*result;
 	unsigned int	i;
+	unsigned int	j;
 
 	if (!s1)
 		return (NULL);
-	i = 0;
 	result = malloc(sizeof(int) * (ft_strlen(s1) + ft_strlen(s2) + 1));
 	if (!result)
 		return (NULL);
-	while (*s1) {
-		result[i++] = (char)*s1++;
-	}
-	while (*s2)
-		result[i++] = (char)*s2++;
+	i = 0;
+	j = 0;
+	while (s1[j])
+		result[i++] = s1[j++];
+	j = 0;
+	while (s2[j])
+		result[i++] = s2[j++];
 	result[i] = '\0';
 	ft_free(s1, s2, flag);
 	return (result);

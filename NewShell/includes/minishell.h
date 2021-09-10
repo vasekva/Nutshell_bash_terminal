@@ -35,7 +35,7 @@
 /*
  *:::::::::::::::::::::::::::::::::::::::::::	DEFINES
  */
-# define BUFFER_SIZE 32
+# define	BUFFER_SIZE 32
 # define	TRUE 1
 # define	FALSE 0
 
@@ -120,6 +120,7 @@ void	init_logs(t_loginfo *shell, char *envp[]);
  * PARSER
  */
 char	*lexer(t_loginfo *shell, char *line);
-char	*ft_dollar_replacer(const char *line, int i_left, int i_right, char *part_to_replace);
+char	*ft_replace_dollar(const char *line, int i_left, int i_right, char *part_to_replace);
+char	*ft_divide_by_quotes(const char *line, int i_left, int i_right);
 
 #endif

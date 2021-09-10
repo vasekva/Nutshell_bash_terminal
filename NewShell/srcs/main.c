@@ -87,10 +87,10 @@ int	main(int argc, char **argv, char **envp)
 			add_history(line);
 		formatted_line = lexer(&shell, line);
 		start_logic(&shell, formatted_line);
+		ft_free_data(&shell, formatted_line); /* TODO: объяснить васе почему нужно фришить отформатированную строку вместо line */
 
 //		start_logic(&shell, line); /* without parsing */
-
-		ft_free_data(&shell, line);
+//		ft_free_data(&shell, line);
 	}
 	return (0);
 }
