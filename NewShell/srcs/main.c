@@ -28,10 +28,12 @@ int	ft_start_shell(t_loginfo *shell)
 	return (0);
 }
 
-void	ft_free_data(t_loginfo *shell, char *line)
+void	ft_free_data(t_loginfo *shell, char *new_line, char *line)
 {
 	free(line);
 	line = NULL;
+	free(new_line);
+	new_line = NULL;
 	arr_free(shell->commands->command);
 	shell->commands->num_args = 0;
 	shell->commands->next = NULL;
@@ -41,9 +43,10 @@ static void	signal_handler(int signal)
 {
 	if (signal == SIGINT)
 	{
-		printf("\b\b  \n");
+//		printf("atory/minishell/$>   ");
+		printf("\n");
+		rl_replace_line("", 0);
 		rl_on_new_line();
-		rl_replace_line("", 0); //TODO: решить проблему с отсутствием функции
 		rl_redisplay();
 	}
 	if (signal == SIGQUIT)
@@ -68,7 +71,7 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_loginfo	shell;
 	char 		*line;
-	char 		*formatted_line;
+	char 		*new_line;
 
 	(void)argc;
 	(void)argv;
@@ -85,9 +88,9 @@ int	main(int argc, char **argv, char **envp)
 		}
 		if (line[0])
 			add_history(line);
-		formatted_line = lexer(&shell, line);
-		start_logic(&shell, formatted_line);
-		ft_free_data(&shell, formatted_line); /* TODO: объяснить васе почему нужно фришить отформатированную строку вместо line */
+		new_line = lexer(&shell, line);
+		start_logic(&shell, new_line);
+		ft_free_data(&shell, new_line, line);
 
 //		start_logic(&shell, line); /* without parsing */
 //		ft_free_data(&shell, line);
