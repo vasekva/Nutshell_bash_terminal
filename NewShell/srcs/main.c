@@ -86,8 +86,12 @@ int	main(int argc, char **argv, char **envp)
 			write(2, " \b\b exit\n", 9);
 			exit(-1);
 		}
-		if (line[0])
+		if (line[0] && !valid_command(line))
 			add_history(line);
+		else {
+			free(line);
+			continue ;
+		}
 		new_line = lexer(&shell, line);
 		start_logic(&shell, new_line);
 		ft_free_data(&shell, new_line, line);

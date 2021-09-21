@@ -31,6 +31,7 @@ COMMANDS_SRCS	=	ft_echo.c		\
 
 PARSER_SRCS		=	ft_lexer.c			\
 					ft_lexer_utils.c	\
+					syntax_checker.c	\
 
 OBJS_NAME	=	$(SRCS_NAME:.c=.o) $(COMMANDS_SRCS:.c=.o) $(PARSER_SRCS:.c=.o)
 
@@ -55,7 +56,7 @@ all: 			$(NAME)
 $(NAME):		$(OBJS)
 				@echo "\033[1m\033[35m===	COMPILATION MINISHELL...			\033[1m==="
 				@$(MAKE)	-C			$(LIBFT_DIR)
-				@$(CC)	$(LIBRARY)	$(OBJS)	-o $(NAME) $(RL_FLAGS)
+				@$(CC)	$(OBJS)	$(LIBRARY) -o $(NAME) $(RL_FLAGS)
 				@echo "\033[1m\033[35m===	MINISHELL COMPILATION WAS \033[32mSUCCESFULL		\033[1m\033[35m===\n"
 
 $(OBJS):		$(SRCS)

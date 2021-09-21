@@ -33,17 +33,17 @@ static void replace_env_variable(char **envp_copy, char **line, int *index)
 		while ((*line)[++(*index)])
 			if ((*line)[*index] == ' ' || (*line)[*index] == '"' || (*line)[*index] == '\'' || (*line)[*index] == '$')
 				break;
-			key = ft_substr(*line, i_start + 1, *index - i_start - 1);
-			if (!key)
-				exception("malloc error\n");
-			value = env_get_value_by_key(envp_copy, key);
-			if (value)
-				*line = ft_replace_dollar(*line, i_start, *index, value);
-			else
-				*line = ft_replace_dollar(*line, i_start, *index, "");
-			free(key);
+		key = ft_substr(*line, i_start + 1, *index - i_start - 1);
+		if (!key)
+			exception("malloc error\n");
+		value = env_get_value_by_key(envp_copy, key);
+		if (value)
+			*line = ft_replace_dollar(*line, i_start, *index, value);
+		else
+			*line = ft_replace_dollar(*line, i_start, *index, "");
+		free(key);
 	}
-	*index = i_start;
+	*index = i_start - 1;
 	free(tmp);
 }
 
@@ -68,19 +68,15 @@ static int	remove_double_quotes(char **envp_copy, char **line, int *index)
 	i_start = *index;
 	while ((*line)[++(*index)])
 	{
+		if ((*line)[*index] == '"')
+			break ;
 		if ((*line)[*index] == '$')
 			replace_env_variable(envp_copy, line, index);
-		if ((*line)[*index] == '"') {
-			break ;
-		}
 	}
-	if (!(*line)[*index])
-		return (0);
 	tmp = *line;
 	*line = ft_divide_by_quotes(*line, i_start, *index);
 	free(tmp);
 	*index -= 1;
-//	printf("formatted: %s\n", *line);
 	return (1);
 }
 /**
@@ -104,13 +100,10 @@ static int	remove_single_quotes(char **line, int *index)
 		if ((*line)[*index] == '\'')
 			break;
 	}
-	if (!(*line)[*index])
-		return (0);
 	tmp = *line;
 	*line = ft_divide_by_quotes(*line, i_start, *index);
 	free(tmp);
 	*index -= 2;
-//	printf("formatted: %s\n", *line);
 	return (1);
 }
 
@@ -125,18 +118,12 @@ char	*lexer(t_loginfo *shell, char *line)
 	index = -1;
 	while (line_ptr[++index])
 	{
-//		if (line_ptr[index] == ';')
-//		{
-//			printf("syntax error: ;\n");
-//		}
+		if (line_ptr[index] == '"')
+			remove_double_quotes(shell->envp_copy, &line_ptr, &index);
+		if (line_ptr[index] == '\'')
+			remove_single_quotes(&line_ptr, &index);
 		if (line_ptr[index] == '$')
 			replace_env_variable(shell->envp_copy, &line_ptr, &index);
-		if (line_ptr[index] == '"')
-			if (!remove_double_quotes(shell->envp_copy, &line_ptr, &index))
-				exception("syntax error : unclosed double quote\n");
-		if (line_ptr[index] == '\'')
-			if (!remove_single_quotes(&line_ptr, &index))
-				exception("syntax error : unclosed quote\n");
 	}
 	return (line_ptr);
 }
