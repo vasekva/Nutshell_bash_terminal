@@ -70,8 +70,8 @@ int	start_logic(t_loginfo *shell, char *line)
 int	main(int argc, char **argv, char **envp)
 {
 	t_loginfo	shell;
-	char 		*line;
-	char 		*new_line;
+	char		*line;
+	char		*new_line;
 
 	(void)argc;
 	(void)argv;
@@ -86,15 +86,17 @@ int	main(int argc, char **argv, char **envp)
 			write(2, " \b\b exit\n", 9);
 			exit(-1);
 		}
-		if (line[0] && !valid_command(line))
+		if (line[0])
 			add_history(line);
-		else {
+		if (valid_command(line))
+		{
 			free(line);
 			continue ;
 		}
-		new_line = lexer(&shell, line);
-		start_logic(&shell, new_line);
-		ft_free_data(&shell, new_line, line);
+		split_commands(&shell, line);
+//		new_line = lexer(&shell, line);
+//		start_logic(&shell, new_line);
+//		ft_free_data(&shell, new_line, line);
 
 //		start_logic(&shell, line); /* without parsing */
 //		ft_free_data(&shell, line);

@@ -29,9 +29,11 @@ COMMANDS_SRCS	=	ft_echo.c		\
 					ft_execve.c		\
 					ft_exit.c		\
 
-PARSER_SRCS		=	ft_lexer.c			\
+PARSER_SRCS		=	syntax_checker.c	\
+					split_commands.c	\
+					ft_lexer.c				\
 					ft_lexer_utils.c	\
-					syntax_checker.c	\
+
 
 OBJS_NAME	=	$(SRCS_NAME:.c=.o) $(COMMANDS_SRCS:.c=.o) $(PARSER_SRCS:.c=.o)
 

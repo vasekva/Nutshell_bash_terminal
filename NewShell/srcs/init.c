@@ -34,12 +34,16 @@ static void	get_envp_copy(t_loginfo *shell, char *envp[])
 void	init_logs(t_loginfo *shell, char *envp[])
 {
 	shell->title = ft_strjoin(getenv("LOGNAME"), "/minishell/$> ", -1);
-	shell->commands = malloc(sizeof(shell->commands));
-	if (!shell->title || !shell->commands)
+//	shell->commands = malloc(sizeof(shell->commands));
+//	if (!shell->title || !shell->commands)
+//		exception(ONE);
+	if (!shell->title)
 		exception(ONE);
 	shell->envp_copy = NULL;
 	get_envp_copy(shell, envp);
-	shell->commands->command = NULL;
-	shell->commands->num_args = 0;
-	shell->commands->next = NULL;
+
+	shell->commands = NULL;
+//	shell->commands->command = NULL;
+//	shell->commands->num_args = 0;
+//	shell->commands->next = NULL;
 }
