@@ -14,7 +14,7 @@
  * @return 	returns formatted string
  * @error	calls exception func in case of malloc error
  */
-static void replace_env_variable(char **envp_copy, char **line, int *index)
+static void	replace_env_variable(char **envp_copy, char **line, int *index)
 {
 	int		i_start;
 	char	*key;
@@ -23,16 +23,15 @@ static void replace_env_variable(char **envp_copy, char **line, int *index)
 
 	if (!(*line)[*index + 1] || (*line)[*index + 1] == ' ')
 		return ;
-
 	tmp = *line;
 	i_start = *index;
-
-	if ((*line)[*index + 1] == '$' || (*line)[*index + 1] == '?' || (*line)[*index + 1] == '0')
-		*line = ft_replace_dollar(*line, i_start, *index + 2, "system data here");
-	else {
+	if ((*line)[*index + 1] == '?')
+		*line = ft_replace_dollar(*line, i_start, *index + 2, "CODE OF LAST ERROR HERE");
+	else
+	{
 		while ((*line)[++(*index)])
 			if ((*line)[*index] == ' ' || (*line)[*index] == '"' || (*line)[*index] == '\'' || (*line)[*index] == '$')
-				break;
+				break ;
 		key = ft_substr(*line, i_start + 1, *index - i_start - 1);
 		if (!key)
 			exception("malloc error\n");
@@ -79,6 +78,7 @@ static int	remove_double_quotes(char **envp_copy, char **line, int *index)
 	*index -= 1;
 	return (1);
 }
+
 /**
  * function removes single quotes in the line\n
  * other parts of given line are left unchanged
@@ -96,10 +96,9 @@ static int	remove_single_quotes(char **line, int *index)
 	char	*tmp;
 
 	i_start = *index;
-	while ((*line)[++(*index)]) {
+	while ((*line)[++(*index)])
 		if ((*line)[*index] == '\'')
-			break;
-	}
+			break ;
 	tmp = *line;
 	*line = ft_divide_by_quotes(*line, i_start, *index);
 	free(tmp);

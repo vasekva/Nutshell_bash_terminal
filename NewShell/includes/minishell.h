@@ -30,7 +30,7 @@
 
 # include "libft.h"
 # include "exceptions.h"
-//# include "my_readline.h"
+# include "my_readline.h"
 
 /*
  *:::::::::::::::::::::::::::::::::::::::::::	DEFINES
@@ -122,7 +122,7 @@ void	init_logs(t_loginfo *shell, char *envp[]);
 int		valid_command(const char *line);
 void	split_commands(t_loginfo *shell, char *line);
 char	*lexer(t_loginfo *shell, char *line);
-char	*ft_replace_dollar(const char *line, int i_left, int i_right, char *part_to_replace);
+char	*ft_replace_dollar(const char *line, int i_left, int i_right, char *new);
 char	*ft_divide_by_quotes(const char *line, int i_left, int i_right);
 
 #endif

@@ -8,13 +8,13 @@ static int	ft_check_redirect(const char *line, int index, char symbol)
 {
 	while (line[++(index)])
 		if (line[index] != ' ')
-			break;
+			break ;
 	if (!line[index])
-		return (printf("syntax error near unexpected token `newline'\n"));
+		return (printf("%s `newline'\n", SYNTAX_ERROR));
 	if (line[index] == '<' && symbol == '>')
-		return (printf("syntax error near unexpected token `%s'\n", &line[index]));
+		return (printf("%s `%s'\n", SYNTAX_ERROR, &line[index]));
 	if (line[index] == '>' && symbol == '<')
-		return (printf("syntax error near unexpected token `%s'\n", &line[index]));
+		return (printf("%s `%s'\n", SYNTAX_ERROR, &line[index]));
 	return (0);
 }
 
@@ -27,12 +27,12 @@ static int	ft_check_pipe(const char *line, int index_forward)
 		if (line[index_back] != ' ')
 			break ;
 	if (!line[index_back])
-		return (printf("syntax error near unexpected token `|'\n"));
+		return (printf("%s `|'\n", SYNTAX_ERROR));
 	while (line[++(index_forward)])
 		if (line[index_forward] != ' ')
 			break ;
 	if (!line[index_forward])
-		return (printf("syntax error near unexpected token `newline'\n"));
+		return (printf("%s `newline'\n", SYNTAX_ERROR));
 	return (0);
 }
 
@@ -54,13 +54,13 @@ static int	ft_check_pair(const char *line, int *index, char symbol)
  */
 int	valid_command(const char *line)
 {
-	int index;
+	int	index;
 
 	index = -1;
 	while (line[++index])
 	{
 		if (line[index] == ';' || line[index] == '\\')
-			return (printf("syntax error near unexpected token `%c'\n", line[index]));
+			return (printf("%s `%c'\n", SYNTAX_ERROR, line[index]));
 		if (line[index] == '|')
 			if (ft_check_pipe(line, index))
 				return (1);

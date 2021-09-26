@@ -4,23 +4,20 @@
 
 #include "minishell.h"
 
-char	*ft_replace_dollar(const char *line, int i_left, int i_right, char *part_to_replace)
+char	*ft_replace_dollar(const char *line, int i_left, int i_right, char *new)
 {
-	char 	*result_line;
-	char 	*part_line;
+	char	*result_line;
+	char	*part_line;
 
 	result_line = ft_substr(line, 0, i_left);
 	if (!result_line)
 		exception("malloc error\n");
-
-	result_line = ft_strjoin(result_line, part_to_replace, 0);
+	result_line = ft_strjoin(result_line, new, 0);
 	if (!result_line)
 		exception("malloc error\n");
-
 	part_line = ft_strdup(&line[i_right]);
 	if (!part_line)
 		exception("malloc error\n");
-
 	result_line = ft_strjoin(result_line, part_line, 0);
 	if (!result_line)
 		exception("malloc error\n");
@@ -41,28 +38,23 @@ char	*ft_replace_dollar(const char *line, int i_left, int i_right, char *part_to
  */
 char	*ft_divide_by_quotes(const char *line, int i_left, int i_right)
 {
-	char 	*result_line;
-	char 	*part_line;
+	char	*result_line;
+	char	*part_line;
 
 	part_line = ft_substr(line, 0, i_left);
 	if (!part_line)
 		exception("malloc error\n");
-
 	result_line = ft_substr(line, i_left + 1, i_right - i_left - 1);
 	if (!result_line)
 		exception("malloc error\n");
-
 	result_line = ft_strjoin(part_line, result_line, 2);
 	if (!result_line)
 		exception("malloc error\n");
-
 	part_line = ft_strdup(&line[i_right + 1]);
 	if (!part_line)
 		exception("malloc error\n");
-
 	result_line = ft_strjoin(result_line, part_line, 2);
 	if (!result_line)
 		exception("malloc error\n");
-
 	return (result_line);
 }
