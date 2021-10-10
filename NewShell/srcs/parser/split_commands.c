@@ -57,45 +57,43 @@ static	void	ft_do_words(const char *s, char c, int i, char **matrix)
 {
 	size_t	array_index;
 	int		len;
-	int		start;
 	int 	single_quote_flag;
 	int 	double_quote_flag;
 
 	array_index = 0;
-	start = 0;
 	single_quote_flag = 0;
 	double_quote_flag = 0;
-	while (array_index < ft_count_words_for_args(s, c))
+	len = 0;
+	while (s[i] != '\0' && array_index < ft_count_words_for_args(s, c))
 	{
-		if (s[i] == '"' && !single_quote_flag)
-		{
-			if (double_quote_flag)
-				double_quote_flag = 0;
-			else
-				double_quote_flag= 1;
-		}
-		if (s[i] == '\'' && !double_quote_flag)
-		{
-			if (single_quote_flag)
-				single_quote_flag = 0;
-			else
-				single_quote_flag = 1;
-		}
-		while (s[i] && s[i] == c && !double_quote_flag && !single_quote_flag)
+		len = 0;
+		while (s[i] != '\0' && s[i] == c && !single_quote_flag && !double_quote_flag)
 			i++;
-		if (i == 0 || ((s[i] != c) && !single_quote_flag && !double_quote_flag && (s[i - 1] == c || s[i - 1] == '\0')))
-			start = i;
-		if (!double_quote_flag && !single_quote_flag && (s[i + 1] == c || s[i + 1] == '\0'))
+		while (s[i + len] != '\0' && (s[i + len] != c || (s[i + len] == c && (single_quote_flag || double_quote_flag))))
 		{
-			len = i - start + 1;
-			matrix[array_index++] = ft_substr(s, i - len + 1, len);
-			if (!matrix[array_index - 1])
+			if (s[i + len] == '"' && !single_quote_flag)
 			{
-				ft_free_words(matrix, array_index - 1);
-				return ;
+				if (double_quote_flag)
+					double_quote_flag = 0;
+				else
+					double_quote_flag= 1;
 			}
+			if (s[i + len] == '\'' && !double_quote_flag)
+			{
+				if (single_quote_flag)
+					single_quote_flag = 0;
+				else
+					single_quote_flag = 1;
+			}
+			len++;
 		}
-		i++;
+		matrix[array_index] = ft_substr(s, i, len);
+		if (!matrix[array_index]) {
+			ft_free_words(matrix, array_index);
+			return;
+		}
+		array_index++;
+		i += len;
 	}
 	matrix[array_index] = NULL;
 }
@@ -149,9 +147,11 @@ void split_commands(t_loginfo *shell, char *line)
 		list_ptr->command = split_arguments(commands[index], ' ');
 		if (!list_ptr->command)
 			exception(ONE);
-		//todo : посчитать
-		printf("STOP\n\n");
+		list_ptr->num_args = 0;
+		while (list_ptr->command[list_ptr->num_args])
+			list_ptr->num_args++; //todo : посчитать
 		list_ptr->next = NULL;
-		printf("%s\n", commands[index]);
 	}
+	while (commands[index])
+		free(commands[index--]);
 }

@@ -56,15 +56,26 @@ static void	signal_handler(int signal)
 	}
 }
 
-int	start_logic(t_loginfo *shell, char *line)
+//int	start_logic(t_loginfo *shell, char *line)
+//{
+//	shell->commands->command = ft_split(line, ' ');
+//	if (!shell->commands->command)
+//		printf("SPLIT ERROR \n");
+//	while (shell->commands->command[shell->commands->num_args])
+//		shell->commands->num_args++;
+//	if (shell->commands->command[0])
+//		ft_start_shell(shell);
+//}
+
+static void	start_logic(t_loginfo *shell, char *line)
 {
-	shell->commands->command = ft_split(line, ' ');
-	if (!shell->commands->command)
-		printf("SPLIT ERROR \n");
-	while (shell->commands->command[shell->commands->num_args])
-		shell->commands->num_args++;
-	if (shell->commands->command[0])
-		ft_start_shell(shell);
+	int		index;
+	t_cmd	*ptr;
+
+//	split_commands(shell, line);
+//	ptr = shell->commands;
+//	index = -1;
+//	while (ptr->command[++index])
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -93,7 +104,7 @@ int	main(int argc, char **argv, char **envp)
 			free(line);
 			continue ;
 		}
-		split_commands(&shell, line);
+		start_logic(&shell, line);
 //		new_line = lexer(&shell, line);
 //		start_logic(&shell, new_line);
 //		ft_free_data(&shell, new_line, line);
