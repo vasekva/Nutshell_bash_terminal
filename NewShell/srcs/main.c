@@ -28,12 +28,10 @@ int	ft_start_shell(t_loginfo *shell)
 	return (0);
 }
 
-void	ft_free_data(t_loginfo *shell, char *new_line, char *line)
+void	ft_free_data(t_loginfo *shell, char *line)
 {
 	free(line);
 	line = NULL;
-	free(new_line);
-	new_line = NULL;
 	arr_free(shell->commands->command);
 	shell->commands->num_args = 0;
 	shell->commands->next = NULL;
@@ -56,33 +54,33 @@ static void	signal_handler(int signal)
 	}
 }
 
-//int	start_logic(t_loginfo *shell, char *line)
-//{
-//	shell->commands->command = ft_split(line, ' ');
-//	if (!shell->commands->command)
-//		printf("SPLIT ERROR \n");
-//	while (shell->commands->command[shell->commands->num_args])
-//		shell->commands->num_args++;
-//	if (shell->commands->command[0])
-//		ft_start_shell(shell);
-//}
-
-static void	start_logic(t_loginfo *shell, char *line)
+static void	preparser(t_loginfo shell, char *line)
 {
 	int		index;
 	t_cmd	*ptr;
+    char    *line_ptr;
 
-//	split_commands(shell, line);
-//	ptr = shell->commands;
-//	index = -1;
-//	while (ptr->command[++index])
+	split_commands(&shell, line);
+	ptr = shell.commands;
+    while (ptr != NULL)
+    {
+        index = -1;
+        while (ptr->command[++index])
+        {
+            line_ptr = lexer(&shell, ptr->command[index]);
+            free(ptr->command[index]);
+            ptr->command[index] = line_ptr;
+            printf("%s ", ptr->command[index]);
+        }
+        printf("\n");
+        ptr = ptr->next;
+    }
 }
 
 int	main(int argc, char **argv, char **envp)
 {
 	t_loginfo	shell;
 	char		*line;
-	char		*new_line;
 
 	(void)argc;
 	(void)argv;
@@ -104,13 +102,10 @@ int	main(int argc, char **argv, char **envp)
 			free(line);
 			continue ;
 		}
-		start_logic(&shell, line);
-//		new_line = lexer(&shell, line);
-//		start_logic(&shell, new_line);
-//		ft_free_data(&shell, new_line, line);
-
-//		start_logic(&shell, line); /* without parsing */
-//		ft_free_data(&shell, line);
+		preparser(shell, line);
+        if (shell.commands && shell.commands->command[0])
+            ft_start_shell(&shell);
+//        ft_free_data(&shell, line);
 	}
 	return (0);
 }

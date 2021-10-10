@@ -105,15 +105,11 @@ char	**split_arguments(const char *command, char c)
 	int		i;
 
 	num_words = ft_count_words_for_args(command, c);
-	printf("NUM : %d\n", num_words);
 	arguments = (char **)malloc((num_words + 1) * sizeof(char *));
 	if (!arguments)
 		return (NULL);
 	i = 0;
 	ft_do_words(command, c, i, arguments);
-	i = -1;
-	while (arguments[++i])
-		printf("%s\n", arguments[i]);
 	return (arguments);
 }
 
@@ -126,31 +122,30 @@ char	**split_arguments(const char *command, char c)
 //
 
 
-void split_commands(t_loginfo *shell, char *line)
+void    split_commands(t_loginfo *shell, char *line)
 {
 	char 	**commands;
 	int		index;
-	t_cmd 	*list_ptr;
+	t_cmd 	**list_ptr;
 
 	commands = ft_split(line, '|');
 	if (!commands)
 		exception("SPLIT ERROR\n");
 	index = -1;
-	list_ptr = shell->commands;
+	list_ptr = &shell->commands;
 	while (commands[++index])
 	{
-		if (list_ptr)
-			list_ptr = list_ptr->next;
-		list_ptr = malloc(sizeof(t_cmd));
-		if (!list_ptr)
+		*list_ptr = malloc(sizeof(t_cmd));
+		if (!*list_ptr)
 			exception(ONE);
-		list_ptr->command = split_arguments(commands[index], ' ');
-		if (!list_ptr->command)
+		(*list_ptr)->command = split_arguments(commands[index], ' ');
+		if (!(*list_ptr)->command)
 			exception(ONE);
-		list_ptr->num_args = 0;
-		while (list_ptr->command[list_ptr->num_args])
-			list_ptr->num_args++; //todo : посчитать
-		list_ptr->next = NULL;
+		(*list_ptr)->num_args = 0;
+		while ((*list_ptr)->command[(*list_ptr)->num_args])
+			(*list_ptr)->num_args++;
+		(*list_ptr)->next = NULL;
+        *list_ptr = (*list_ptr)->next;
 	}
 	while (commands[index])
 		free(commands[index--]);
