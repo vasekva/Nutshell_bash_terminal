@@ -121,32 +121,86 @@ char	**split_arguments(const char *command, char c)
 //
 //
 
+/**
+ * Функция возвращает указатель на
+ * последний элемент списка.
+ *
+ * @return
+ * Возвращает указатель на последний
+ * элемент списка.\n
+ * Если список равен NULL - возвращается NULL.
+ */
+t_cmd	*get_last(t_cmd *list)
+{
+	if (!list)
+		return (NULL);
+	while (list->next)
+		list = list->next;
+	return (list);
+}
+
+/**
+ * Функция создает новый элемент с
+ * переданным в параметры значением и
+ * вставляет его в конец списка.
+ * В новом элементе сохраняется указатель
+ * на предыдущее значение и устанавливается
+ * NULL для следующего.
+ *
+ * @param stack: Список, в который
+ * производится вставка.
+ *
+ * @param value: Значение для вставки
+ * в созданный элемент.
+ */
+void	push_back(t_cmd **list, char **command)
+{
+	t_cmd	*last;
+	t_cmd	*tmp;
+
+	last = get_last(*list);
+	if (!last)
+	{
+		(*list) = (t_cmd *)malloc(sizeof(t_cmd));
+		(*list)->command = command;
+		(*list)->next = NULL;
+		(*list)->past = NULL;
+	}
+	else
+	{
+		tmp = (t_cmd *)malloc(sizeof(t_cmd));
+		tmp->command = command;
+		tmp->next = NULL;
+		tmp->past = last;
+		last->next = tmp;
+	}
+}
 
 void    split_commands(t_loginfo *shell, char *line)
 {
-	char 	**commands;
+	char 	**all_cmds;
+	char	**final_cmds;
 	int		index;
 	t_cmd 	**list_ptr;
 
-	commands = ft_split(line, '|');
-	if (!commands)
+	all_cmds = ft_split(line, '|');
+	if (!all_cmds)
 		exception("SPLIT ERROR\n");
 	index = -1;
 	list_ptr = &shell->commands;
-	while (commands[++index])
+	final_cmds = NULL;
+	while (all_cmds[++index])
 	{
-		*list_ptr = malloc(sizeof(t_cmd));
-		if (!*list_ptr)
-			exception(ONE);
-		(*list_ptr)->command = split_arguments(commands[index], ' ');
+		final_cmds = split_arguments(all_cmds[index], ' ');
+		if (!final_cmds)
+			exception("SPLIT ERROR\n");
+		push_back(list_ptr, final_cmds);
 		if (!(*list_ptr)->command)
 			exception(ONE);
 		(*list_ptr)->num_args = 0;
 		while ((*list_ptr)->command[(*list_ptr)->num_args])
 			(*list_ptr)->num_args++;
-		(*list_ptr)->next = NULL;
-        *list_ptr = (*list_ptr)->next;
 	}
-	while (commands[index])
-		free(commands[index--]);
+	while (all_cmds[index])
+		free(all_cmds[index--]);
 }

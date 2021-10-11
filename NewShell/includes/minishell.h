@@ -50,6 +50,7 @@ struct s_cmd
 	char	**command;
 	int		num_args;
 	t_cmd	*next;
+	t_cmd	*past;
 };
 
 struct s_loginfo

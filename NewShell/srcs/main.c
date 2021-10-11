@@ -54,20 +54,20 @@ static void	signal_handler(int signal)
 	}
 }
 
-static void	preparser(t_loginfo shell, char *line)
+static void	preparser(t_loginfo *shell, char *line)
 {
 	int		index;
 	t_cmd	*ptr;
     char    *line_ptr;
 
-	split_commands(&shell, line);
-	ptr = shell.commands;
+	split_commands(shell, line);
+	ptr = shell->commands;
     while (ptr != NULL)
     {
         index = -1;
         while (ptr->command[++index])
         {
-            line_ptr = lexer(&shell, ptr->command[index]);
+            line_ptr = lexer(shell, ptr->command[index]);
             free(ptr->command[index]);
             ptr->command[index] = line_ptr;
             printf("%s ", ptr->command[index]);
@@ -102,10 +102,12 @@ int	main(int argc, char **argv, char **envp)
 			free(line);
 			continue ;
 		}
-		preparser(shell, line);
+		preparser(&shell, line);
+		/*
         if (shell.commands && shell.commands->command[0])
             ft_start_shell(&shell);
 //        ft_free_data(&shell, line);
+		 */
 	}
 	return (0);
 }
