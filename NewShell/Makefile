@@ -29,10 +29,11 @@ COMMANDS_SRCS	=	ft_echo.c		\
 					ft_execve.c		\
 					ft_exit.c		\
 
-PARSER_SRCS		=	syntax_checker.c	\
-					split_commands.c	\
+PARSER_SRCS		=	syntax_checker.c		\
+					ft_split_arguments.c	\
+					ft_preparser.c			\
 					ft_lexer.c				\
-					ft_lexer_utils.c	\
+					ft_lexer_utils.c		\
 
 
 OBJS_NAME	=	$(SRCS_NAME:.c=.o) $(COMMANDS_SRCS:.c=.o) $(PARSER_SRCS:.c=.o)
@@ -88,6 +89,6 @@ fclean:			clean
 				@echo "\033[1m\033[36m	===	REMOVING minishell 	\033[32mOK			\033[1m\033[36m==="
 				@rm -rf	$(OBJS_DIR)
 				@echo "\033[1m\033[36m	===	REMOVING ./objs		\033[32mOK			\033[1m\033[36m==="
-				@echo	"\033[1m\033[35m===	ALL CREATED FILES HAVE BEEN \033[32mDELETED SUCCESSFULLY \033[1m\033[35m==="
+				@echo	"\033[1m\033[35m===	ALL CREATED FILES HAVE BEEN \033[32mDELETED SUCCESSFULLY \033[1m\033[35m===\n"
 
 re:				fclean all

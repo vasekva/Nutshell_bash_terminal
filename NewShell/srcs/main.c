@@ -12,11 +12,28 @@
 
 #include "minishell.h"
 
+static void	signal_handler(int signal)
+{
+	if (signal == SIGINT)
+	{
+		//		printf("atory/minishell/$>   ");
+		printf("\n");
+		rl_replace_line("", 0);
+		rl_on_new_line();
+		rl_redisplay();
+	}
+	if (signal == SIGQUIT)
+	{
+		printf("quit\n");
+		exit(1);
+	}
+}
+
 /*
  * Запускает функцию в которой определяется команда,
  * которую необходимо выполнить
  */
-int	ft_start_shell(t_loginfo *shell)
+static int	ft_start_shell(t_loginfo *shell)
 {
 	if (shell->commands)
 	{
@@ -30,51 +47,23 @@ int	ft_start_shell(t_loginfo *shell)
 
 void	ft_free_data(t_loginfo *shell, char *line)
 {
+	t_cmd	*ptr;
+	t_cmd	*tmp;
+
 	free(line);
 	line = NULL;
-	arr_free(shell->commands->command);
-	shell->commands->num_args = 0;
-	shell->commands->next = NULL;
-}
-
-static void	signal_handler(int signal)
-{
-	if (signal == SIGINT)
-	{
-//		printf("atory/minishell/$>   ");
-		printf("\n");
-		rl_replace_line("", 0);
-		rl_on_new_line();
-		rl_redisplay();
-	}
-	if (signal == SIGQUIT)
-	{
-		printf("quit\n");
-		exit(1);
-	}
-}
-
-static void	preparser(t_loginfo *shell, char *line)
-{
-	int		index;
-	t_cmd	*ptr;
-    char    *line_ptr;
-
-	split_commands(shell, line);
 	ptr = shell->commands;
-    while (ptr != NULL)
-    {
-        index = -1;
-        while (ptr->command[++index])
-        {
-            line_ptr = lexer(shell, ptr->command[index]);
-            free(ptr->command[index]);
-            ptr->command[index] = line_ptr;
-            printf("%s ", ptr->command[index]);
-        }
-        printf("\n");
-        ptr = ptr->next;
-    }
+	while (ptr != NULL)
+	{
+		arr_free(ptr->command);
+		ptr->num_args = 0;
+		tmp = ptr;
+		ptr = ptr->next;
+		tmp->next = NULL;
+		free(tmp);
+		tmp = NULL;
+	}
+	shell->commands = NULL;
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -97,17 +86,13 @@ int	main(int argc, char **argv, char **envp)
 		}
 		if (line[0])
 			add_history(line);
-		if (valid_command(line))
+		if (!syntax_check(line))
 		{
-			free(line);
-			continue ;
+			preparser(&shell, line);
+			if (shell.commands && shell.commands->command[0])
+				ft_start_shell(&shell);
 		}
-		preparser(&shell, line);
-		/*
-        if (shell.commands && shell.commands->command[0])
-            ft_start_shell(&shell);
-//        ft_free_data(&shell, line);
-		 */
+        ft_free_data(&shell, line);
 	}
 	return (0);
 }

@@ -52,7 +52,7 @@ static int	ft_check_pair(const char *line, int *index, char symbol)
  * @return	0 : if OK
  * 			any other digit if there is error
  */
-int	valid_command(const char *line)
+int	syntax_check(const char *line)
 {
 	int	index;
 

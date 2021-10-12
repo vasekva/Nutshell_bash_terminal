@@ -120,8 +120,9 @@ void	init_logs(t_loginfo *shell, char *envp[]);
 /*
  * PARSER
  */
-int		valid_command(const char *line);
-void    split_commands(t_loginfo *shell, char *line);
+int		syntax_check(const char *line);
+void	preparser(t_loginfo *shell, char *line);
+char	**split_arguments(const char *command, char c);
 char	*lexer(t_loginfo *shell, char *line);
 char	*ft_replace_dollar(const char *line, int i_left, int i_right, char *new);
 char	*ft_divide_by_quotes(const char *line, int i_left, int i_right);
