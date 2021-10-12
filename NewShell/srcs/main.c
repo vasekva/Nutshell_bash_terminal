@@ -12,11 +12,28 @@
 
 #include "minishell.h"
 
+static void	signal_handler(int signal)
+{
+	if (signal == SIGINT)
+	{
+		//		printf("atory/minishell/$>   ");
+		printf("\n");
+		rl_replace_line("", 0);
+		rl_on_new_line();
+		rl_redisplay();
+	}
+	if (signal == SIGQUIT)
+	{
+		printf("quit\n");
+		exit(1);
+	}
+}
+
 /*
  * Запускает функцию в которой определяется команда,
  * которую необходимо выполнить
  */
-int	ft_start_shell(t_loginfo *shell)
+static int	ft_start_shell(t_loginfo *shell)
 {
 	if (shell->commands)
 	{
@@ -30,44 +47,29 @@ int	ft_start_shell(t_loginfo *shell)
 
 void	ft_free_data(t_loginfo *shell, char *line)
 {
+	t_cmd	*ptr;
+	t_cmd	*tmp;
+
 	free(line);
 	line = NULL;
-	arr_free(shell->commands->command);
-	shell->commands->num_args = 0;
-	shell->commands->next = NULL;
-}
-
-static void	signal_handler(int signal)
-{
-	if (signal == SIGINT)
+	ptr = shell->commands;
+	while (ptr != NULL)
 	{
-		printf("\b\b  \n");
-		rl_on_new_line();
-		rl_replace_line("", 0); //TODO: решить проблему с отсутствием функции
-		rl_redisplay();
+		arr_free(ptr->command);
+		ptr->num_args = 0;
+		tmp = ptr;
+		ptr = ptr->next;
+		tmp->next = NULL;
+		free(tmp);
+		tmp = NULL;
 	}
-	if (signal == SIGQUIT)
-	{
-		printf("quit\n");
-		exit(1);
-	}
-}
-
-int	start_logic(t_loginfo *shell, char *line)
-{
-	shell->commands->command = ft_split(line, ' ');
-	if (!shell->commands->command)
-		printf("SPLIT ERROR \n");
-	while (shell->commands->command[shell->commands->num_args])
-		shell->commands->num_args++;
-	if (shell->commands->command[0])
-		ft_start_shell(shell);
+	shell->commands = NULL;
 }
 
 int	main(int argc, char **argv, char **envp)
 {
 	t_loginfo	shell;
-	char 		*line;
+	char		*line;
 
 	(void)argc;
 	(void)argv;
@@ -84,8 +86,13 @@ int	main(int argc, char **argv, char **envp)
 		}
 		if (line[0])
 			add_history(line);
-		start_logic(&shell, line);
-		ft_free_data(&shell, line);
+		if (!syntax_check(line))
+		{
+			preparser(&shell, line);
+			if (shell.commands && shell.commands->command[0])
+				ft_start_shell(&shell);
+		}
+        ft_free_data(&shell, line);
 	}
 	return (0);
 }

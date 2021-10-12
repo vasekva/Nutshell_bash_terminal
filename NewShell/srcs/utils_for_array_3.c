@@ -32,8 +32,16 @@ int	env_find_str_ind_by_key(char **array, char *key)
 	return (-1);
 }
 
-// возвращает !!!не замалоченную строку, найденную в думерном массиве по ключу
-// строка возвращается по указателю начиная с индекса после символа '='
+/**
+ * возвращает !!!не замалоченную строку, найденную в двумерном массиве по ключу \n
+ * строка возвращается по указателю начиная с индекса после символа '='
+ *
+ * @param array	:	envp_copy array
+ * @param key	:	search key
+ *
+ * @return возвращает указатель на значение переменной
+ * @return или NULL, если такой ключ в массиве не найден
+ */
 char	*env_get_value_by_key(char **array, char *key)
 {
 	int	str_ind;
@@ -41,6 +49,8 @@ char	*env_get_value_by_key(char **array, char *key)
 	char *ret;
 
 	str_ind = env_find_str_ind_by_key(array, key);
+	if (str_ind == -1)
+		return (NULL);
 	symbol_ind = get_symbol_ind(array[str_ind], '=');
 	symbol_ind++;
 //	ret = ft_strdup(&array[str_ind][symbol_ind]);

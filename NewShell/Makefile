@@ -5,6 +5,7 @@ LIBFT_DIR		=	./libft/
 LIBRARY			=	./libft/libft.a
 SRCS_DIR		=	./srcs/
 COMMANDS_DIR	=	./srcs/commands/
+PARSER_DIR		=	./srcs/parser/
 OBJS_DIR		=	./objs/
 
 SRCS_NAME		=	get_next_line.c		\
@@ -28,9 +29,16 @@ COMMANDS_SRCS	=	ft_echo.c		\
 					ft_execve.c		\
 					ft_exit.c		\
 
-OBJS_NAME	=	$(SRCS_NAME:.c=.o) $(COMMANDS_SRCS:.c=.o)
+PARSER_SRCS		=	syntax_checker.c		\
+					ft_split_arguments.c	\
+					ft_preparser.c			\
+					ft_lexer.c				\
+					ft_lexer_utils.c		\
 
-SRCS		=	$(addprefix $(SRCS_DIR), $(SRCS_NAME)) $(addprefix $(COMMANDS_DIR), $(COMMANDS_SRCS))
+
+OBJS_NAME	=	$(SRCS_NAME:.c=.o) $(COMMANDS_SRCS:.c=.o) $(PARSER_SRCS:.c=.o)
+
+SRCS		=	$(addprefix $(SRCS_DIR), $(SRCS_NAME)) $(addprefix $(COMMANDS_DIR), $(COMMANDS_SRCS)) $(addprefix $(PARSER_DIR), $(PARSER_SRCS))
 OBJS		=	$(addprefix $(OBJS_DIR), $(OBJS_NAME))
 
 CC			=	gcc -g
@@ -51,7 +59,7 @@ all: 			$(NAME)
 $(NAME):		$(OBJS)
 				@echo "\033[1m\033[35m===	COMPILATION MINISHELL...			\033[1m==="
 				@$(MAKE)	-C			$(LIBFT_DIR)
-				@$(CC)	$(LIBRARY)	$(OBJS)	-o $(NAME) $(RL_FLAGS)
+				@$(CC)	$(OBJS)	$(LIBRARY) -o $(NAME) $(RL_FLAGS)
 				@echo "\033[1m\033[35m===	MINISHELL COMPILATION WAS \033[32mSUCCESFULL		\033[1m\033[35m===\n"
 
 $(OBJS):		$(SRCS)
@@ -81,6 +89,6 @@ fclean:			clean
 				@echo "\033[1m\033[36m	===	REMOVING minishell 	\033[32mOK			\033[1m\033[36m==="
 				@rm -rf	$(OBJS_DIR)
 				@echo "\033[1m\033[36m	===	REMOVING ./objs		\033[32mOK			\033[1m\033[36m==="
-				@echo	"\033[1m\033[35m===	ALL CREATED FILES HAVE BEEN \033[32mDELETED SUCCESSFULLY \033[1m\033[35m==="
+				@echo	"\033[1m\033[35m===	ALL CREATED FILES HAVE BEEN \033[32mDELETED SUCCESSFULLY \033[1m\033[35m===\n"
 
 re:				fclean all

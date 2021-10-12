@@ -18,6 +18,7 @@
 # define THREE "No such file or directory"
 # define FOUR "Fork error!"
 # define FIVE	"Command not found!"
+# define SYNTAX_ERROR	"syntax error near unexpected token"
 
 
 #endif

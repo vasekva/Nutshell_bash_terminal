@@ -35,7 +35,7 @@
 /*
  *:::::::::::::::::::::::::::::::::::::::::::	DEFINES
  */
-# define BUFFER_SIZE 32
+# define	BUFFER_SIZE 32
 # define	TRUE 1
 # define	FALSE 0
 
@@ -50,6 +50,7 @@ struct s_cmd
 	char	**command;
 	int		num_args;
 	t_cmd	*next;
+	t_cmd	*past;
 };
 
 struct s_loginfo
@@ -115,5 +116,15 @@ void	swap_values(t_loginfo *shell, char *key_fst, char *key_scnd);
  * INIT.C
  */
 void	init_logs(t_loginfo *shell, char *envp[]);
+
+/*
+ * PARSER
+ */
+int		syntax_check(const char *line);
+void	preparser(t_loginfo *shell, char *line);
+char	**split_arguments(const char *command, char c);
+char	*lexer(t_loginfo *shell, char *line);
+char	*ft_replace_dollar(const char *line, int i_left, int i_right, char *new);
+char	*ft_divide_by_quotes(const char *line, int i_left, int i_right);
 
 #endif

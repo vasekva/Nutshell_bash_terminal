@@ -12,21 +12,6 @@
 
 #include "libft.h"
 
-//int	ft_fill_s1(char *str, char *s1, int *j, int i)
-//{
-//	int	n;
-//
-//	n = *j;
-//	i = 0;
-//	while (s1[i])
-//	{
-//		str[n++] = s1[i];
-//		i++;
-//	}
-//	*j = n;
-//	return (i);
-//}
-
 void	ft_free(char *s1, char *s2, int flag)
 {
 	if (flag == -1)
@@ -42,46 +27,24 @@ void	ft_free(char *s1, char *s2, int flag)
 	}
 }
 
-//char	*ft_strjoin(char *s1, char *s2, int flag)
-//{
-//	int		i;
-//	int		j;
-//	char	*str;
-//
-//	str = (char *)malloc(sizeof(*s1) * (ft_strlen(s1) + ft_strlen(s2) + 1));
-//	if (!str)
-//		return (NULL);
-//	i = 0;
-//	j = 0;
-//	if (s1 != NULL)
-//		i = ft_fill_s1(str, s1, &j, i);
-//	i = -1;
-//	if (s2)
-//	{
-//		while (s2[++i])
-//			str[j++] = s2[i];
-//	}
-//	str[j] = 0;
-//	ft_free(s1, s2, flag);
-//	return (str);
-//}
-
 char	*ft_strjoin(char *s1, char *s2, int flag)
 {
 	char			*result;
 	unsigned int	i;
+	unsigned int	j;
 
 	if (!s1)
 		return (NULL);
-	i = 0;
 	result = malloc(sizeof(int) * (ft_strlen(s1) + ft_strlen(s2) + 1));
 	if (!result)
 		return (NULL);
-	while (*s1) {
-		result[i++] = (char)*s1++;
-	}
-	while (*s2)
-		result[i++] = (char)*s2++;
+	i = 0;
+	j = 0;
+	while (s1[j])
+		result[i++] = s1[j++];
+	j = 0;
+	while (s2[j])
+		result[i++] = s2[j++];
 	result[i] = '\0';
 	ft_free(s1, s2, flag);
 	return (result);
