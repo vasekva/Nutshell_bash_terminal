@@ -42,41 +42,38 @@
 /*
  *:::::::::::::::::::::::::::::::::::::::::::	STRUCTURES
  */
-typedef struct s_loginfo	t_loginfo;
-typedef struct s_cmd		t_cmd;
+typedef struct s_data	t_data;
+typedef struct s_cmd	t_cmd;
 
 struct s_cmd
 {
 	char	**command;
 	int		num_args;
 	t_cmd	*next;
-	t_cmd	*past;
 };
 
-struct s_loginfo
+struct s_data
 {
 	char	*title;
 	char	**envp_copy;
 
-	t_cmd	*commands;
+	t_cmd	*list_cmds;
 };
-
-//void	arr_free(char **array);
 
 int		get_next_line(int fd, char **line);
 
 
-int		deff_curr_cmd(t_loginfo *shell);
+int		deff_curr_cmd(t_data *shell);
 void	exception(char *str);
 
-int		ft_cd(t_loginfo *shell);
-int		ft_echo(t_loginfo *shell);
-void	ft_env(t_loginfo *shell);
-void	ft_execve(t_loginfo *shell);
-void	ft_exit(t_loginfo *shell);
-void	ft_export(t_loginfo *shell);
+int		ft_cd(t_data *shell);
+int		ft_echo(t_data *shell);
+void	ft_env(t_data *shell);
+void	ft_execve(t_data *shell);
+void	ft_exit(t_data *shell);
+void	ft_export(t_data *shell);
 void	ft_pwd(void);
-void	ft_unset(t_loginfo *shell);
+void	ft_unset(t_data *shell);
 
 /*
 ** ARRAY_RESIZE.C
@@ -86,8 +83,8 @@ char	**array_resize(char **src, int flag);
 /*
 ** UTILS_FOR_ARRAY_1.C
 */
-int		arr_get_str_ind(t_loginfo *shell, char *str);
-void	arr_add_var(t_loginfo *shell, char *key, char *value);
+int		arr_get_str_ind(t_data *shell, char *str);
+void	arr_add_var(t_data *shell, char *key, char *value);
 void	arr_swap_strings(char **array, int first, int second);
 void	arr_free(char **array);
 char	**arr_sort(char **array);
@@ -107,23 +104,23 @@ char *env_get_value_by_key(char **array, char *key);
 /*
 ** FT_ENV_UTILS.C
 */
-char	*get_value(t_loginfo *shell, char *key);
-char	*replace_value(t_loginfo *shell, char *key, char *new_value);
-void	copy_value(t_loginfo *shell, char *src, char *dst);
-void	swap_values(t_loginfo *shell, char *key_fst, char *key_scnd);
+char	*get_value(t_data *shell, char *key);
+char	*replace_value(t_data *shell, char *key, char *new_value);
+void	copy_value(t_data *shell, char *src, char *dst);
+void	swap_values(t_data *shell, char *key_fst, char *key_scnd);
 
 /*
  * INIT.C
  */
-void	init_logs(t_loginfo *shell, char *envp[]);
+void	init_logs(t_data *shell, char *envp[]);
 
 /*
  * PARSER
  */
 int		syntax_check(const char *line);
-void	preparser(t_loginfo *shell, char *line);
+void	preparser(t_data *shell, char *line);
 char	**split_arguments(const char *command, char c);
-char	*lexer(t_loginfo *shell, char *line);
+char	*lexer(t_data *shell, char *line);
 char	*ft_replace_dollar(const char *line, int i_left, int i_right, char *new);
 char	*ft_divide_by_quotes(const char *line, int i_left, int i_right);
 

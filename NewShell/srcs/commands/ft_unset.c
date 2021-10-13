@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void	ft_unset(t_loginfo *shell)
+void	ft_unset(t_data *shell)
 {
 	int		i;
 	int		ind;
@@ -22,7 +22,7 @@ void	ft_unset(t_loginfo *shell)
 	i = 1;
 	ind = 0;
 	tmp_str = NULL;
-	s_cmd = shell->commands;
+	s_cmd = shell->list_cmds;
 	while (s_cmd->command[i])
 	{
 		ind = arr_get_str_ind(shell, s_cmd->command[i]);

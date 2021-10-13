@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void	ft_env(t_loginfo *shell)
+void	ft_env(t_data *shell)
 {
 	int	i;
 

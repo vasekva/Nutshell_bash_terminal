@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void	cd_minus(t_loginfo *shell)
+void	cd_minus(t_data *shell)
 {
 	if (arr_get_str_ind(shell, "OLDPWD") == -1)
 	{
@@ -21,7 +21,7 @@ void	cd_minus(t_loginfo *shell)
 	}
 }
 
-void	cd_with_params(t_loginfo *shell)
+void	cd_with_params(t_data *shell)
 {
 	char	*first_arg;
 
@@ -32,14 +32,14 @@ void	cd_with_params(t_loginfo *shell)
 	}
 }
 
-int	ft_cd(t_loginfo *shell)
+int	ft_cd(t_data *shell)
 {
 	char	*tmp_cwd;
 	char	*cmd;
 	t_cmd	*s_cmd;
 
 	tmp_cwd = NULL;
-	s_cmd = shell->commands;
+	s_cmd = shell->list_cmds;
 	cmd = s_cmd->command[1];
 	if (s_cmd->num_args == 2 && cmd[0] == '-')
 	{

@@ -29,11 +29,11 @@ static int	is_builtin(char	*cmd)
 		return (0);
 }
 
-int	deff_curr_cmd(t_loginfo *shell)
+int	deff_curr_cmd(t_data *shell)
 {
 	char	*cmd;
 
-	cmd = shell->commands->command[0];
+	cmd = shell->list_cmds->command[0];
 	if (is_builtin(cmd))
 	{
 		if (ft_strncmp(cmd, "echo", ft_strlen(cmd)) == 0)

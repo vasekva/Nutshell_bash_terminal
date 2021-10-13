@@ -90,6 +90,9 @@ static	void	ft_do_words(const char *s, char c, int i, char **matrix)
 	matrix[array_index] = NULL;
 }
 
+/*
+ * split() игнорирующий символ разделения, находящийся внутри кавычек
+ */
 char	**split_arguments(const char *command, char c)
 {
 	char	**arguments;

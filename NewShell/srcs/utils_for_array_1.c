@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int	arr_get_str_ind(t_loginfo *shell, char *str)
+int	arr_get_str_ind(t_data *shell, char *str)
 {
 	int	ind;
 
@@ -31,7 +31,7 @@ int	arr_get_str_ind(t_loginfo *shell, char *str)
 	return (-1);
 }
 
-void	arr_add_var(t_loginfo *shell, char *key, char *value)
+void	arr_add_var(t_data *shell, char *key, char *value)
 {
 	int		len;
 	char	*tmp_str;

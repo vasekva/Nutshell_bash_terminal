@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static void	export_without_params(t_loginfo *shell)
+static void	export_without_params(t_data *shell)
 {
 	char	**arr_export;
 	char	*tmp_str;
@@ -31,12 +31,12 @@ static void	export_without_params(t_loginfo *shell)
 	arr_free(arr_export);
 }
 
-void	ft_export(t_loginfo *shell)
+void	ft_export(t_data *shell)
 {
 	int	i;
 
 	i = 0;
-	if (shell->commands->command[1] == NULL)
+	if (shell->list_cmds->command[1] == NULL)
 	{
 		export_without_params(shell);
 		return ;

@@ -106,7 +106,7 @@ static int	remove_single_quotes(char **line, int *index)
 	return (1);
 }
 
-char	*lexer(t_loginfo *shell, char *line)
+char	*lexer(t_data *shell, char *line)
 {
 	int		index;
 	char	*line_ptr;

@@ -33,9 +33,9 @@ static void	signal_handler(int signal)
  * Запускает функцию в которой определяется команда,
  * которую необходимо выполнить
  */
-static int	ft_start_shell(t_loginfo *shell)
+static int	ft_start_shell(t_data *shell)
 {
-	if (shell->commands)
+	if (shell->list_cmds)
 	{
 		if (!deff_curr_cmd(shell))
 			return (0);
@@ -45,14 +45,14 @@ static int	ft_start_shell(t_loginfo *shell)
 	return (0);
 }
 
-void	ft_free_data(t_loginfo *shell, char *line)
+void	ft_free_data(t_data *shell, char *line)
 {
 	t_cmd	*ptr;
 	t_cmd	*tmp;
 
 	free(line);
 	line = NULL;
-	ptr = shell->commands;
+	ptr = shell->list_cmds;
 	while (ptr != NULL)
 	{
 		arr_free(ptr->command);
@@ -63,13 +63,13 @@ void	ft_free_data(t_loginfo *shell, char *line)
 		free(tmp);
 		tmp = NULL;
 	}
-	shell->commands = NULL;
+	shell->list_cmds = NULL;
 }
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_loginfo	shell;
-	char		*line;
+	t_data	shell;
+	char	*line;
 
 	(void)argc;
 	(void)argv;
@@ -89,7 +89,7 @@ int	main(int argc, char **argv, char **envp)
 		if (!syntax_check(line))
 		{
 			preparser(&shell, line);
-			if (shell.commands && shell.commands->command[0])
+			if (shell.list_cmds && shell.list_cmds->command[0])
 				ft_start_shell(&shell);
 		}
         ft_free_data(&shell, line);

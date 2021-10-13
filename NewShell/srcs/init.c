@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static void	get_envp_copy(t_loginfo *shell, char *envp[])
+static void	get_envp_copy(t_data *shell, char *envp[])
 {
 	int length;
 
@@ -31,19 +31,19 @@ static void	get_envp_copy(t_loginfo *shell, char *envp[])
 	}
 }
 
-void	init_logs(t_loginfo *shell, char *envp[])
+void	init_logs(t_data *shell, char *envp[])
 {
 	shell->title = ft_strjoin(getenv("LOGNAME"), "/minishell/$> ", -1);
-//	shell->commands = malloc(sizeof(shell->commands));
-//	if (!shell->title || !shell->commands)
+//	shell->list_cmds = malloc(sizeof(shell->list_cmds));
+//	if (!shell->title || !shell->list_cmds)
 //		exception(ONE);
 	if (!shell->title)
 		exception(ONE);
 	shell->envp_copy = NULL;
 	get_envp_copy(shell, envp);
 
-	shell->commands = NULL;
-//	shell->commands->command = NULL;
-//	shell->commands->num_args = 0;
-//	shell->commands->next = NULL;
+	shell->list_cmds = NULL;
+//	shell->list_cmds->command = NULL;
+//	shell->list_cmds->num_args = 0;
+//	shell->list_cmds->next = NULL;
 }

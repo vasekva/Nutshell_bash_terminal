@@ -35,7 +35,7 @@ static void	add_back(t_cmd **head, t_cmd *new)
 	}
 }
 
-static void	create_list(t_loginfo *shell, char *line)
+static void	create_list(t_data *shell, char *line)
 {
 	char	**all_cmds;
 	char	**final_cmds;
@@ -55,19 +55,23 @@ static void	create_list(t_loginfo *shell, char *line)
 		new_node = create_elem(final_cmds);
 		if (!new_node)
 			exception(ONE);
-		add_back(&shell->commands, new_node);
+		add_back(&shell->list_cmds, new_node);
 	}
 	arr_free(all_cmds);
 }
 
-void	preparser(t_loginfo *shell, char *line)
+/*
+ * разбивает входящую команду по пайпам на лист
+ * очищает каждый аргумент в листе от кавычек и $
+ */
+void	preparser(t_data *shell, char *line)
 {
 	int		index;
 	t_cmd	*list_ptr;
 	char	*clear_line;
 
 	create_list(shell, line);
-	list_ptr = shell->commands;
+	list_ptr = shell->list_cmds;
 	while (list_ptr != NULL)
 	{
 		index = -1;

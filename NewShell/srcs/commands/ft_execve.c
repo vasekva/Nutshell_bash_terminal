@@ -22,7 +22,7 @@ static char	*check_directory(char *path, char *cmd)
 	return (NULL);
 }
 
-static char	*define_of_dir(t_loginfo *shell)
+static char	*define_of_dir(t_data *shell)
 {
 	int		i;
 	char	**paths;
@@ -34,7 +34,7 @@ static char	*define_of_dir(t_loginfo *shell)
 	paths = ft_split(tmp, ':'); // todo: check split
 	while (paths[++i])
 	{
-		tmp = check_directory(paths[i], shell->commands->command[0]);
+		tmp = check_directory(paths[i], shell->list_cmds->command[0]);
 		if (tmp)
 		{
 			cmd = ft_strjoin(paths[i], tmp, -1);
@@ -47,27 +47,27 @@ static char	*define_of_dir(t_loginfo *shell)
 	return (tmp);
 }
 
-static void	print_message(t_loginfo *shell)
+static void	print_message(t_data *shell)
 {
 	printf("minishell: ");
-	printf("%s: command not found\n", shell->commands->command[0]);
+	printf("%s: command not found\n", shell->list_cmds->command[0]);
 }
 
-static void	execute(t_loginfo *shell, char *command)
+static void	execute(t_data *shell, char *command)
 {
 	pid_t	forks;
 
 	forks = fork();
 	if (forks == 0)
 	{
-		execve(command, &shell->commands->command[0], shell->envp_copy);
+		execve(command, &shell->list_cmds->command[0], shell->envp_copy);
 		print_message(shell);
 		exit(1);
 	}
 	forks = wait(&forks);
 }
 
-void	ft_execve(t_loginfo *shell)
+void	ft_execve(t_data *shell)
 {
 	char	*cmd;
 
@@ -75,5 +75,5 @@ void	ft_execve(t_loginfo *shell)
 	if (cmd)
 		execute(shell, cmd);
 	else
-		execute(shell, shell->commands->command[0]);
+		execute(shell, shell->list_cmds->command[0]);
 }

@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-char	*get_value(t_loginfo *shell, char *key)
+char	*get_value(t_data *shell, char *key)
 {
 	char	*new_value;
 	char	*str;
@@ -39,7 +39,7 @@ char	*get_value(t_loginfo *shell, char *key)
 	}
 }
 
-void	copy_value(t_loginfo *shell, char *src, char *dst)
+void	copy_value(t_data *shell, char *src, char *dst)
 {
 	int		i_dst;
 	char	*appended_str;
@@ -54,7 +54,7 @@ void	copy_value(t_loginfo *shell, char *src, char *dst)
 	free(tmp_str);
 }
 
-void	swap_values(t_loginfo *shell, char *key_fst, char *key_scnd)
+void	swap_values(t_data *shell, char *key_fst, char *key_scnd)
 {
 	char	*first_value;
 	char	*tmp_str;
@@ -68,7 +68,7 @@ void	swap_values(t_loginfo *shell, char *key_fst, char *key_scnd)
 	free(tmp_str);
 }
 
-char	*replace_value(t_loginfo *shell, char *key, char *new_value)
+char	*replace_value(t_data *shell, char *key, char *new_value)
 {
 	char	*new_pair;
 
