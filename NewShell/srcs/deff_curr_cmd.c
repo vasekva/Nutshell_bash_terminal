@@ -56,4 +56,5 @@ int	deff_curr_cmd(t_data *shell)
 	{
 		ft_execve(shell);
 	}
+	return (0);
 }

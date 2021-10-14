@@ -8,6 +8,21 @@ COMMANDS_DIR	=	./srcs/commands/
 PARSER_DIR		=	./srcs/parser/
 OBJS_DIR		=	./objs/
 
+BACK_GRAY		=	\033[47m
+NORM			=	\033[0m
+BOLD			=	\033[1m
+GREEN			=	\033[32m
+YELLOW			=	\033[33m
+BLUE			=	\033[34m
+PURPLE			=	\033[35m
+BRIGHT_BLUE		=	\033[36m
+NONE			=	\033[37m
+
+WALL			=	$(PURPLE)|
+F_WALL			=	$(WALL)$(BOLD)
+B_WALL			=	$(WALL)$(NORM)
+ROOF			=	$(BOLD)$(WALL)===============================================$(WALL)
+
 SRCS_NAME		=	get_next_line.c		\
 					exception.c			\
 					main.c				\
@@ -52,15 +67,17 @@ else
 			RL_FLAGS	=	-L/Users/$(USER)/.brew/Cellar/readline/8.1/lib -lreadline
 endif
 
-.PHONY:			all	clean	fclean	re
+.PHONY:			all, clean, fclean, re, test
 
 all: 			$(NAME)
 
 $(NAME):		$(OBJS)
-				@echo "\033[1m\033[35m===	COMPILATION MINISHELL...			\033[1m==="
+				@echo	"$(ROOF)"
+				@echo	"$(F_WALL) $(YELLOW)COMPILATION MINISHELL...\t\t\t$(B_WALL)"
 				@$(MAKE)	-C			$(LIBFT_DIR)
 				@$(CC)	$(OBJS)	$(LIBRARY) -o $(NAME) $(RL_FLAGS)
-				@echo "\033[1m\033[35m===	MINISHELL COMPILATION WAS \033[32mSUCCESFULL		\033[1m\033[35m===\n"
+				@echo	"$(ROOF)"
+				@echo	"$(F_WALL)$(PURPLE)======\t $(GREEN)MINISHELL IS READY TO LAUNCH$(PURPLE)\t =======$(B_WALL)"
 
 $(OBJS):		$(SRCS)
 				@$(CC)	$(INCLUDES)	-c	$(SRCS)
@@ -68,27 +85,34 @@ $(OBJS):		$(SRCS)
 				@mv		$(OBJS_NAME)	$(OBJS_DIR)
 
 test:
-				@echo "\033[1m\033[35m===	COMPILATION TESTS...			\033[1m==="
+				@echo "$(BOLD) $(YELLOW)COMPILATION TESTS..."
 				@$(MAKE)	-C			./test_dir
-				@echo "\033[1m\033[35m===	TESTS COMPILATION WAS \033[32mSUCCESFULL		\033[1m\033[35m===\n"
+				@echo "$(BOLD) $(PURPLE)TESTS COMPILATION HAS BEEN $(GREEN)SUCCESFULLY"
+				@echo	"$(NONE)"
 
 clean:
-				@echo "\033[1m\033[35m===	CLEANING ALL OBJS FILES ...			\033[1m==="
-				@echo "\033[1m\033[36m	===	CLEANING LIBFT OBJS ...				\033[1m==="
+				@echo	"$(F_WALL)======= $(BLUE)REMOVING ALL OBJS FILES $(PURPLE)=======$(B_WALL)"
+				@echo	"$(F_WALL) $(BRIGHT_BLUE)REMOVING LIBFT OBJS...\t\t$(B_WALL)"
 				@$(MAKE)	clean	-C		$(LIBFT_DIR)
-				@echo "\033[1m\033[36m	===	CLEANING LIBFT OBJS \033[32mOK				\033[36m\033[1m==="
-				@echo "\033[1m\033[36m	===	CLEANING MINISHELL OBJS ...			\033[1m==="
+				@echo	"$(F_WALL) $(GREEN)OK\t\t\t\t\t$(B_WALL)"
+				@echo	"$(F_WALL) $(BRIGHT_BLUE)REMOVING MINISHELL OBJS...\t\t$(B_WALL)"
 				@rm -rf	$(OBJS)
-				@echo "\033[1m\033[36m	===	CLEANING MINISHELL OBJS \033[32mOK			\033[1m\033[36m==="
-				@echo "\033[1m\033[35m===	ALL OBJS FILES HAVE BEEN CLEANED \033[32mSUCCESSFULLY	\033[35m\033[1m===\n"
+				@echo	"$(F_WALL) $(GREEN)OK\t\t\t\t\t$(B_WALL)"
+				@echo	"$(F_WALL)=============$(GREEN) SUCCESSFULLY $(BOLD)$(PURPLE)============$(B_WALL)"
+				@echo	"$(NONE)"
 
 fclean:			clean
-				@echo "\033[1m\033[35m===	DELETING DIRECTORIES AND OTHER FILES...		===\033[0m"
-				@$(MAKE)	fclean	-C		$(LIBFT_DIR)
+				@echo	"$(ROOF)"
+				@echo	"$(F_WALL)==== $(BLUE)DELETING DIRECTORIES AND BINARY FILES $(PURPLE)====$(B_WALL)"
+				@($(MAKE)	fclean	-C		$(LIBFT_DIR))
 				@rm -rf	$(NAME)
-				@echo "\033[1m\033[36m	===	REMOVING minishell 	\033[32mOK			\033[1m\033[36m==="
-				@rm -rf	$(OBJS_DIR)
-				@echo "\033[1m\033[36m	===	REMOVING ./objs		\033[32mOK			\033[1m\033[36m==="
-				@echo	"\033[1m\033[35m===	ALL CREATED FILES HAVE BEEN \033[32mDELETED SUCCESSFULLY \033[1m\033[35m===\n"
+				@echo	"$(F_WALL) $(BRIGHT_BLUE)REMOVING minishell\t\t\t\t$(B_WALL)"
+				@echo	"$(F_WALL) $(GREEN)OK\t\t\t\t\t\t$(B_WALL)"
+				@(rm -rf	$(OBJS_DIR))
+				@echo	"$(F_WALL) $(BRIGHT_BLUE)REMOVING ./objs\t\t\t\t$(B_WALL)"
+				@echo	"$(F_WALL) $(GREEN)OK\t\t\t\t\t\t$(B_WALL)"
+				@echo	"$(F_WALL)===$(BRIGHT_BLUE) ALL FILES HAVE BEEN $(GREEN)DELETED SUCCESSFULLY$(PURPLE)===$(B_WALL)"
+				@echo	"$(ROOF)"
+				@echo	"$(NONE)"
 
 re:				fclean all

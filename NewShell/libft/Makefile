@@ -5,6 +5,20 @@ INCLUDES			=	-I ./includes/
 OBJS_DIR			=	./objs/
 SRCS_DIR			=	./srcs/
 
+BACK_GRAY		=	\033[47m
+NORM			=	\033[0m
+BOLD			=	\033[1m
+GREEN			=	\033[32m
+YELLOW			=	\033[33m
+BLUE			=	\033[34m
+PURPLE			=	\033[35m
+BRIGHT_BLUE		=	\033[36m
+NONE			=	\033[37m
+
+WALL			=	$(PURPLE)|
+F_WALL			=	$(WALL)$(BOLD)
+B_WALL			=	$(WALL)$(NORM)
+
 SRCS_NAME			=	ft_strchr.c			\
 						ft_strdup.c			\
 						ft_strjoin.c		\
@@ -26,10 +40,10 @@ CFLAGS				=	-Wall -Wextra -Werror
 all:					$(NAME)
 
 $(NAME):				$(OBJS)
-						@echo "\033[1m\033[36m	===	COMPILATION LIBFT ...				\033[1m==="
+						@echo "$(F_WALL) $(YELLOW)COMPILATION LIBFT...\t\t\t\t$(B_WALL)"
 						@ar -rc		$(NAME)			$(OBJS)
 						@ranlib		$(NAME)
-						@echo "\033[36m	===	COMPILATION LIBFT \033[32mOK			\033[36m\033[1m==="
+						@echo	"$(F_WALL) $(GREEN)OK\t\t\t\t\t\t$(B_WALL)"
 
 $(OBJS):				$(SRCS)
 						@($(CC)		$(INCLUDES) -c	$(SRCS))
@@ -41,10 +55,12 @@ clean:
 
 fclean:					clean
 						@(rm -rf	$(NAME))
-						@echo "\033[1m\033[36m	===	REMOVING libft.a 	\033[32mOK			\033[1m\033[36m==="
+						@echo	"$(F_WALL) $(BRIGHT_BLUE)REMOVING libft.a\t\t\t\t$(B_WALL)"
+						@echo	"$(F_WALL) $(GREEN)OK\t\t\t\t\t\t$(B_WALL)"
 						@(rm -rf	objs)
-						@echo "\033[1m\033[36m	===	REMOVING ./libft/objs	\033[32mOK			\033[1m\033[36m==="
-						@echo	"\033[1m\033[36m	===	DIRECTORY LIBFT CLEANED \033[32mSUCCESSFULLY		\033[1m\033[36m==="
+						@echo	"$(F_WALL) $(BRIGHT_BLUE)REMOVING ./libft/objs\t\t\t\t$(B_WALL)"
+						@echo	"$(F_WALL) $(GREEN)OK\t\t\t\t\t\t$(B_WALL)"
+						@echo	"$(F_WALL)$(PURPLE)=====$(BRIGHT_BLUE) LIBFT DIRECTORY CLEANED $(GREEN)SUCCESSFULLY$(PURPLE)=====$(B_WALL)"
 
 re:						fclean all
 
