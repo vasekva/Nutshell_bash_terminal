@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static void	get_envp_copy(t_data *shell, char *envp[])
+static void	get_envp_copy(t_data *shell, char **envp)
 {
 	int length;
 
@@ -31,7 +31,52 @@ static void	get_envp_copy(t_data *shell, char *envp[])
 	}
 }
 
-void	init_logs(t_data *shell, char *envp[])
+/**
+ * Функция создает список на основе содержимого
+ * двумерного массива переменных окружения.
+ *
+ * Функция в цикле 'потрошит' полученную
+ * переменную окружения на:
+ * 'key' - значение строки до знака '=',
+ * 'value' - значение строки после знака '=',
+ * 'str' - изначальная строка переменной окружения
+ * и с помощью push_back(...) создает в конце списка
+ * новый узел, передавая в функцию создания узла
+ * три полученных значения
+ *
+ * @param shell: Структура в которой лежит
+ * указатель на заполняемый список.
+ *
+ * @param envp: Двумерный массив переменных окружения,
+ * который будет копироваться в список.
+ */
+void	copy_env_to_list(t_data *shell, char **envp)
+{
+	char	*key;
+	char	*value;
+	char	*str;
+	int		i;
+	int		j;
+
+	i = -1;
+	j = -1;
+	while (envp[++i])
+	{
+		while (envp[i][++j])
+		{
+			if (envp[i][j] == '=')
+			{
+				key = ft_substr(envp[i], 0, j);
+				value = ft_substr(envp[i], j + 1, ft_strlen(envp[i]) - j);
+				str = ft_strdup(envp[i]);
+				push_back(&shell->env_node, key, value, str);
+			}
+		}
+		j = -1;
+	}
+}
+
+void	init_logs(t_data *shell, char **envp)
 {
 	shell->title = ft_strjoin(getenv("LOGNAME"), "/minishell/$> ", -1);
 //	shell->list_cmds = malloc(sizeof(shell->list_cmds));
@@ -41,6 +86,7 @@ void	init_logs(t_data *shell, char *envp[])
 		exception(ONE);
 	shell->envp_copy = NULL;
 	get_envp_copy(shell, envp);
+	copy_env_to_list(shell, envp);
 
 	shell->list_cmds = NULL;
 //	shell->list_cmds->command = NULL;

@@ -19,6 +19,7 @@
 # define FOUR "Fork error!"
 # define FIVE	"Command not found!"
 # define SYNTAX_ERROR	"syntax error near unexpected token"
+# define EMPTYPOINTER		"Function has taken an empty pointer!"
 
 
 #endif

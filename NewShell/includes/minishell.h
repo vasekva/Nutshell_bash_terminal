@@ -42,8 +42,9 @@
 /*
  *:::::::::::::::::::::::::::::::::::::::::::	STRUCTURES
  */
-typedef struct s_data	t_data;
-typedef struct s_cmd	t_cmd;
+typedef struct s_data		t_data;
+typedef struct s_cmd		t_cmd;
+typedef struct s_env_list	t_env_list;
 
 struct s_cmd
 {
@@ -52,12 +53,22 @@ struct s_cmd
 	t_cmd	*next;
 };
 
+struct s_env_list
+{
+	char		*key;
+	char		*value;
+	char		*str;
+	t_env_list	*next;
+	t_env_list	*past;
+};
+
 struct s_data
 {
-	char	*title;
-	char	**envp_copy;
+	char		*title;
+	char		**envp_copy;
 
-	t_cmd	*list_cmds;
+	t_cmd		*list_cmds;
+	t_env_list	*env_node;
 };
 
 int		get_next_line(int fd, char **line);
@@ -100,6 +111,12 @@ char	**arr_copy(char **array);
 int	env_find_str_ind_by_key(char **array, char *key);
 int	get_symbol_ind(char *str, char symbol);
 char *env_get_value_by_key(char **array, char *key);
+
+/*
+ * UTILS_FOR_LIST.C
+ */
+void		push_back(t_env_list **env_node, char *key, char *value, char *str);
+t_env_list	*get_last(t_env_list *env_node);
 
 /*
 ** FT_ENV_UTILS.C

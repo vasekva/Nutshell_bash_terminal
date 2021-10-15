@@ -31,9 +31,10 @@ SRCS_NAME		=	get_next_line.c		\
 					utils_for_array_1.c	\
 					utils_for_array_2.c	\
 					utils_for_array_3.c	\
+					utils_for_list.c	\
 					init.c				\
 
-COMMANDS_SRCS	=	ft_echo.c		\
+COMMAND_SRCS	=	ft_echo.c		\
 					ft_echo_utils.c	\
                  	ft_cd.c			\
                   	ft_pwd.c		\
@@ -51,9 +52,9 @@ PARSER_SRCS		=	syntax_checker.c		\
 					ft_lexer_utils.c		\
 
 
-OBJS_NAME	=	$(SRCS_NAME:.c=.o) $(COMMANDS_SRCS:.c=.o) $(PARSER_SRCS:.c=.o)
+OBJS_NAME	=	$(SRCS_NAME:.c=.o) $(COMMAND_SRCS:.c=.o) $(PARSER_SRCS:.c=.o)
 
-SRCS		=	$(addprefix $(SRCS_DIR), $(SRCS_NAME)) $(addprefix $(COMMANDS_DIR), $(COMMANDS_SRCS)) $(addprefix $(PARSER_DIR), $(PARSER_SRCS))
+SRCS		=	$(addprefix $(SRCS_DIR), $(SRCS_NAME)) $(addprefix $(COMMANDS_DIR), $(COMMAND_SRCS)) $(addprefix $(PARSER_DIR), $(PARSER_SRCS))
 OBJS		=	$(addprefix $(OBJS_DIR), $(OBJS_NAME))
 
 CC			=	gcc -g
