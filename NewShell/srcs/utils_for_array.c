@@ -1,25 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_env.c                                           :+:      :+:    :+:   */
+/*   utils_for_array_1.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jberegon <jberegon@student.21-schoo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/09/02 07:05:35 by jberegon          #+#    #+#             */
-/*   Updated: 2021/09/02 07:05:36 by jberegon         ###   ########.fr       */
+/*   Created: 2021/09/02 07:13:00 by jberegon          #+#    #+#             */
+/*   Updated: 2021/09/02 07:13:01 by jberegon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_env(t_data *shell)
+void	arr_free(char **array)
 {
-	t_env_list	*env_node;
+	int	ind;
 
-	env_node = shell->env_node;
-	while (env_node)
+	ind = 0;
+	if (array != NULL)
 	{
-		printf("%s\n", env_node->str);
-		env_node = env_node->next;
+		while (array[ind])
+		{
+			if (array[ind] != NULL)
+			{
+				free(array[ind]);
+				array[ind] = NULL;
+			}
+			ind++;
+		}
+		free(array);
+		array = NULL;
 	}
 }

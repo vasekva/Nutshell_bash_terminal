@@ -96,3 +96,17 @@ int	main(int argc, char **argv, char **envp)
 	}
 	return (0);
 }
+//TODO: сега при unset unset
+//TODO: сега при export после удаления всех элементов в env
+//TODO: сега при вводе неккоректной команды после удаления всех элементов в env
+
+//TODO: sega при куче повторных вызовов env подряд
+
+//TODO: env_get_value_by_key() теперь возвращает указатель на строку, (node->value)
+// взятую из узла списка, в котором был найден подходящий ключ (node->key)
+// не уверен, безопасно ли это в плане утечек при удалении, либо замены
+// узла, из которого взят указатель
+
+/*
+ * unset TERM_SESSION_ID SSH_AUTH_SOCK LC_TERMINAL_VERSION Apple_PubSub_Socket_Render _ HOMEBREW_TEMP HOMEBREW_CACHE LSCOLORS COLORFGBG ITERM_PROFILE XPC_FLAGS LANG PWD SECURITYSESSIONID TERM_PROGRAM_VERSION TERM_PROGRAM LC_TERMINAL COLORTERM COMMAND_MODE __CF_USER_TEXT_ENCODING ITERM_SESSION_ID LESS PAGER ZSH USER TERM PATH HOME TMPDIR XPC_SERVICE_NAME LOGNAME SHLVL OLDPWD
+ */

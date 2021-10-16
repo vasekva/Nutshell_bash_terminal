@@ -14,5 +14,9 @@
 
 void	exception(char *message)
 {
-	exit(write(2, message, ft_strlen(message)));
+	int	ret;
+
+	ret = write(2, message, ft_strlen(message));
+	write(1, "\n", 1);
+	exit(ret);
 }

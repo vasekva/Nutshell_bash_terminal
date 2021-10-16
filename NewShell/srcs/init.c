@@ -12,6 +12,7 @@
 
 #include "minishell.h"
 
+/*
 static void	get_envp_copy(t_data *shell, char **envp)
 {
 	int length;
@@ -21,16 +22,16 @@ static void	get_envp_copy(t_data *shell, char **envp)
 		length++;
 	shell->envp_copy = (char **)malloc(sizeof(char*) * length + 1);
 	if (!shell->envp_copy)
-		exception(ONE);
+		exception(MALLOC_ERROR);
 	shell->envp_copy[length] = NULL;
 	while (--length >= 0)
 	{
 		shell->envp_copy[length] = ft_strdup(envp[length]);
 		if (!shell->envp_copy[length])
-			exception(ONE);
+			exception(MALLOC_ERROR);
 	}
 }
-
+*/
 /**
  * Функция создает список на основе содержимого
  * двумерного массива переменных окружения.
@@ -83,9 +84,9 @@ void	init_logs(t_data *shell, char **envp)
 //	if (!shell->title || !shell->list_cmds)
 //		exception(ONE);
 	if (!shell->title)
-		exception(ONE);
-	shell->envp_copy = NULL;
-	get_envp_copy(shell, envp);
+		exception(MALLOC_ERROR);
+	//shell->envp_copy = NULL;
+	//get_envp_copy(shell, envp);
 	copy_env_to_list(shell, envp);
 
 	shell->list_cmds = NULL;

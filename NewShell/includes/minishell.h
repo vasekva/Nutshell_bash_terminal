@@ -65,14 +65,10 @@ struct s_env_list
 struct s_data
 {
 	char		*title;
-	char		**envp_copy;
 
 	t_cmd		*list_cmds;
-	t_env_list	*env_node;
+	t_env_list	*env_node; //список переменных окружения
 };
-
-int		get_next_line(int fd, char **line);
-
 
 int		deff_curr_cmd(t_data *shell);
 void	exception(char *str);
@@ -87,44 +83,22 @@ void	ft_pwd(void);
 void	ft_unset(t_data *shell);
 
 /*
-** ARRAY_RESIZE.C
-*/
-char	**array_resize(char **src, int flag);
-
-/*
 ** UTILS_FOR_ARRAY_1.C
 */
-int		arr_get_str_ind(t_data *shell, char *str);
-void	arr_add_var(t_data *shell, char *key, char *value);
-void	arr_swap_strings(char **array, int first, int second);
 void	arr_free(char **array);
-char	**arr_sort(char **array);
-
-/*
-** UTILS_FOR_ARRAY_2.C
-*/
-char	**arr_copy(char **array);
-
-/*
-** UTILS_FOR_ARRAY_3.C
-*/
-int	env_find_str_ind_by_key(char **array, char *key);
-int	get_symbol_ind(char *str, char symbol);
-char *env_get_value_by_key(char **array, char *key);
 
 /*
  * UTILS_FOR_LIST.C
  */
 void		push_back(t_env_list **env_node, char *key, char *value, char *str);
+void		list_sort(t_env_list *list);
+int			list_length(const t_env_list *list);
+char		*get_value_by_key(t_env_list *list, char *key);
 t_env_list	*get_last(t_env_list *env_node);
+t_env_list	*get_node_by_content(t_env_list *list, char *content, int flag);
+void		delete_list_node(t_env_list **list);
+void		free_node_content(t_env_list *node);
 
-/*
-** FT_ENV_UTILS.C
-*/
-char	*get_value(t_data *shell, char *key);
-char	*replace_value(t_data *shell, char *key, char *new_value);
-void	copy_value(t_data *shell, char *src, char *dst);
-void	swap_values(t_data *shell, char *key_fst, char *key_scnd);
 
 /*
  * INIT.C

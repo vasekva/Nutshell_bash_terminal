@@ -54,7 +54,7 @@ static void	create_list(t_data *shell, char *line)
 			exception("SPLIT ERROR\n");
 		new_node = create_elem(final_cmds);
 		if (!new_node)
-			exception(ONE);
+			exception(MALLOC_ERROR);
 		add_back(&shell->list_cmds, new_node);
 	}
 	arr_free(all_cmds);
