@@ -14,25 +14,63 @@
 
 void	ft_unset(t_data *shell)
 {
+	t_env_list *node;
+	t_env_list *tmp;
 	int		i;
-	int		ind;
-	char	*tmp_str;
-	t_cmd	*s_cmd;
 
-	i = 1;
-	ind = 0;
-	tmp_str = NULL;
-	s_cmd = shell->list_cmds;
-	while (s_cmd->command[i])
+	if (!shell->env_node)
+		return ;
+	i = 0;
+	node = NULL;
+	tmp = NULL;
+	while (shell->list_cmds->command[++i])
 	{
-		ind = arr_get_str_ind(shell, s_cmd->command[i]);
-		if (ind >= 0)
+		node = get_node_by_content(shell->env_node, shell->list_cmds->command[i], 0);
+		if (!node)
+			printf("RETURN NULL\n");
+		if (node)
 		{
-			tmp_str = shell->envp_copy[ind];
-			shell->envp_copy[ind] = ft_strdup("\0");
-			free(tmp_str);
+			printf("DEL_VAL: %s\n", node->str);
+			if (!shell->env_node->past && !shell->env_node->next)
+			{
+				printf("ONE ELEM\n");
+				free(shell->env_node->key);
+				free(shell->env_node->value);
+				free(shell->env_node->str);
+				free(shell->env_node);
+				shell->env_node = NULL;
+			}
+			else
+			{
+				if (!node->past)
+				{
+					if (node->next)
+					{
+						tmp = shell->env_node;
+						shell->env_node = shell->env_node->next;
+						shell->env_node->past->next = NULL;
+						shell->env_node->past = NULL;
+						free_node_content(tmp);
+					}
+				}
+				else if (!node->next)
+				{
+					printf("DEL LAST\n");
+					node->past->next = NULL;
+					free_node_content(node);
+				}
+				else
+				{
+					printf("DEL MIDDLE\n");
+					node->past->next = node->next;
+					node->next->past = node->past;
+					free_node_content(node);
+				}
+			}
 		}
-		i++;
+		if (shell->env_node && shell->env_node->str)
+			printf("=====FIRST VAL NOW: %s\n", shell->env_node->str);
+		else
+			printf("IS EMPTY\n");
 	}
-	shell->envp_copy = array_resize(shell->envp_copy, -1);
 }

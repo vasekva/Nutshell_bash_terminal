@@ -7,14 +7,14 @@
 /**
  * function replaces environment variable with its value in the line
  *
- * @param envp_copy	:	array of environment variables
+ * @param env_node	:	list of environment variables
  * @param line		:	string to format
  * @param index		:	index of $ sign
  *
  * @return 	returns formatted string
  * @error	calls exception func in case of malloc error
  */
-static void	replace_env_variable(char **envp_copy, char **line, int *index)
+static void	replace_env_variable(t_env_list *env_node, char **line, int *index)
 {
 	int		i_start;
 	char	*key;
@@ -35,7 +35,7 @@ static void	replace_env_variable(char **envp_copy, char **line, int *index)
 		key = ft_substr(*line, i_start + 1, *index - i_start - 1);
 		if (!key)
 			exception("malloc error\n");
-		value = env_get_value_by_key(envp_copy, key);
+		value = get_value_by_key(env_node, key);
 		if (value)
 			*line = ft_replace_dollar(*line, i_start, *index, value);
 		else
@@ -51,7 +51,7 @@ static void	replace_env_variable(char **envp_copy, char **line, int *index)
  * replaces environment variables with their values \n
  * if $ sign stands by
  *
- * @param envp_copy	:	array of environment variables
+ * @param env_node	:	list of environment variables
  * @param line		:	string to format
  * @param index		:	index of quote opening
  *
@@ -59,7 +59,7 @@ static void	replace_env_variable(char **envp_copy, char **line, int *index)
  * 			or 0 if quote is unclosed
  * @error	calls exception function if malloc fails
  */
-static int	remove_double_quotes(char **envp_copy, char **line, int *index)
+static int	remove_double_quotes(t_env_list *env_node, char **line, int *index)
 {
 	int		i_start;
 	char	*tmp;
@@ -70,7 +70,7 @@ static int	remove_double_quotes(char **envp_copy, char **line, int *index)
 		if ((*line)[*index] == '"')
 			break ;
 		if ((*line)[*index] == '$')
-			replace_env_variable(envp_copy, line, index);
+			replace_env_variable(env_node, line, index);
 	}
 	tmp = *line;
 	*line = ft_divide_by_quotes(*line, i_start, *index);
@@ -118,11 +118,11 @@ char	*lexer(t_data *shell, char *line)
 	while (line_ptr[++index])
 	{
 		if (line_ptr[index] == '"')
-			remove_double_quotes(shell->envp_copy, &line_ptr, &index);
+			remove_double_quotes(shell->env_node, &line_ptr, &index);
 		if (line_ptr[index] == '\'')
 			remove_single_quotes(&line_ptr, &index);
 		if (line_ptr[index] == '$')
-			replace_env_variable(shell->envp_copy, &line_ptr, &index);
+			replace_env_variable(shell->env_node, &line_ptr, &index);
 	}
 	return (line_ptr);
 }

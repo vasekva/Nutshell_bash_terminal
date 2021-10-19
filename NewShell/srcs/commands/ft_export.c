@@ -14,28 +14,24 @@
 
 static void	export_without_params(t_data *shell)
 {
-	char	**arr_export;
-	char	*tmp_str;
-	int		i;
+	t_env_list	*env_node;
+	char		*tmp_str;
 
-	i = 0;
-	arr_export = NULL;
-	arr_export = arr_sort(shell->envp_copy);
-	while (arr_export[i])
+	if (!shell->env_node)
+		return ;
+	env_node = shell->env_node;
+	list_sort(env_node);
+	while (env_node)
 	{
-		tmp_str = ft_strjoin("declare -x ", arr_export[i], 3);
+		tmp_str = ft_strjoin("declare -x ", env_node->str, -1);
 		printf("%s\n", tmp_str);
 		free(tmp_str);
-		i++;
+		env_node = env_node->next;
 	}
-	arr_free(arr_export);
 }
 
 void	ft_export(t_data *shell)
 {
-	int	i;
-
-	i = 0;
 	if (shell->list_cmds->command[1] == NULL)
 	{
 		export_without_params(shell);

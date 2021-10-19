@@ -18,19 +18,15 @@ PURPLE			=	\033[35m
 BRIGHT_BLUE		=	\033[36m
 NONE			=	\033[37m
 
-WALL			=	$(PURPLE)|
+WALL			=	$(BOLD)$(PURPLE)|
 F_WALL			=	$(WALL)$(BOLD)
 B_WALL			=	$(WALL)$(NORM)
 ROOF			=	$(BOLD)$(WALL)===============================================$(WALL)
 
-SRCS_NAME		=	get_next_line.c		\
-					exception.c			\
+SRCS_NAME		=	exception.c			\
 					main.c				\
 					deff_curr_cmd.c		\
-					array_resize.c		\
-					utils_for_array_1.c	\
-					utils_for_array_2.c	\
-					utils_for_array_3.c	\
+					utils_for_array.c	\
 					utils_for_list.c	\
 					init.c				\
 
@@ -41,7 +37,6 @@ COMMAND_SRCS	=	ft_echo.c		\
                   	ft_export.c		\
 					ft_unset.c		\
 					ft_env.c		\
-					ft_env_utils.c	\
 					ft_execve.c		\
 					ft_exit.c		\
 

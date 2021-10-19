@@ -15,7 +15,7 @@ PURPLE			=	\033[35m
 BRIGHT_BLUE		=	\033[36m
 NONE			=	\033[37m
 
-WALL			=	$(PURPLE)|
+WALL			=	$(BOLD)$(PURPLE)|
 F_WALL			=	$(WALL)$(BOLD)
 B_WALL			=	$(WALL)$(NORM)
 

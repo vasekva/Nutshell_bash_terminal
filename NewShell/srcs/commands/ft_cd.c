@@ -12,57 +12,45 @@
 
 #include "minishell.h"
 
-void	cd_minus(t_data *shell)
+void	changeNodeToPast(t_data *shell)
 {
-	if (arr_get_str_ind(shell, "OLDPWD") == -1)
-	{
-		printf("OLDPWD not set\n");
+	char	*curr_path;
+	char	*new_path;
+	int		i;
+	int		slash_index;
+	//printf("%s\n", getcwd(NULL, 0));
+	curr_path = getcwd(NULL, 0);
+	new_path = NULL;
+	slash_index = 0;
+	i = -1;
+	if (!ft_strncmp("/", curr_path, ft_strlen(curr_path)))
 		return ;
-	}
-}
-
-void	cd_with_params(t_data *shell)
-{
-	char	*first_arg;
-
-	first_arg = shell->envp_copy[1];
-	if (first_arg[0] == '-')
+	else
 	{
-		cd_minus(shell);
+		while (curr_path[++i])
+		{
+			if (curr_path[i] == '/')
+				slash_index = i;
+		}
+		new_path = ft_substr(curr_path, 0, slash_index);
 	}
+	printf("RES: %s\n", new_path);
 }
 
 int	ft_cd(t_data *shell)
 {
-	char	*tmp_cwd;
-	char	*cmd;
-	t_cmd	*s_cmd;
+	t_cmd *s_cmd;
 
-	tmp_cwd = NULL;
+	if (!shell || !shell->list_cmds)
+		exception(EMPTYPOINTER);
 	s_cmd = shell->list_cmds;
-	cmd = s_cmd->command[1];
-	if (s_cmd->num_args == 2 && cmd[0] == '-')
+	int i = -1;
+	while (shell->list_cmds->command[++i])
+		printf("%s\n", shell->list_cmds->command[i]);
+	if (!ft_strncmp("..", s_cmd->command[1], ft_strlen(s_cmd->command[1])))
 	{
-		cd_minus(shell);
-		return (0);
+		changeNodeToPast(shell);
 	}
-	if (!cmd || ft_strncmp(cmd, "--", 2))
-	{
-		if (arr_get_str_ind(shell, "HOME") < 0)
-		{
-			return (0);
-		}
-		else if (arr_get_str_ind(shell, "PWD") < 0)
-		{
-			tmp_cwd = getcwd(NULL, 0);
-			arr_add_var(shell, "PWD", tmp_cwd);
-		}
-		else
-			copy_value(shell, "HOME", "PWD");
-	}
-	else
-	{
-		cd_with_params(shell);
-	}
+
 	return (0);
 }

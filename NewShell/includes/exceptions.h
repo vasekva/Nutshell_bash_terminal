@@ -13,7 +13,7 @@
 #ifndef EXCEPTIONS_H
 # define EXCEPTIONS_H
 
-# define ONE "Malloc error!"
+# define MALLOC_ERROR "Malloc error!"
 # define TWO "Strdup malloc error!"
 # define THREE "No such file or directory"
 # define FOUR "Fork error!"

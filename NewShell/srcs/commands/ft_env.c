@@ -14,12 +14,14 @@
 
 void	ft_env(t_data *shell)
 {
-	int	i;
+	t_env_list	*env_node;
 
-	i = 0;
-	while (shell->envp_copy[i])
+	if (!shell->env_node)
+		return ;
+	env_node = shell->env_node;
+	while (env_node)
 	{
-		printf("%s\n", shell->envp_copy[i]);
-		i++;
+		printf("%s\n", env_node->str);
+		env_node = env_node->next;
 	}
 }

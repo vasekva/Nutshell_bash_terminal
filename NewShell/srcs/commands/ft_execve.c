@@ -30,8 +30,10 @@ static char	*define_of_dir(t_data *shell)
 	char	*tmp;
 
 	i = -1;
-	tmp = env_get_value_by_key(shell->envp_copy, "PATH");
-	paths = ft_split(tmp, ':'); // todo: check split
+	if (!shell->env_node)
+		return (NULL); //TODO оригинальный bash выводит "No such file or directory"
+	tmp = get_value_by_key(shell->env_node, "PATH");
+	paths = ft_split(tmp, ':');
 	while (paths[++i])
 	{
 		tmp = check_directory(paths[i], shell->list_cmds->command[0]);
@@ -53,14 +55,55 @@ static void	print_message(t_data *shell)
 	printf("%s: command not found\n", shell->list_cmds->command[0]);
 }
 
+/**
+ * Функция проходится по узлам списка и копирует их в двумерный массив.
+ *
+ * @param list:	список, в котором производится поиск.
+ *
+ * @return возвращает двумерный массив, полученный путем прохода
+ * по узлам списка и копирования (list->str) значений.
+ */
+static char	**get_envp_copy(t_data *shell)
+{
+	int			length;
+	int			i;
+	char		**env_copy;
+	t_env_list	*node;
+
+	i = 0;
+	if (!shell->env_node)
+		return (NULL);
+	length = list_length(shell->env_node);
+	env_copy = (char **)malloc(sizeof(char*) * length + 1);
+	if (!env_copy)
+		exception(MALLOC_ERROR);
+	env_copy[length] = NULL;
+	node = shell->env_node;
+	while (node)
+	{
+		env_copy[i] = ft_strdup(node->str);
+		if (!env_copy[i])
+			exception(MALLOC_ERROR);
+		node = node->next;
+		i++;
+	}
+	return (env_copy);
+}
+
 static void	execute(t_data *shell, char *command)
 {
 	pid_t	forks;
+	char	**env_copy;
 
 	forks = fork();
+	env_copy = NULL;
 	if (forks == 0)
 	{
-		execve(command, &shell->list_cmds->command[0], shell->envp_copy);
+		env_copy = get_envp_copy(shell);
+		if (!env_copy)
+			return ; // TODO: No such file or directory????
+		execve(command, &shell->list_cmds->command[0], env_copy);
+		arr_free(env_copy);
 		print_message(shell);
 		exit(1);
 	}
@@ -76,4 +119,5 @@ void	ft_execve(t_data *shell)
 		execute(shell, cmd);
 	else
 		execute(shell, shell->list_cmds->command[0]);
+	free(cmd);
 }
