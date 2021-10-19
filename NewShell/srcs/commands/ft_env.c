@@ -16,6 +16,8 @@ void	ft_env(t_data *shell)
 {
 	t_env_list	*env_node;
 
+	if (!shell->env_node)
+		return ;
 	env_node = shell->env_node;
 	while (env_node)
 	{

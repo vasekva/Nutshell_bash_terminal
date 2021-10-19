@@ -17,6 +17,8 @@ static void	export_without_params(t_data *shell)
 	t_env_list	*env_node;
 	char		*tmp_str;
 
+	if (!shell->env_node)
+		return ;
 	env_node = shell->env_node;
 	list_sort(env_node);
 	while (env_node)

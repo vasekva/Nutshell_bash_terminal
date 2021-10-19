@@ -30,6 +30,8 @@ static char	*define_of_dir(t_data *shell)
 	char	*tmp;
 
 	i = -1;
+	if (!shell->env_node)
+		return (NULL); //TODO оригинальный bash выводит "No such file or directory"
 	tmp = get_value_by_key(shell->env_node, "PATH");
 	paths = ft_split(tmp, ':');
 	while (paths[++i])
@@ -69,6 +71,8 @@ static char	**get_envp_copy(t_data *shell)
 	t_env_list	*node;
 
 	i = 0;
+	if (!shell->env_node)
+		return (NULL);
 	length = list_length(shell->env_node);
 	env_copy = (char **)malloc(sizeof(char*) * length + 1);
 	if (!env_copy)
@@ -96,6 +100,8 @@ static void	execute(t_data *shell, char *command)
 	if (forks == 0)
 	{
 		env_copy = get_envp_copy(shell);
+		if (!env_copy)
+			return ; // TODO: No such file or directory????
 		execve(command, &shell->list_cmds->command[0], env_copy);
 		arr_free(env_copy);
 		print_message(shell);
