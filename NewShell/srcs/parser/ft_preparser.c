@@ -44,17 +44,17 @@ static void	create_list(t_data *shell, char *line)
 
 	all_cmds = split_arguments(line, '|');
 	if (!all_cmds)
-		exception("SPLIT ERROR\n");
+		exception(NULL, NULL, NULL, SPLIT_ERROR);
 	index = -1;
 	final_cmds = NULL;
 	while (all_cmds[++index])
 	{
 		final_cmds = split_arguments(all_cmds[index], ' ');
 		if (!final_cmds)
-			exception("SPLIT ERROR\n");
+			exception(NULL, NULL, NULL, SPLIT_ERROR);
 		new_node = create_elem(final_cmds);
 		if (!new_node)
-			exception(MALLOC_ERROR);
+			exception(NULL, NULL, NULL, MALLOC_ERROR);
 		add_back(&shell->list_cmds, new_node);
 	}
 	arr_free(all_cmds);

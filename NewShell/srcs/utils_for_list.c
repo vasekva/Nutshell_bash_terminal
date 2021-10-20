@@ -46,7 +46,7 @@ void	push_back(t_env_list **env_node, char *key, char *value, char *str)
 
 	last = get_last(*env_node);
 	if (!key || !value || !str)
-		exception(EMPTYPOINTER);
+		exception(NULL, NULL, NULL, EMPTYPOINTER);
 	if (!last)
 	{
 		(*env_node) = (t_env_list *)malloc(sizeof(t_env_list));
@@ -140,7 +140,7 @@ void	free_node_content(t_env_list *node)
 	free(node);
 	node = NULL;
 }
-
+/*
 void	delete_list_node(t_env_list **list)
 {
 	t_env_list *tmp;
@@ -182,7 +182,7 @@ void	delete_list_node(t_env_list **list)
 	if ((*list))
 		printf("DA SUKA\n");
 }
-
+*/
 static	void	swap_list_values(t_env_list *a, t_env_list *b)
 {
 	char	*str;

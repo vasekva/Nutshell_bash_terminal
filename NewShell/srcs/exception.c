@@ -12,11 +12,25 @@
 
 #include "minishell.h"
 
-void	exception(char *message)
+void	exception(t_data *shell, char *command, char *variable, char *message)
 {
 	int	ret;
 
+	if (shell)
+	{
+		write(1, "minishell: ", 12);
+		if (command)
+		{
+			write(1, command, ft_strlen(command));
+			write(1, ": ", 2);
+		}
+		if (variable)
+		{
+			write(1, variable, ft_strlen(variable));
+			write(1, " ", 1);
+		}
+	}
 	ret = write(2, message, ft_strlen(message));
 	write(1, "\n", 1);
-	exit(ret);
+	//exit(ret);
 }

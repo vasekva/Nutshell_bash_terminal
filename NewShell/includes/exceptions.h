@@ -13,13 +13,15 @@
 #ifndef EXCEPTIONS_H
 # define EXCEPTIONS_H
 
-# define MALLOC_ERROR "Malloc error!"
-# define TWO "Strdup malloc error!"
-# define THREE "No such file or directory"
-# define FOUR "Fork error!"
-# define FIVE	"Command not found!"
+# define MALLOC_ERROR	"Malloc error!"
+# define SPLIT_ERROR	"Error during split string!"
+# define TWO 			"Strdup malloc error!"
+# define THREE 			"No such file or directory"
+# define FOUR 			"Fork error!"
+# define FIVE			"Command not found!"
 # define SYNTAX_ERROR	"syntax error near unexpected token"
-# define EMPTYPOINTER		"Function has taken an empty pointer!"
+# define EMPTYPOINTER	"Function has taken an empty pointer!"
+# define	EMPTYENV	"not set"
 
 
 #endif

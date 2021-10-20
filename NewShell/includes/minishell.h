@@ -73,7 +73,7 @@ struct s_data
 };
 
 int		deff_curr_cmd(t_data *shell);
-void	exception(char *str);
+void	exception(t_data *shell, char *command, char *variable, char *message);
 
 int		ft_cd(t_data *shell);
 void	ft_cd_updir(t_data *shell);
@@ -100,7 +100,6 @@ int			list_length(const t_env_list *list);
 char		*get_value_by_key(t_env_list *list, char *key);
 t_env_list	*get_last(t_env_list *env_node);
 t_env_list	*get_node_by_content(t_env_list *list, char *content, int flag);
-void		delete_list_node(t_env_list **list);
 void		free_node_content(t_env_list *node);
 
 

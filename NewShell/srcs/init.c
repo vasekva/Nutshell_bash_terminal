@@ -66,7 +66,7 @@ void	init_logs(t_data *shell, char **envp)
 //	if (!shell->title || !shell->list_cmds)
 //		exception(ONE);
 	if (!shell->title)
-		exception(MALLOC_ERROR);
+		exception(NULL, NULL, NULL, MALLOC_ERROR);
 	//shell->envp_copy = NULL;
 	//get_envp_copy(shell, envp);
 	copy_env_to_list(shell, envp);
