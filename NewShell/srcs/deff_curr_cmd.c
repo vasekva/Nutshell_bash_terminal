@@ -41,7 +41,7 @@ int	deff_curr_cmd(t_data *shell)
 		if (ft_strncmp(cmd, "cd", ft_strlen(cmd)) == 0)
 			ft_cd(shell);
 		if (ft_strncmp(cmd, "pwd", ft_strlen(cmd)) == 0)
-			ft_pwd();
+			ft_pwd(shell);
 		if (ft_strncmp(cmd, "unset", ft_strlen(cmd)) == 0)
 			ft_unset(shell);
 		if (ft_strncmp(cmd, "env", ft_strlen(cmd)) == 0)

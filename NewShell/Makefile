@@ -31,8 +31,8 @@ SRCS_NAME		=	exception.c			\
 					init.c				\
 
 COMMAND_SRCS	=	ft_echo.c		\
-					ft_echo_utils.c	\
                  	ft_cd.c			\
+                 	ft_cd_updir.c	\
                   	ft_pwd.c		\
                   	ft_export.c		\
 					ft_unset.c		\

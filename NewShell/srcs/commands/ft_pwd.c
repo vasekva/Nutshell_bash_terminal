@@ -12,13 +12,22 @@
 
 #include "minishell.h"
 
-void	ft_pwd(void)
+void	ft_pwd(t_data *shell)
 {
-	char	*path;
-
-	path = getcwd(NULL, 0);
-	if (!path)
-		exit(0);
-	printf("%s\n", path);
-	free(path);
+	//char		*path;
+//	t_env_list	*node;
+//
+//	node = NULL;
+//	if (shell->env_node)
+//		node = get_node_by_content(shell->env_node, "PWD", 0);
+//	if (node)
+//	{
+//		path = node->value;
+//	}
+//	else
+//		path = getcwd(NULL, 0);
+//	if (!path)
+//		exit(0);
+	printf("%s\n", shell->curr_dir);
+	//free(path);
 }

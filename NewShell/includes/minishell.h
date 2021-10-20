@@ -66,6 +66,8 @@ struct s_data
 {
 	char		*title;
 
+	char		*curr_dir;
+	char		*past_dir;
 	t_cmd		*list_cmds;
 	t_env_list	*env_node; //список переменных окружения
 };
@@ -74,12 +76,14 @@ int		deff_curr_cmd(t_data *shell);
 void	exception(char *str);
 
 int		ft_cd(t_data *shell);
+void	ft_cd_updir(t_data *shell);
+
 int		ft_echo(t_data *shell);
 void	ft_env(t_data *shell);
 void	ft_execve(t_data *shell);
 void	ft_exit(t_data *shell);
 void	ft_export(t_data *shell);
-void	ft_pwd(void);
+void	ft_pwd(t_data *shell);
 void	ft_unset(t_data *shell);
 
 /*
