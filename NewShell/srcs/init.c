@@ -62,17 +62,9 @@ void	init_logs(t_data *shell, char **envp)
 	shell->title = ft_strjoin(getenv("LOGNAME"), "/minishell/$> ", -1);
 	shell->curr_dir = getcwd(NULL, 0);
 	shell->past_dir = ft_strdup(shell->curr_dir);
-//	shell->list_cmds = malloc(sizeof(shell->list_cmds));
-//	if (!shell->title || !shell->list_cmds)
-//		exception(ONE);
 	if (!shell->title)
 		exception(NULL, NULL, NULL, MALLOC_ERROR);
-	//shell->envp_copy = NULL;
-	//get_envp_copy(shell, envp);
+    shell->env_node = NULL;
 	copy_env_to_list(shell, envp);
-
-	shell->list_cmds = NULL;
-//	shell->list_cmds->command = NULL;
-//	shell->list_cmds->num_args = 0;
-//	shell->list_cmds->next = NULL;
+    shell->list_cmds = NULL;
 }
