@@ -16,7 +16,7 @@
 # define MALLOC_ERROR	"Malloc error!"
 # define SPLIT_ERROR	"Error during split string!"
 # define TWO 			"Strdup malloc error!"
-# define THREE 			"No such file or directory"
+# define NO_FILE_OR_DIR "No such file or directory"
 # define FOUR 			"Fork error!"
 # define FIVE			"Command not found!"
 # define SYNTAX_ERROR	"syntax error near unexpected token"

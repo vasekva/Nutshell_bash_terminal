@@ -17,7 +17,16 @@ void	ft_env(t_data *shell)
 	t_env_list	*env_node;
 
 	if (!shell->env_node)
+	{
+		exception(shell, "env", NULL, NO_FILE_OR_DIR);
 		return ;
+	}
+	env_node = get_node_by_content(shell->env_node, "PATH", 0);
+	if (!env_node)
+	{
+		exception(shell, "env", NULL, NO_FILE_OR_DIR);
+		return ;
+	}
 	env_node = shell->env_node;
 	while (env_node)
 	{
