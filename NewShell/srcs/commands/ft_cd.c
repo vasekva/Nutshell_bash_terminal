@@ -15,7 +15,7 @@
 /**
  * Функция проверяет наличие переменной окружения по
  * ключевому значению dst_path_key, при ее наличии меняет значение
- * этой переменой на значение из узла src_node.
+ * этой переменой на значение new_path.
  * Так же вне зависимости от результата первого действия
  * обновляет переменные curr_dir и past_dir в корневой структуре.
  *
@@ -25,29 +25,30 @@
  *
  * @param shell - корневая структура, откуда вытаскивается информация.
  *
- * @param src_node - элемент списка(переменная окружения), значение которой(го)
- * копируется.
+ * @param new_path - значение пути, которое копируется и назначается новым
+ * текущим положением.
  *
  * @param dst_path_key - ключ, по которому производится поиск элемента списка
- * (переменной окружения) в которую будет копироваться значение из src_node.
+ * (переменной окружения) в которую будет копироваться значение new_path.
  */
-static void	change_dirs(t_data *shell, t_env_list *src_node, char *dst_path_key)
+static void	change_dirs(t_data *shell, char *new_path, char *dst_path_key)
 {
+	t_env_list	*node;
 	char		*path;
 	char		*tmp;
 
-	if (!ft_strncmp(shell->curr_dir, src_node->value,
-			ft_strlen(src_node->value)))
+	if (!ft_strncmp_old(shell->curr_dir, new_path,
+			ft_strlen(new_path)))
 		return ;
-	path = ft_strdup(src_node->value);
-	src_node = get_node_by_content(shell->env_node, dst_path_key, 0);
-	if (src_node)
+	path = ft_strdup(new_path);
+	node = get_node_by_content(shell->env_node, dst_path_key, 0);
+	if (node)
 	{
-		tmp = src_node->value;
-		src_node->value = ft_strdup(path);
+		tmp = node->value;
+		node->value = ft_strdup(path);
 		free(tmp);
-		tmp = src_node->str;
-		src_node->str = ft_strjoin(dst_path_key, src_node->value, -1);
+		tmp = node->str;
+		node->str = ft_strjoin(dst_path_key, node->value, -1);
 		free(tmp);
 	}
 	tmp = shell->past_dir;
@@ -80,21 +81,16 @@ static void	change_dirs(t_data *shell, t_env_list *src_node, char *dst_path_key)
  * @param dst_key: Ключ, по которому производится поиск переменной
  * в которую копируется значение.
  */
-void	change_value(t_data *shell, char *src_key, char *dst_key)
+static void	change_value(t_data *shell, char *src_key, char *dst_key)
 {
 	t_env_list	*src_node;
 
-	if (!shell)
+	src_node = get_node_by_content(shell->env_node, src_key, 0);
+	if (!src_node)
 		exception(shell, "cd", src_key, EMPTYENV);
 	else
 	{
-		src_node = get_node_by_content(shell->env_node, src_key, 0);
-		if (!src_node)
-			exception(shell, "cd", src_key, EMPTYENV);
-		else
-		{
-			change_dirs(shell, src_node, dst_key);
-		}
+		change_dirs(shell, src_node->value, dst_key);
 	}
 }
 
@@ -135,6 +131,25 @@ static void	create_old_pwd(t_data *shell)
 	}
 }
 
+void	relative_path(t_data *shell, t_cmd *s_cmd)
+{
+	//DIR				*direct;
+	//struct dirent	*dir_file;
+
+	if (s_cmd->command[1][0] == '/')
+	{
+		change_dirs(shell, "/", "PWD");
+	}
+	else if (!ft_strncmp("..", s_cmd->command[1], ft_strlen(s_cmd->command[1])))
+	{
+		ft_cd_updir(shell);
+	}
+//	direct = opendir(path);
+//	if (!direct)
+//		return (NULL);
+//	dir_file = readdir(direct);
+}
+
 int	ft_cd(t_data *shell)
 {
 	t_cmd		*s_cmd;
@@ -142,10 +157,9 @@ int	ft_cd(t_data *shell)
 	if (!shell || !shell->list_cmds)
 		exception(NULL, NULL, NULL, EMPTYPOINTER);
 	s_cmd = shell->list_cmds;
-	if (!ft_strncmp("..", s_cmd->command[1], ft_strlen(s_cmd->command[1])))
-	{
-		ft_cd_updir(shell);
-	}
+	if (s_cmd->command[1] &&
+		((s_cmd->command[1][0] == '.') || (s_cmd->command[1][0] == '/')))
+		relative_path(shell, s_cmd);
 	else if (!shell->env_node)
 	{
 		if (!s_cmd->command[1] || !ft_strncmp("--", s_cmd->command[1],
