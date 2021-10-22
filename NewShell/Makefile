@@ -29,6 +29,7 @@ SRCS_NAME		=	exception.c			\
 					utils_for_array.c	\
 					utils_for_list.c	\
 					init.c				\
+					signals.c			\
 
 COMMAND_SRCS	=	ft_echo.c		\
                  	ft_cd.c			\

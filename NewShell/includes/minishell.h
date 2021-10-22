@@ -48,8 +48,16 @@ typedef struct s_env_list	t_env_list;
 
 struct s_cmd
 {
+	int 	fd[2];
+	int 	fd_output;
+	int 	fd_input;
+
 	char	**command;
 	int		num_args;
+
+	int 	redirect;
+
+	t_cmd	*prev;
 	t_cmd	*next;
 };
 
@@ -107,6 +115,11 @@ void		free_node_content(t_env_list *node);
  * INIT.C
  */
 void	init_logs(t_data *shell, char *envp[]);
+
+/*
+ * SIGNALS.C
+ */
+void	signal_handler(int signal);
 
 /*
  * PARSER

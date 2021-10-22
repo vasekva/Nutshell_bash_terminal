@@ -12,22 +12,7 @@
 
 #include "minishell.h"
 
-static void	signal_handler(int signal)
-{
-	if (signal == SIGINT)
-	{
-		//		printf("atory/minishell/$>   ");
-		printf("\n");
-		rl_replace_line("", 0);
-		rl_on_new_line();
-		rl_redisplay();
-	}
-	if (signal == SIGQUIT)
-	{
-		printf("quit\n");
-		exit(1);
-	}
-}
+int status = 0;
 
 /*
  * Запускает функцию в которой определяется команда,
@@ -80,10 +65,7 @@ int	main(int argc, char **argv, char **envp)
 	{
 		line = readline(shell.title);
 		if (!line)
-		{
-			write(2, " \b\b exit\n", 9);
-			exit(-1);
-		}
+			line = ft_strdup("exit");
 		if (line[0])
 			add_history(line);
 		if (!syntax_check(line))

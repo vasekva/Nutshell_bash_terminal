@@ -18,19 +18,19 @@ void	exception(t_data *shell, char *command, char *variable, char *message)
 
 	if (shell)
 	{
-		write(1, "minishell: ", 12);
+		write(2, "minishell: ", 12);
 		if (command)
 		{
-			write(1, command, ft_strlen(command));
-			write(1, ": ", 2);
+			write(2, command, ft_strlen(command));
+			write(2, ": ", 2);
 		}
 		if (variable)
 		{
-			write(1, variable, ft_strlen(variable));
-			write(1, " ", 1);
+			write(2, variable, ft_strlen(variable));
+			write(2, " ", 1);
 		}
 	}
 	ret = write(2, message, ft_strlen(message));
-	write(1, "\n", 1);
+	write(2, "\n", 1);
 	//exit(ret);
 }
