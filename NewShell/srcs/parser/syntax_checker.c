@@ -10,11 +10,15 @@ static int	ft_check_redirect(const char *line, int index, char symbol)
 		if (line[index] != ' ')
 			break ;
 	if (!line[index])
-		return (printf("%s `newline'\n", SYNTAX_ERROR));
-	if (line[index] == '<' && symbol == '>')
-		return (printf("%s `%s'\n", SYNTAX_ERROR, &line[index]));
-	if (line[index] == '>' && symbol == '<')
-		return (printf("%s `%s'\n", SYNTAX_ERROR, &line[index]));
+	{
+		exception(SYNTAX_ERROR, "newline", NULL);
+		return (1);
+	}
+	if ((line[index] == '<' && symbol == '>') || (line[index] == '>' && symbol == '<'))
+	{
+		exception(SYNTAX_ERROR, (char *)&(line[index]), NULL);
+		return (1);
+	}
 	return (0);
 }
 
@@ -27,12 +31,18 @@ static int	ft_check_pipe(const char *line, int index_forward)
 		if (line[index_back] != ' ')
 			break ;
 	if (!line[index_back])
-		return (printf("%s `|'\n", SYNTAX_ERROR));
+	{
+		exception(SYNTAX_ERROR, "|", NULL);
+		return (1);
+	}
 	while (line[++(index_forward)])
 		if (line[index_forward] != ' ')
 			break ;
 	if (!line[index_forward])
-		return (printf("%s `newline'\n", SYNTAX_ERROR));
+	{
+		exception(SYNTAX_ERROR, "newline", NULL);
+		return (1);
+	}
 	return (0);
 }
 
@@ -42,7 +52,10 @@ static int	ft_check_pair(const char *line, int *index, char symbol)
 		if (line[*index] == symbol)
 			break ;
 	if (!line[*index])
-		return (printf("syntax error : unclosed quote\n"));
+	{
+		exception(SYNTAX_ERROR, "unclosed quote", NULL);
+		return (1);
+	}
 	return (0);
 }
 
@@ -54,17 +67,21 @@ static int	ft_check_pair(const char *line, int *index, char symbol)
  */
 int	syntax_check(const char *line)
 {
-	int	index;
+	int		index;
+	int		s_q_flag;
+	int		d_q_flag;
 
 	index = -1;
+	s_q_flag = 0;
+	d_q_flag = 0;
 	while (line[++index])
 	{
-		if (line[index] == ';' || line[index] == '\\')
-			return (printf("%s `%c'\n", SYNTAX_ERROR, line[index]));
+		if (line[index] == '"' || line[index] == '\'')
+			switcher(line[index], &d_q_flag, &s_q_flag);
 		if (line[index] == '|')
 			if (ft_check_pipe(line, index))
 				return (1);
-		if (line[index] == '>' || line[index] == '<')
+		if ((line[index] == '>' || line[index] == '<') && !d_q_flag && !s_q_flag)
 			if (ft_check_redirect(line, index, line[index]))
 				return (1);
 	}

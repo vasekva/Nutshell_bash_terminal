@@ -12,13 +12,23 @@
 
 #include "minishell.h"
 
-void	exception(t_data *shell, char *command, char *variable, char *message)
+int	syntax_error(char *variable)
+{
+	write(2, SYNTAX_ERROR, ft_strlen(SYNTAX_ERROR));
+	write(2, " `", 2);
+	write(2, variable, ft_strlen(variable));
+	write(2, "\'", 1);
+}
+
+void	exception(char *command, char *variable, char *message)
 {
 	int	ret;
 
-	if (shell)
+	write(2, "minishell: ", 12);
+	if (command == SYNTAX_ERROR)
+		syntax_error(variable);
+	else
 	{
-		write(2, "minishell: ", 12);
 		if (command)
 		{
 			write(2, command, ft_strlen(command));

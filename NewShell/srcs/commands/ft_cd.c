@@ -87,7 +87,7 @@ static void	change_value(t_data *shell, char *src_key, char *dst_key)
 
 	src_node = get_node_by_content(shell->env_node, src_key, 0);
 	if (!src_node)
-		exception(shell, "cd", src_key, EMPTYENV);
+		exception("cd", src_key, EMPTYENV);
 	else
 	{
 		change_dirs(shell, src_node->value, dst_key);
@@ -155,7 +155,7 @@ int	ft_cd(t_data *shell)
 	t_cmd		*s_cmd;
 
 	if (!shell || !shell->list_cmds)
-		exception(NULL, NULL, NULL, EMPTYPOINTER);
+		exception(NULL, NULL, EMPTYPOINTER);
 	s_cmd = shell->list_cmds;
 	if (s_cmd->command[1] &&
 		((s_cmd->command[1][0] == '.') || (s_cmd->command[1][0] == '/')))
@@ -164,9 +164,9 @@ int	ft_cd(t_data *shell)
 	{
 		if (!s_cmd->command[1] || !ft_strncmp("--", s_cmd->command[1],
 				ft_strlen(s_cmd->command[1])))
-			exception(shell, s_cmd->command[0], "HOME", EMPTYENV);
+			exception(s_cmd->command[0], "HOME", EMPTYENV);
 		else if (!ft_strncmp("-", s_cmd->command[1], ft_strlen(s_cmd->command[1])))
-			exception(shell, s_cmd->command[0], "OLDPWD", EMPTYENV);
+			exception(s_cmd->command[0], "OLDPWD", EMPTYENV);
 		return (0);
 	}
 	else if (!s_cmd->command[1] || !ft_strncmp("--", s_cmd->command[1],

@@ -76,14 +76,14 @@ static char	**get_envp_copy(t_data *shell)
 	length = list_length(shell->env_node);
 	env_copy = (char **)malloc(sizeof(char*) * length + 1);
 	if (!env_copy)
-		exception(NULL, NULL, NULL, MALLOC_ERROR);
+		exception(NULL, NULL, MALLOC_ERROR);
 	env_copy[length] = NULL;
 	node = shell->env_node;
 	while (node)
 	{
 		env_copy[i] = ft_strdup(node->str);
 		if (!env_copy[i])
-			exception(NULL, NULL, NULL, MALLOC_ERROR);
+			exception(NULL, NULL, MALLOC_ERROR);
 		node = node->next;
 		i++;
 	}

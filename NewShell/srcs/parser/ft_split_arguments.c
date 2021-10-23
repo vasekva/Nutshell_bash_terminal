@@ -4,7 +4,7 @@
 
 #include "minishell.h"
 
-static void	switcher(char symbol, int *d_q_flag, int *s_q_flag)
+void	switcher(char symbol, int *d_q_flag, int *s_q_flag)
 {
 	if (symbol == '"' && !*s_q_flag)
 	{

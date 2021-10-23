@@ -34,7 +34,7 @@ static void	replace_env_variable(t_env_list *env_node, char **line, int *index)
 				break ;
 		key = ft_substr(*line, i_start + 1, *index - i_start - 1);
 		if (!key)
-			exception(NULL, NULL, NULL, MALLOC_ERROR);
+			exception(NULL, NULL, MALLOC_ERROR);
 		value = get_value_by_key(env_node, key);
 		if (value)
 			*line = ft_replace_dollar(*line, i_start, *index, value);
@@ -113,7 +113,7 @@ char	*lexer(t_data *shell, char *line)
 
 	line_ptr = ft_strdup(line);
 	if (!line_ptr)
-		exception(NULL, NULL, NULL, MALLOC_ERROR);
+		exception(NULL, NULL, MALLOC_ERROR);
 	index = -1;
 	while (line_ptr[++index])
 	{

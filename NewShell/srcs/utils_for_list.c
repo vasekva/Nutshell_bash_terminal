@@ -46,7 +46,7 @@ void	push_back(t_env_list **env_node, char *key, char *value, char *str)
 
 	last = get_last(*env_node);
 	if (!key || !value || !str)
-		exception(NULL, NULL, NULL, EMPTYPOINTER);
+		exception(NULL, NULL, EMPTYPOINTER);
 	if (!last)
 	{
 		(*env_node) = (t_env_list *)malloc(sizeof(t_env_list));

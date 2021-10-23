@@ -81,7 +81,7 @@ struct s_data
 };
 
 int		deff_curr_cmd(t_data *shell);
-void	exception(t_data *shell, char *command, char *variable, char *message);
+void	exception(char *command, char *variable, char *message);
 
 int		ft_cd(t_data *shell);
 void	ft_cd_updir(t_data *shell);
@@ -127,6 +127,7 @@ void	signal_handler(int signal);
 int		syntax_check(const char *line);
 void	preparser(t_data *shell, char *line);
 char	**split_arguments(const char *command, char c);
+void	switcher(char symbol, int *d_q_flag, int *s_q_flag);
 char	*lexer(t_data *shell, char *line);
 char	*ft_replace_dollar(const char *line, int i_left, int i_right, char *new);
 char	*ft_divide_by_quotes(const char *line, int i_left, int i_right);

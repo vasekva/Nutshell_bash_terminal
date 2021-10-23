@@ -21,7 +21,7 @@
 # define FIVE			"Command not found!"
 # define SYNTAX_ERROR	"syntax error near unexpected token"
 # define EMPTYPOINTER	"Function has taken an empty pointer!"
-# define	EMPTYENV	"not set"
+# define EMPTYENV		"not set"
 
 
 #endif
