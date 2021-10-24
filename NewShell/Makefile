@@ -44,6 +44,7 @@ COMMAND_SRCS	=	ft_echo.c		\
 PARSER_SRCS		=	syntax_checker.c		\
 					ft_split_arguments.c	\
 					ft_preparser.c			\
+					parse_redirects.c		\
 					ft_lexer.c				\
 					ft_lexer_utils.c		\
 

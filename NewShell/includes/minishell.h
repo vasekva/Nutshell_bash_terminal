@@ -44,6 +44,7 @@
  */
 typedef struct s_data		t_data;
 typedef struct s_cmd		t_cmd;
+typedef struct s_redir_list	t_redir_list;
 typedef struct s_env_list	t_env_list;
 
 struct s_cmd
@@ -55,7 +56,8 @@ struct s_cmd
 	char	**command;
 	int		num_args;
 
-	int 	redirect;
+	int 	        is_redirect;
+    t_redir_list    *r_list;
 
 	t_cmd	*prev;
 	t_cmd	*next;
@@ -68,6 +70,12 @@ struct s_env_list
 	char		*str;
 	t_env_list	*next;
 	t_env_list	*past;
+};
+
+struct s_redir_list
+{
+	char		    *filename;
+	t_redir_list	*next;
 };
 
 struct s_data
@@ -121,14 +129,27 @@ void	init_logs(t_data *shell, char *envp[]);
  */
 void	signal_handler(int signal);
 
+
 /*
- * PARSER
+ * :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  PARSER  :::::
  */
 int		syntax_check(const char *line);
 void	preparser(t_data *shell, char *line);
 char	**split_arguments(const char *command, char c);
-void	switcher(char symbol, int *d_q_flag, int *s_q_flag);
+/*
+ *................... work with redirects
+ */
+void	refactor_redirects(char **line, t_redir_list **r_list);
+char    *cut_filenames(char **str, int *i, int len);
+void    open_filenames_fd(t_cmd *node);
+/*
+ * ............... work with $ and quotes
+ */
 char	*lexer(t_data *shell, char *line);
+/*
+ * ........................  PARSER UTILS
+ */
+void	switcher(char symbol, int *d_q_flag, int *s_q_flag);
 char	*ft_replace_dollar(const char *line, int i_left, int i_right, char *new);
 char	*ft_divide_by_quotes(const char *line, int i_left, int i_right);
 

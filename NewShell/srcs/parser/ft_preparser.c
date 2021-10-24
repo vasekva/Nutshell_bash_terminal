@@ -4,30 +4,7 @@
 
 #include "minishell.h"
 
-void	refactor_redirects(char **line)
-{
-	char	*tmp;
-	char	*file_name;
-	int 	i;
-	int		s_q_flag;
-	int		d_q_flag;
-
-	s_q_flag = 0;
-	d_q_flag = 0;
-	i = -1;
-	while (*line[++i])
-	{
-		if (*line[i] == '"' || *line[i] == '\'')
-			switcher(*line[i], &d_q_flag, &s_q_flag);
-//		if ((*line[i] == '>' || *line[i] == '<') && !d_q_flag && !s_q_flag)
-//		{
-//			tmp = ft_replace_dollar(*line, i, i+len, filename);
-//		}
-	}
-
-}
-
-static t_cmd	*create_elem(char **command)
+static t_cmd	*create_elem(char **command, t_redir_list *r)
 {
 	t_cmd	*new;
 
@@ -41,7 +18,11 @@ static t_cmd	*create_elem(char **command)
 	new->num_args = 0;
 	while (new->command[new->num_args])
 		new->num_args++;
-	new->redirect = 0;
+    if (r)
+	    new->is_redirect = 1;
+    else
+        new->is_redirect = 0;
+    new->r_list = r;
 	new->prev = NULL;
 	new->next = NULL;
 	return (new);
@@ -63,25 +44,25 @@ static void	add_back(t_cmd **head, t_cmd *new)
 	}
 }
 
-static void	create_list(t_data *shell, char *line)
+static void	create_list(t_data *shell, char *line, int index)
 {
-	char	**all_cmds;
-	char	**final_cmds;
-	int		index;
-	t_cmd	*new_node;
+	char	        **all_cmds;
+	char	        **final_cmds;
+	t_cmd	        *new_node;
+    t_redir_list    *r_list;
 
 	all_cmds = split_arguments(line, '|');
 	if (!all_cmds)
 		exception(NULL, NULL, SPLIT_ERROR);
-	index = -1;
 	final_cmds = NULL;
 	while (all_cmds[++index])
 	{
-//		refactor_redirects(&all_cmds[index]);
-		final_cmds = split_arguments(all_cmds[index], ' ');
+        r_list = NULL;
+		refactor_redirects(&all_cmds[index], &r_list);
+        final_cmds = split_arguments(all_cmds[index], ' ');
 		if (!final_cmds)
 			exception(NULL, NULL, SPLIT_ERROR);
-		new_node = create_elem(final_cmds);
+		new_node = create_elem(final_cmds, r_list);
 		if (!new_node)
 			exception(NULL, NULL, MALLOC_ERROR);
 		add_back(&shell->list_cmds, new_node);
@@ -99,7 +80,7 @@ void	preparser(t_data *shell, char *line)
 	t_cmd	*list_ptr;
 	char	*clear_line;
 
-	create_list(shell, line);
+	create_list(shell, line, -1);
 //	list_ptr = shell->list_cmds;
 //	while (list_ptr != NULL)
 //	{
