@@ -24,5 +24,6 @@
 # define CD_ACCESS		"Permission denied"
 # define CD_NOTDIR		"not a directory"
 # define NO_FILE_OR_DIR "No such file or directory"
+# define OPEN_FD_ERROR	"couldn't open file descriptor"
 
 #endif

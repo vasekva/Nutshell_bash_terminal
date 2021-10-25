@@ -135,6 +135,10 @@ void	init_logs(t_data *shell, char *envp[]);
  */
 void	signal_handler(int signal);
 
+/*
+ * REDIRECTS.C
+ */
+void	open_filenames_fd(t_cmd *node);
 
 /*
  * :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  PARSER  :::::
@@ -147,7 +151,7 @@ char	**split_arguments(const char *command, char c);
  */
 void	refactor_redirects(char **line, t_redir_list **r_list);
 char    *cut_filenames(char **str, int *i, int len);
-void    open_filenames_fd(t_cmd *node);
+
 /*
  * ............... work with $ and quotes
  */
