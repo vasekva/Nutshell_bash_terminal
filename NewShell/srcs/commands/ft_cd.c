@@ -31,14 +31,13 @@
  * @param dst_path_key - ключ, по которому производится поиск элемента списка
  * (переменной окружения) в которую будет копироваться значение new_path.
  */
-static void	change_dirs(t_data *shell, char *new_path, char *dst_path_key)
+void	change_dirs(t_data *shell, char *new_path, char *dst_path_key)
 {
 	t_env_list	*node;
 	char		*path;
 	char		*tmp;
 
-	if (!ft_strncmp_old(shell->curr_dir, new_path,
-			ft_strlen(new_path)))
+	if (!ft_strncmp_old(shell->curr_dir, new_path, ft_strlen(new_path)))
 		return ;
 	path = ft_strdup(new_path);
 	node = get_node_by_content(shell->env_node, dst_path_key, 0);
@@ -48,7 +47,8 @@ static void	change_dirs(t_data *shell, char *new_path, char *dst_path_key)
 		node->value = ft_strdup(path);
 		free(tmp);
 		tmp = node->str;
-		node->str = ft_strjoin(dst_path_key, node->value, -1);
+		node->str = ft_strjoin(dst_path_key,
+				ft_strjoin("=", node->value, -1), 1);
 		free(tmp);
 	}
 	tmp = shell->past_dir;
@@ -61,17 +61,11 @@ static void	change_dirs(t_data *shell, char *new_path, char *dst_path_key)
 }
 
 /**
- * Функция копирует значение(путь) из переменной(элемента списка),
- * полученной по src_key в значение переменной(элемента списка),
- * найденной по dst_key.
- *
- * 1) Проверяется наличие переменной по ключу src_key, если ее нет
- * - исключение
- * 2) Получаем элемент списка переменной
- *
- * Если искомой переменной нет, то выдается исключение, иначе
- * дальнейшее выполнение делегируется функции change_dirs()
- * которая меняет текущую директорию на значение переменной HOME.
+ * Функция с помощью src_key проверяет наличие переменной в
+ * списке, если искомой переменной нет, то выдается исключение, иначе
+ * дальнейшее выполнение делегируется функции change_dirs(),
+ * которая копирует значение(value) из узла найденного по src_key
+ * в узел с значением ключа dst_key
  *
  * @param shell - корневая структура, откуда передается информация.
  *
@@ -117,7 +111,7 @@ static void	create_old_pwd(t_data *shell)
 	{
 		key = ft_strdup("OLDPWD");
 		value = ft_strdup(shell->past_dir);
-		str = ft_strjoin(key, value, -1);
+		str = ft_strjoin(key, ft_strjoin("=", value, -1), 1);
 		push_back(&shell->env_node, key, value, str);
 	}
 	else
@@ -126,16 +120,14 @@ static void	create_old_pwd(t_data *shell)
 		node->value = ft_strdup(shell->past_dir);
 		free(tmp);
 		tmp = node->str;
-		node->str = ft_strjoin(node->key, node->value, -1);
+		node->str = ft_strjoin(node->key,
+				ft_strjoin("=", node->value, -1), 1);
 		free(tmp);
 	}
 }
 
 void	relative_path(t_data *shell, t_cmd *s_cmd)
 {
-	//DIR				*direct;
-	//struct dirent	*dir_file;
-
 	if (s_cmd->command[1][0] == '/')
 	{
 		change_dirs(shell, "/", "PWD");
@@ -144,40 +136,47 @@ void	relative_path(t_data *shell, t_cmd *s_cmd)
 	{
 		ft_cd_updir(shell);
 	}
-//	direct = opendir(path);
-//	if (!direct)
-//		return (NULL);
-//	dir_file = readdir(direct);
+	else
+		ft_cd_cut_path(shell, s_cmd);
 }
 
 int	ft_cd(t_data *shell)
 {
 	t_cmd		*s_cmd;
+	char		*cd_cmd;
+	int			len_of_cmd;
 
 	if (!shell || !shell->list_cmds)
 		exception(NULL, NULL, EMPTYPOINTER);
 	s_cmd = shell->list_cmds;
-	if (s_cmd->command[1] &&
-		((s_cmd->command[1][0] == '.') || (s_cmd->command[1][0] == '/')))
+	cd_cmd = NULL;
+	if (s_cmd->command[1])
+	{
+		cd_cmd = s_cmd->command[1];
+		len_of_cmd = ft_strlen(cd_cmd);
+	}
+	if (cd_cmd
+		&& (ft_strncmp("-", cd_cmd, len_of_cmd)
+			&& (ft_strncmp("--", cd_cmd, len_of_cmd))))
 		relative_path(shell, s_cmd);
 	else if (!shell->env_node)
 	{
-		if (!s_cmd->command[1] || !ft_strncmp("--", s_cmd->command[1],
-				ft_strlen(s_cmd->command[1])))
-			exception(s_cmd->command[0], "HOME", EMPTYENV);
-		else if (!ft_strncmp("-", s_cmd->command[1], ft_strlen(s_cmd->command[1])))
-			exception(s_cmd->command[0], "OLDPWD", EMPTYENV);
+		if (!cd_cmd || !ft_strncmp("--", cd_cmd, len_of_cmd))
+			exception("cd", "HOME", EMPTYENV);
+		else if (!ft_strncmp("-", cd_cmd, len_of_cmd))
+			exception("cd", "OLDPWD", EMPTYENV);
 		return (0);
 	}
-	else if (!s_cmd->command[1] || !ft_strncmp("--", s_cmd->command[1],
-		ft_strlen(s_cmd->command[1])))
+	else if (!cd_cmd || !ft_strncmp("--", cd_cmd, len_of_cmd))
 	{
 		change_value(shell, "HOME", "PWD");
 	}
-	else if (!ft_strncmp("-", s_cmd->command[1], ft_strlen(s_cmd->command[1])))
+	else if (!ft_strncmp("-", cd_cmd, len_of_cmd))
 	{
 		change_value(shell, "OLDPWD", "PWD");
+		printf("%s\n", shell->curr_dir);
 	}
 	create_old_pwd(shell);
+	chdir(shell->curr_dir);
 	return (0);
 }

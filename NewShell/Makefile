@@ -31,22 +31,22 @@ SRCS_NAME		=	exception.c			\
 					init.c				\
 					signals.c			\
 
-COMMAND_SRCS	=	ft_echo.c		\
-                 	ft_cd.c			\
-                 	ft_cd_updir.c	\
-                  	ft_pwd.c		\
-                  	ft_export.c		\
-					ft_unset.c		\
-					ft_env.c		\
-					ft_execve.c		\
-					ft_exit.c		\
+COMMAND_SRCS	=	ft_cd.c				\
+                 	ft_cd_cut_path.c	\
+                 	ft_cd_updir.c		\
+                 	ft_echo.c			\
+                  	ft_pwd.c			\
+                  	ft_export.c			\
+					ft_unset.c			\
+					ft_env.c			\
+					ft_execve.c			\
+					ft_exit.c			\
 
-PARSER_SRCS		=	syntax_checker.c		\
-					ft_split_arguments.c	\
-					ft_preparser.c			\
-					ft_lexer.c				\
+PARSER_SRCS		=	ft_lexer.c				\
 					ft_lexer_utils.c		\
-
+					ft_preparser.c			\
+					ft_split_arguments.c	\
+					syntax_checker.c		\
 
 OBJS_NAME	=	$(SRCS_NAME:.c=.o) $(COMMAND_SRCS:.c=.o) $(PARSER_SRCS:.c=.o)
 
