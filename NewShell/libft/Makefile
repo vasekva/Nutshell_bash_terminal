@@ -1,6 +1,6 @@
 NAME 				=	libft.a
 
-INCLUDES			=	-I ./includes/
+INCLUDES			=	-I ../includes/
 
 OBJS_DIR			=	./objs/
 SRCS_DIR			=	./srcs/
@@ -19,7 +19,8 @@ WALL			=	$(BOLD)$(PURPLE)|
 F_WALL			=	$(WALL)$(BOLD)
 B_WALL			=	$(WALL)$(NORM)
 
-SRCS_NAME			=	ft_strchr.c			\
+SRCS_NAME			=	ft_calloc.c			\
+						ft_itoa.c			\
 						ft_strdup.c			\
 						ft_strjoin.c		\
 						ft_strlen.c			\

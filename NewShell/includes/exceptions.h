@@ -16,12 +16,13 @@
 # define MALLOC_ERROR	"Malloc error!"
 # define SPLIT_ERROR	"Error during split string!"
 # define TWO 			"Strdup malloc error!"
-# define NO_FILE_OR_DIR "No such file or directory"
 # define FOUR 			"Fork error!"
-# define FIVE			"Command not found!"
+# define CMD_NOT_FOUND	"command not found"
 # define SYNTAX_ERROR	"syntax error near unexpected token"
 # define EMPTYPOINTER	"Function has taken an empty pointer!"
 # define EMPTYENV		"not set"
-
+# define CD_ACCESS		"Permission denied"
+# define CD_NOTDIR		"not a directory"
+# define NO_FILE_OR_DIR "No such file or directory"
 
 #endif

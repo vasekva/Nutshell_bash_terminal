@@ -18,19 +18,20 @@
  */
 # include <stdio.h>
 # include <string.h>
-# include <unistd.h>
-# include <stdlib.h>
+//# include <unistd.h>
+//# include <stdlib.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <signal.h>
 # include <dirent.h>
 
 # include <sys/stat.h>
-//# include <sys/types.h>
+# include <sys/types.h>
+# include <errno.h>
 
-# include "libft.h"
 # include "exceptions.h"
 # include "my_readline.h"
+# include "libft.h"
 
 /*
  *:::::::::::::::::::::::::::::::::::::::::::	DEFINES
@@ -38,6 +39,8 @@
 # define	BUFFER_SIZE 32
 # define	TRUE 1
 # define	FALSE 0
+
+int	error_code;
 
 /*
  *:::::::::::::::::::::::::::::::::::::::::::	STRUCTURES
@@ -93,6 +96,9 @@ void	exception(char *command, char *variable, char *message);
 
 int		ft_cd(t_data *shell);
 void	ft_cd_updir(t_data *shell);
+void	ft_cd_cut_path(t_data *shell, t_cmd *s_cmd);
+
+void	change_dirs(t_data *shell, char *new_path, char *dst_path_key);
 
 int		ft_echo(t_data *shell);
 void	ft_env(t_data *shell);

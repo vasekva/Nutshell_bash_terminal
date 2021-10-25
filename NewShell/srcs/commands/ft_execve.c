@@ -27,32 +27,26 @@ static char	*define_of_dir(t_data *shell)
 	int		i;
 	char	**paths;
 	char	*cmd;
-	char	*tmp;
+	char	*cmd_path;
 
 	i = -1;
 	if (!shell->env_node)
 		return (NULL); //TODO оригинальный bash выводит "No such file or directory"
-	tmp = get_value_by_key(shell->env_node, "PATH");
-	paths = ft_split(tmp, ':');
+	cmd_path = get_value_by_key(shell->env_node, "PATH");
+	paths = ft_split(cmd_path, ':');
 	while (paths[++i])
 	{
-		tmp = check_directory(paths[i], shell->list_cmds->command[0]);
-		if (tmp)
+		cmd_path = check_directory(paths[i], shell->list_cmds->command[0]);
+		if (cmd_path)
 		{
-			cmd = ft_strjoin(paths[i], tmp, -1);
-			free(tmp);
+			cmd = ft_strjoin(paths[i], cmd_path, -1);
+			free(cmd_path);
 			arr_free(paths);
 			return (cmd);
 		}
 	}
 	arr_free(paths);
-	return (tmp);
-}
-
-static void	print_message(t_data *shell)
-{
-	printf("minishell: ");
-	printf("%s: command not found\n", shell->list_cmds->command[0]);
+	return (cmd_path);
 }
 
 /**
@@ -90,34 +84,37 @@ static char	**get_envp_copy(t_data *shell)
 	return (env_copy);
 }
 
-static void	execute(t_data *shell, char *command)
+static void	execute(t_data *shell, char *cmd_path)
 {
-	pid_t	forks;
+	pid_t	status;
 	char	**env_copy;
 
-	forks = fork();
+	status = fork();
 	env_copy = NULL;
-	if (forks == 0)
+	if (status == 0)
 	{
 		env_copy = get_envp_copy(shell);
 		if (!env_copy)
 			return ; // TODO: No such file or directory????
-		execve(command, &shell->list_cmds->command[0], env_copy);
+		for (int i = 0; env_copy[i]; i++)
+			printf("%s\n", env_copy[i]);
+		execve(cmd_path, &shell->list_cmds->command[0], env_copy);
 		arr_free(env_copy);
-		print_message(shell);
+		exception(cmd_path, NULL, CMD_NOT_FOUND);
+//		print_message(shell);
 		exit(1);
 	}
-	forks = wait(&forks);
+	status = wait(&status);
 }
 
 void	ft_execve(t_data *shell)
 {
-	char	*cmd;
+	char	*cmd_path;
 
-	cmd = define_of_dir(shell);
-	if (cmd)
-		execute(shell, cmd);
+	cmd_path = define_of_dir(shell);
+	if (cmd_path)
+		execute(shell, cmd_path);
 	else
 		execute(shell, shell->list_cmds->command[0]);
-	free(cmd);
+	free(cmd_path);
 }
