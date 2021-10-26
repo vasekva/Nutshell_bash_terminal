@@ -32,8 +32,9 @@ static int	ft_start_shell(t_data *shell)
 
 void	ft_free_data(t_data *shell, char *line)
 {
-	t_cmd	*ptr;
-	t_cmd	*tmp;
+	t_cmd			*ptr;
+	t_cmd			*tmp;
+	t_redir_list	*tmp_redir;
 
 	free(line);
 	line = NULL;
@@ -42,9 +43,22 @@ void	ft_free_data(t_data *shell, char *line)
 	{
 		arr_free(ptr->command);
 		ptr->num_args = 0;
+		ptr->fd_input = 0;
+		ptr->fd_output = 1;
+		ptr->is_redirect = 0;
+		while (ptr->r_list)
+		{
+			free(ptr->r_list->filename);
+			tmp_redir = ptr->r_list;
+			ptr->r_list = ptr->r_list->next;
+			tmp_redir->next = NULL;
+			free(tmp_redir);
+			tmp_redir = NULL;
+		}
 		tmp = ptr;
 		ptr = ptr->next;
 		tmp->next = NULL;
+		tmp->prev = NULL;
 		free(tmp);
 		tmp = NULL;
 	}
@@ -73,6 +87,10 @@ int	main(int argc, char **argv, char **envp)
 			preparser(&shell, line);
 			if (shell.list_cmds && shell.list_cmds->command[0])
 				ft_start_shell(&shell);
+			while (shell.list_cmds) {
+				open_filenames_fd(shell.list_cmds);
+				shell.list_cmds = shell.list_cmds->next;
+			}
 		}
         ft_free_data(&shell, line);
 	}

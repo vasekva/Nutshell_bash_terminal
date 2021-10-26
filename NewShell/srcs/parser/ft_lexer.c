@@ -75,7 +75,7 @@ static int	remove_double_quotes(t_env_list *env_node, char **line, int *index)
 	tmp = *line;
 	*line = ft_divide_by_quotes(*line, i_start, *index);
 	free(tmp);
-	*index -= 1;
+	*index -= 2;
 	return (1);
 }
 

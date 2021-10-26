@@ -14,7 +14,8 @@ static int	ft_check_redirect(const char *line, int index, char symbol)
 		exception(SYNTAX_ERROR, "newline", NULL);
 		return (1);
 	}
-	if ((line[index] == '<' && symbol == '>') || (line[index] == '>' && symbol == '<'))
+	if ((line[index] == '<' && symbol == '>') || \
+	(line[index] == '>' && symbol == '<'))
 	{
 		exception(SYNTAX_ERROR, (char *)&(line[index]), NULL);
 		return (1);
@@ -81,7 +82,8 @@ int	syntax_check(const char *line)
 		if (line[index] == '|')
 			if (ft_check_pipe(line, index))
 				return (1);
-		if ((line[index] == '>' || line[index] == '<') && !d_q_flag && !s_q_flag)
+		if ((line[index] == '>' || line[index] == '<') && \
+		!d_q_flag && !s_q_flag)
 			if (ft_check_redirect(line, index, line[index]))
 				return (1);
 	}
