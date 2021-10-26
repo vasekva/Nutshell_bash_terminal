@@ -140,25 +140,23 @@ void	relative_path(t_data *shell, t_cmd *s_cmd)
 		ft_cd_cut_path(shell, s_cmd);
 }
 
-int	ft_cd(t_data *shell)
+int	ft_cd(t_data *shell, t_cmd *node)
 {
-	t_cmd		*s_cmd;
 	char		*cd_cmd;
 	int			len_of_cmd;
 
 	if (!shell || !shell->list_cmds)
 		exception(NULL, NULL, EMPTYPOINTER);
-	s_cmd = shell->list_cmds;
 	cd_cmd = NULL;
-	if (s_cmd->command[1])
+	if (node->command[1])
 	{
-		cd_cmd = s_cmd->command[1];
+		cd_cmd = node->command[1];
 		len_of_cmd = ft_strlen(cd_cmd);
 	}
 	if (cd_cmd
 		&& (ft_strncmp("-", cd_cmd, len_of_cmd)
 			&& (ft_strncmp("--", cd_cmd, len_of_cmd))))
-		relative_path(shell, s_cmd);
+		relative_path(shell, node);
 	else if (!shell->env_node)
 	{
 		if (!cd_cmd || !ft_strncmp("--", cd_cmd, len_of_cmd))

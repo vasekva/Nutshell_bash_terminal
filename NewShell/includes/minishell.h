@@ -94,19 +94,19 @@ struct s_data
 int		deff_curr_cmd(t_data *shell, t_cmd *node);
 void	exception(char *command, char *variable, char *message);
 
-int		ft_cd(t_data *shell);
+int		ft_cd(t_data *shell, t_cmd *node);
 void	ft_cd_updir(t_data *shell);
 void	ft_cd_cut_path(t_data *shell, t_cmd *s_cmd);
 
 void	change_dirs(t_data *shell, char *new_path, char *dst_path_key);
 
-int		ft_echo(t_data *shell);
+int		ft_echo(t_cmd *node);
 void	ft_env(t_data *shell);
-void	ft_execve(t_data *shell);
+void	ft_execve(t_data *shell, t_cmd *node);
 void	ft_exit(t_data *shell);
 void	ft_export(t_data *shell);
 void	ft_pwd(void);
-void	ft_unset(t_data *shell);
+void	ft_unset(t_data *shell, t_cmd *cmd_node);
 
 /*
 ** UTILS_FOR_ARRAY_1.C

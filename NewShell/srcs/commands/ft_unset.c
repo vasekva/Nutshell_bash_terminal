@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void	ft_unset(t_data *shell)
+void	ft_unset(t_data *shell, t_cmd *cmd_node)
 {
 	t_env_list *node;
 	t_env_list *tmp;
@@ -23,9 +23,9 @@ void	ft_unset(t_data *shell)
 	i = 0;
 	node = NULL;
 	tmp = NULL;
-	while (shell->list_cmds->command[++i])
+	while (cmd_node->command[++i])
 	{
-		node = get_node_by_content(shell->env_node, shell->list_cmds->command[i], 0);
+		node = get_node_by_content(shell->env_node, cmd_node->command[i], 1);
 		if (!node)
 			printf("RETURN NULL\n");
 		if (node)

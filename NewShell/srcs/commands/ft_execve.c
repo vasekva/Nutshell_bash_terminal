@@ -84,7 +84,7 @@ static char	**get_envp_copy(t_data *shell)
 	return (env_copy);
 }
 
-static void	execute(t_data *shell, char *cmd_path)
+static void	execute(t_data *shell, char *cmd_path, char **argv)
 {
 	pid_t	status;
 	char	**env_copy;
@@ -96,7 +96,7 @@ static void	execute(t_data *shell, char *cmd_path)
 		env_copy = get_envp_copy(shell);
 		if (!env_copy)
 			return ; // TODO: No such file or directory????
-		execve(cmd_path, &shell->list_cmds->command[0], env_copy);
+		execve(cmd_path, argv, env_copy);
 		arr_free(env_copy);
 		exception(cmd_path, NULL, CMD_NOT_FOUND);
 		exit(1);
@@ -104,14 +104,16 @@ static void	execute(t_data *shell, char *cmd_path)
 	status = wait(&status);
 }
 
-void	ft_execve(t_data *shell)
+void	ft_execve(t_data *shell, t_cmd *node)
 {
 	char	*cmd_path;
+	char 	**argv;
 
+	argv = node->command;
 	cmd_path = define_of_dir(shell);
 	if (cmd_path)
-		execute(shell, cmd_path);
+		execute(shell, cmd_path, argv);
 	else
-		execute(shell, shell->list_cmds->command[0]);
+		execute(shell, argv[0], argv);
 	free(cmd_path);
 }
