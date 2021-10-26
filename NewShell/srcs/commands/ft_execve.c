@@ -96,12 +96,9 @@ static void	execute(t_data *shell, char *cmd_path)
 		env_copy = get_envp_copy(shell);
 		if (!env_copy)
 			return ; // TODO: No such file or directory????
-		for (int i = 0; env_copy[i]; i++)
-			printf("%s\n", env_copy[i]);
 		execve(cmd_path, &shell->list_cmds->command[0], env_copy);
 		arr_free(env_copy);
 		exception(cmd_path, NULL, CMD_NOT_FOUND);
-//		print_message(shell);
 		exit(1);
 	}
 	status = wait(&status);
