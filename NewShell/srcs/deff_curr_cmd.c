@@ -29,11 +29,11 @@ static int	is_builtin(char	*cmd)
 		return (0);
 }
 
-int	deff_curr_cmd(t_data *shell)
+int	deff_curr_cmd(t_data *shell, t_cmd *node)
 {
 	char	*cmd;
 
-	cmd = shell->list_cmds->command[0];
+	cmd = node->command[0];
 	if (is_builtin(cmd))
 	{
 		if (ft_strncmp(cmd, "echo", ft_strlen(cmd)) == 0)
@@ -41,7 +41,7 @@ int	deff_curr_cmd(t_data *shell)
 		if (ft_strncmp(cmd, "cd", ft_strlen(cmd)) == 0)
 			ft_cd(shell);
 		if (ft_strncmp(cmd, "pwd", ft_strlen(cmd)) == 0)
-			ft_pwd(shell);
+			ft_pwd();
 		if (ft_strncmp(cmd, "unset", ft_strlen(cmd)) == 0)
 			ft_unset(shell);
 		if (ft_strncmp(cmd, "env", ft_strlen(cmd)) == 0)

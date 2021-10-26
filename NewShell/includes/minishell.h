@@ -91,7 +91,7 @@ struct s_data
 	t_env_list	*env_node; //список переменных окружения
 };
 
-int		deff_curr_cmd(t_data *shell);
+int		deff_curr_cmd(t_data *shell, t_cmd *node);
 void	exception(char *command, char *variable, char *message);
 
 int		ft_cd(t_data *shell);
@@ -105,7 +105,7 @@ void	ft_env(t_data *shell);
 void	ft_execve(t_data *shell);
 void	ft_exit(t_data *shell);
 void	ft_export(t_data *shell);
-void	ft_pwd(t_data *shell);
+void	ft_pwd(void);
 void	ft_unset(t_data *shell);
 
 /*
@@ -160,7 +160,7 @@ char    *cut_filenames(char **str, int *i, int len);
 /*
  * ............... work with $ and quotes
  */
-char	*lexer(t_data *shell, char *line);
+char	*lexer(t_data *shell, char *line, int num_arg);
 /*
  * ........................  PARSER UTILS
  */

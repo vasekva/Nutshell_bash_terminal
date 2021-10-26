@@ -14,7 +14,7 @@
  * @return 	returns formatted string
  * @error	calls exception func in case of malloc error
  */
-static void	replace_env_variable(t_env_list *env_node, char **line, int *index)
+static void	replace_env_variable(t_env_list *env_node, char **line, int *index, int num_arg)
 {
 	int		i_start;
 	char	*key;
@@ -26,7 +26,11 @@ static void	replace_env_variable(t_env_list *env_node, char **line, int *index)
 	tmp = *line;
 	i_start = *index;
 	if ((*line)[*index + 1] == '?')
+	{
+		if (!num_arg)
+			return ;
 		*line = ft_replace_dollar(*line, i_start, *index + 2, "CODE OF LAST ERROR HERE");
+	}
 	else
 	{
 		while ((*line)[++(*index)])
@@ -59,7 +63,7 @@ static void	replace_env_variable(t_env_list *env_node, char **line, int *index)
  * 			or 0 if quote is unclosed
  * @error	calls exception function if malloc fails
  */
-static int	remove_double_quotes(t_env_list *env_node, char **line, int *index)
+static int	remove_double_quotes(t_env_list *env_node, char **line, int *index, int num_arg)
 {
 	int		i_start;
 	char	*tmp;
@@ -70,7 +74,7 @@ static int	remove_double_quotes(t_env_list *env_node, char **line, int *index)
 		if ((*line)[*index] == '"')
 			break ;
 		if ((*line)[*index] == '$')
-			replace_env_variable(env_node, line, index);
+			replace_env_variable(env_node, line, index, num_arg);
 	}
 	tmp = *line;
 	*line = ft_divide_by_quotes(*line, i_start, *index);
@@ -106,7 +110,7 @@ static int	remove_single_quotes(char **line, int *index)
 	return (1);
 }
 
-char	*lexer(t_data *shell, char *line)
+char	*lexer(t_data *shell, char *line, int num_arg)
 {
 	int		index;
 	char	*line_ptr;
@@ -118,11 +122,11 @@ char	*lexer(t_data *shell, char *line)
 	while (line_ptr[++index])
 	{
 		if (line_ptr[index] == '"')
-			remove_double_quotes(shell->env_node, &line_ptr, &index);
+			remove_double_quotes(shell->env_node, &line_ptr, &index, num_arg);
 		if (line_ptr[index] == '\'')
 			remove_single_quotes(&line_ptr, &index);
 		if (line_ptr[index] == '$')
-			replace_env_variable(shell->env_node, &line_ptr, &index);
+			replace_env_variable(shell->env_node, &line_ptr, &index, num_arg);
 	}
 	return (line_ptr);
 }

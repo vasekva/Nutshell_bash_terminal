@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void	ft_pwd(t_data *shell)
+void	ft_pwd(void)
 {
 	char		*path;
 	path = getcwd(NULL, 0);

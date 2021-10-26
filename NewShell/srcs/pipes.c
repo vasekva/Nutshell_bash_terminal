@@ -25,6 +25,7 @@ void	ft_start_shell(t_data *shell)
 
 	ptr = shell->list_cmds;
 	while (ptr) {
+		deff_curr_cmd(shell, ptr);
 		if (ptr->is_redirect)
 			open_filenames_fd(ptr);
 		ptr = ptr->next;

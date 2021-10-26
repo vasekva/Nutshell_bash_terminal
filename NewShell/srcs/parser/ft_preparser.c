@@ -87,7 +87,7 @@ void	preparser(t_data *shell, char *line)
 		index = -1;
 		while (list_ptr->command[++index])
 		{
-			clear_line = lexer(shell, list_ptr->command[index]);
+			clear_line = lexer(shell, list_ptr->command[index], index);
 			free(list_ptr->command[index]);
 			list_ptr->command[index] = clear_line;
 		}
