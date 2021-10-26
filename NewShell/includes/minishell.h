@@ -141,6 +141,11 @@ void	signal_handler(int signal);
 void	open_filenames_fd(t_cmd *node);
 
 /*
+ * PIPES.C
+ */
+void	ft_start_shell(t_data *shell);
+
+/*
  * :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  PARSER  :::::
  */
 int		syntax_check(const char *line);

@@ -14,22 +14,6 @@
 
 int	g_status = 0;
 
-/*
- * Запускает функцию в которой определяется команда,
- * которую необходимо выполнить
- */
-static int	ft_start_shell(t_data *shell)
-{
-	if (shell->list_cmds)
-	{
-		if (!deff_curr_cmd(shell))
-			return (0);
-		else
-			return (1);
-	}
-	return (0);
-}
-
 void	ft_free_data(t_data *shell, char *line)
 {
 	t_cmd			*ptr;
@@ -69,7 +53,6 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_data	shell;
 	char	*line;
-	t_cmd	*ptr;
 
 	(void)argc;
 	(void)argv;
@@ -87,13 +70,7 @@ int	main(int argc, char **argv, char **envp)
 		if (!syntax_check(line))
 		{
 			preparser(&shell, line);
-			if (shell.list_cmds && shell.list_cmds->command[0])
-				ft_start_shell(&shell);
-			ptr = shell.list_cmds;
-			while (ptr) {
-				open_filenames_fd(ptr);
-				ptr = ptr->next;
-			}
+			ft_start_shell(&shell);
 		}
         ft_free_data(&shell, line);
 	}

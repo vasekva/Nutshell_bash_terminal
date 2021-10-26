@@ -31,6 +31,7 @@ SRCS_NAME		=	exception.c			\
 					init.c				\
 					signals.c			\
 					redirects.c			\
+					pipes.c				\
 
 COMMAND_SRCS	=	ft_cd.c				\
                  	ft_cd_cut_path.c	\
