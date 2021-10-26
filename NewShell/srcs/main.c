@@ -69,11 +69,13 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_data	shell;
 	char	*line;
+	t_cmd	*ptr;
 
 	(void)argc;
 	(void)argv;
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, signal_handler);
+//	rl_catch_signals = 0;
 	init_logs(&shell, envp);
 	while (1)
 	{
@@ -87,9 +89,10 @@ int	main(int argc, char **argv, char **envp)
 			preparser(&shell, line);
 			if (shell.list_cmds && shell.list_cmds->command[0])
 				ft_start_shell(&shell);
-			while (shell.list_cmds) {
-				open_filenames_fd(shell.list_cmds);
-				shell.list_cmds = shell.list_cmds->next;
+			ptr = shell.list_cmds;
+			while (ptr) {
+				open_filenames_fd(ptr);
+				ptr = ptr->next;
 			}
 		}
         ft_free_data(&shell, line);
@@ -98,7 +101,6 @@ int	main(int argc, char **argv, char **envp)
 }
 //TODO: 'll' производит вывод)
 
-//TODO: неккоректный вывод 'syntax error'. Надо постараться связать его с exception();
 //TODO: сделать OLDPWD при смене директории (изначально этой переменной нет)
 //TODO: (возможно) сделать отдельную функцию для смены директории, ибо часто используется
 // смена текущей и в последствии предыдущей директорий
