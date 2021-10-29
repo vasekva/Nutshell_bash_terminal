@@ -19,6 +19,7 @@
 void	*ft_calloc(size_t count, size_t size);
 char	*ft_itoa(int n);
 char	**ft_split(char const *s, char c);
+char	*ft_strchr(const char *s, int c);
 char	*ft_strdup(const char *s1);
 char	*ft_strjoin(char *s1, char *s2, int flag);
 size_t	ft_strlen(const char *s);

@@ -123,6 +123,11 @@ t_env_list	*get_node_by_content(t_env_list *list, char *content, int flag)
 			if (!ft_strncmp(content, env_node->value, ft_strlen(env_node->value)))
 				return (env_node);
 		}
+		else if (flag == 2)
+		{
+			if (!ft_strncmp(content, env_node->str, ft_strlen(env_node->str)))
+				return (env_node);
+		}
 		env_node = env_node->next;
 	}
 	return (NULL);
@@ -140,49 +145,7 @@ void	free_node_content(t_env_list *node)
 	free(node);
 	node = NULL;
 }
-/*
-void	delete_list_node(t_env_list **list)
-{
-	t_env_list *tmp;
 
-	tmp = NULL;
-	if (!(*list)->past)
-	{
-		printf("DEL FIRST\n");
-		tmp = (*list);
-		if ((*list)->next)
-		{
-			(*list) = (*list)->next;
-			(*list)->past->next = NULL;
-			(*list)->past = NULL;
-		}
-		if ((*list)->past == NULL)
-			printf("PAST VALL NOW: NULL\n");
-		free_node_content(tmp);
-		tmp = NULL;
-		if ((*list))
-			printf("FIRST VAL NOW: %s\n", (*list)->str);
-		(*list) = NULL;
-	}
-	else if (!(*list)->next)
-	{
-		printf("DEL LAST\n");
-		(*list)->past->next = NULL;
-		free_node_content((*list));
-		(*list) = NULL;
-	}
-	else
-	{
-		printf("DEL MIDDLE\n");
-		(*list)->past->next = (*list)->next;
-		(*list)->next->past = (*list)->past;
-		free_node_content((*list));
-		(*list) = NULL;
-	}
-	if ((*list))
-		printf("DA SUKA\n");
-}
-*/
 static	void	swap_list_values(t_env_list *a, t_env_list *b)
 {
 	char	*str;

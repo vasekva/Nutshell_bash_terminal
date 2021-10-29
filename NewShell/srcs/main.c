@@ -76,11 +76,6 @@ int	main(int argc, char **argv, char **envp)
 	}
 	return (0);
 }
-//TODO: 'll' производит вывод)
-
-//TODO: сделать OLDPWD при смене директории (изначально этой переменной нет)
-//TODO: (возможно) сделать отдельную функцию для смены директории, ибо часто используется
-// смена текущей и в последствии предыдущей директорий
 
 //TODO: env_get_value_by_key() теперь возвращает указатель на строку, (node->value)
 // взятую из узла списка, в котором был найден подходящий ключ (node->key)
@@ -89,4 +84,8 @@ int	main(int argc, char **argv, char **envp)
 
 /*
  * unset TERM_SESSION_ID SSH_AUTH_SOCK LC_TERMINAL_VERSION Apple_PubSub_Socket_Render _ HOMEBREW_TEMP HOMEBREW_CACHE LSCOLORS COLORFGBG ITERM_PROFILE XPC_FLAGS LANG PWD SECURITYSESSIONID TERM_PROGRAM_VERSION TERM_PROGRAM LC_TERMINAL COLORTERM COMMAND_MODE __CF_USER_TEXT_ENCODING ITERM_SESSION_ID LESS PAGER ZSH USER TERM PATH HOME TMPDIR XPC_SERVICE_NAME LOGNAME SHLVL OLDPWD
+ */
+
+/*
+ * unset $HOME $SHLVL | unset $LESS $USER $PWD | unset $SHELL $PAGER
  */

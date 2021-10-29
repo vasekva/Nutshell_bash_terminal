@@ -12,65 +12,79 @@
 
 #include "minishell.h"
 
+static void delete_variable_from_list(t_data *shell, t_env_list *del_node)
+{
+	t_env_list	*tmp;
+
+	tmp = NULL;
+	if (!del_node->past && del_node->next)
+	{
+		tmp = shell->env_node;
+		shell->env_node = shell->env_node->next;
+		shell->env_node->past->next = NULL;
+		shell->env_node->past = NULL;
+		free_node_content(tmp);
+	}
+	else if (!del_node->next)
+	{
+		del_node->past->next = NULL;
+		free_node_content(del_node);
+	}
+	else
+	{
+		del_node->past->next = del_node->next;
+		del_node->next->past = del_node->past;
+		free_node_content(del_node);
+	}
+}
+
+static void	delete_variable(t_data *shell, t_env_list *del_node)
+{
+	if (!shell->env_node->past && !shell->env_node->next)
+	{
+		free(shell->env_node->key);
+		free(shell->env_node->value);
+		free(shell->env_node->str);
+		free(shell->env_node);
+		shell->env_node = NULL;
+	}
+	else
+		delete_variable_from_list(shell, del_node);
+}
+
+/**
+ * Функция проходит по списку полученных значений и, если в
+ * переменных окружения есть значение с таким ключом -
+ * удаляет переменную из списка путем вызова delete_variable();
+ *
+ * @param shell:	корневая структура, откуда вытаскиваются значения
+ * @param cmd_node:	узел с полученными входными значениями команды
+ *
+ */
 void	ft_unset(t_data *shell, t_cmd *cmd_node)
 {
-	t_env_list *node;
-	t_env_list *tmp;
-	int		i;
+	t_env_list	*del_node;
+	int			i;
 
-	if (!shell->env_node)
+	if (!shell->env_node || !cmd_node->command[1])
 		return ;
 	i = 0;
-	node = NULL;
-	tmp = NULL;
+	del_node = NULL;
 	while (cmd_node->command[++i])
 	{
-		node = get_node_by_content(shell->env_node, cmd_node->command[i], 1);
-		if (!node)
-			printf("RETURN NULL\n");
-		if (node)
+		if (ft_strlen(cmd_node->command[i]))
 		{
-			printf("DEL_VAL: %s\n", node->str);
-			if (!shell->env_node->past && !shell->env_node->next)
-			{
-				printf("ONE ELEM\n");
-				free(shell->env_node->key);
-				free(shell->env_node->value);
-				free(shell->env_node->str);
-				free(shell->env_node);
-				shell->env_node = NULL;
-			}
+			del_node = get_node_by_content(shell->env_node,
+					cmd_node->command[i], 0);
+			if (del_node && !cmd_node->next && !cmd_node->prev)
+				delete_variable(shell, del_node);
 			else
 			{
-				if (!node->past)
-				{
-					if (node->next)
-					{
-						tmp = shell->env_node;
-						shell->env_node = shell->env_node->next;
-						shell->env_node->past->next = NULL;
-						shell->env_node->past = NULL;
-						free_node_content(tmp);
-					}
-				}
-				else if (!node->next)
-				{
-					printf("DEL LAST\n");
-					node->past->next = NULL;
-					free_node_content(node);
-				}
-				else
-				{
-					printf("DEL MIDDLE\n");
-					node->past->next = node->next;
-					node->next->past = node->past;
-					free_node_content(node);
-				}
+				del_node = get_node_by_content(shell->env_node,
+						cmd_node->command[i], 1);
+				if (del_node && ((cmd_node->prev && i == 1) || !cmd_node->prev))
+					exception("unset", del_node->value, UNSET_ERR);
 			}
 		}
-		if (shell->env_node && shell->env_node->str)
-			printf("=====FIRST VAL NOW: %s\n", shell->env_node->str);
-		else
-			printf("IS EMPTY\n");
 	}
 }

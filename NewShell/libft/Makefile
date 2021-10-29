@@ -21,13 +21,14 @@ B_WALL			=	$(WALL)$(NORM)
 
 SRCS_NAME			=	ft_calloc.c			\
 						ft_itoa.c			\
+						ft_split.c			\
+						ft_strchr.c			\
 						ft_strdup.c			\
 						ft_strjoin.c		\
 						ft_strlen.c			\
 						ft_strncmp.c		\
 						ft_strncmp_old.c	\
 						ft_substr.c			\
-						ft_split.c			\
 
 OBJS_NAME			=	$(SRCS_NAME:.c=.o)
 
