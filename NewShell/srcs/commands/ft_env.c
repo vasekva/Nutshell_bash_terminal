@@ -30,7 +30,8 @@ void	ft_env(t_data *shell)
 	env_node = shell->env_node;
 	while (env_node)
 	{
-		printf("%s\n", env_node->str);
+		if (ft_strchr(env_node->str, '='))
+			printf("%s\n", env_node->str);
 		env_node = env_node->next;
 	}
 }

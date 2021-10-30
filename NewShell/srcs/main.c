@@ -82,6 +82,8 @@ int	main(int argc, char **argv, char **envp)
 // не уверен, безопасно ли это в плане утечек при удалении, либо замены
 // узла, из которого взят указатель
 
+//TODO: -Wall -Wextra -Werror -g ??????
+
 /*
  * unset TERM_SESSION_ID SSH_AUTH_SOCK LC_TERMINAL_VERSION Apple_PubSub_Socket_Render _ HOMEBREW_TEMP HOMEBREW_CACHE LSCOLORS COLORFGBG ITERM_PROFILE XPC_FLAGS LANG PWD SECURITYSESSIONID TERM_PROGRAM_VERSION TERM_PROGRAM LC_TERMINAL COLORTERM COMMAND_MODE __CF_USER_TEXT_ENCODING ITERM_SESSION_ID LESS PAGER ZSH USER TERM PATH HOME TMPDIR XPC_SERVICE_NAME LOGNAME SHLVL OLDPWD
  */
