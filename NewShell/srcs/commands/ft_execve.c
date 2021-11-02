@@ -101,7 +101,7 @@ static void	execute(t_data *shell, t_cmd *node, char *cmd_path, char **argv)
 		exception(node->command[0], NULL, NO_FILE_OR_DIR);
 		return ;
 	}
-    set_signal_handler(CHILD);
+	set_signal_handler(CHILD); // TODO: ПОСМОТРЕТЬ СЮДА
     status = fork();
     if (status == 0)
 	{
@@ -114,7 +114,7 @@ static void	execute(t_data *shell, t_cmd *node, char *cmd_path, char **argv)
         exit(1);
     }
     status = wait(&status);
-    set_signal_handler(PARENT);
+    set_signal_handler(PARENT); // TODO: ПОСМОТРЕТЬ СЮДА
 }
 
 void	ft_execve(t_data *shell, t_cmd *node)

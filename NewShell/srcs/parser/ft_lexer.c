@@ -14,41 +14,6 @@
  * @return 	returns formatted string
  * @error	calls exception func in case of malloc error
  */
-//static void	replace_env_variable(t_env_list *env_node, char **line, int *index, int num_arg)
-//{
-//	int		i_start;
-//	char	*key;
-//	char	*value;
-//	char	*tmp;
-//
-//	if (!(*line)[*index + 1] || (*line)[*index + 1] == ' ')
-//		return ;
-//	tmp = *line;
-//	i_start = *index;
-//	if ((*line)[*index + 1] == '?' || ((*line)[*index + 1] >= 48 && (*line)[*index + 1] <= 57))
-//	{
-//		if (!num_arg)
-//			return ;
-//		*line = ft_replace_dollar(*line, i_start, *index + 2, "CODE OF LAST ERROR HERE");
-//	}
-//	else
-//	{
-//		while ((*line)[++(*index)])
-//			if ((*line)[*index] == ' ' || (*line)[*index] == '"' || (*line)[*index] == '\'' || (*line)[*index] == '$')
-//				break ;
-//		key = ft_substr(*line, i_start + 1, *index - i_start - 1);
-//		if (!key)
-//			exception(NULL, NULL, MALLOC_ERROR);
-//		value = get_value_by_key(env_node, key);
-//		if (value)
-//			*line = ft_replace_dollar(*line, i_start, *index, value);
-//		else
-//			*line = ft_replace_dollar(*line, i_start, *index, "");
-//		free(key);
-//	}
-//	*index = i_start - 1;
-//	free(tmp);
-//}
 static void	replace_env_variable(t_env_list *env_node, char **line, int *index, int num_arg)
 {
 	int		i_start;
@@ -60,16 +25,20 @@ static void	replace_env_variable(t_env_list *env_node, char **line, int *index, 
 		return ;
 	tmp = *line;
 	i_start = *index;
-	if ((*line)[*index + 1] == '?' || ((*line)[*index + 1] >= 48 && (*line)[*index + 1] <= 57))
+	if ((*line)[*index + 1] == '?')
 	{
 		if (!num_arg)
 			return ;
-		*line = ft_replace_dollar(*line, i_start, *index + 2, "CODE OF LAST ERROR HERE");
+		value = ft_itoa(error_code);
+		if (!value)
+			exception(NULL, NULL, MALLOC_ERROR);
+		*line = ft_replace_dollar(*line, i_start, *index + 2, value);
+		free(value);
 	}
 	else
 	{
 		while ((*line)[++(*index)])
-			if ((*line)[*index] == ' ' || (*line)[*index] == '"' || (*line)[*index] == '\'' || (*line)[*index] == '$')
+			if ((*line)[*index] == ' ' || (*line)[*index] == '"' || (*line)[*index] == '\'' || (*line)[*index] == '$' || (*line)[*index] == '?')
 				break ;
 		key = ft_substr(*line, i_start + 1, *index - i_start - 1);
 		if (!key)

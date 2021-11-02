@@ -24,10 +24,11 @@ void	ft_start_shell(t_data *shell)
 	t_cmd	*ptr;
 
 	ptr = shell->list_cmds;
-	while (ptr) {
-		deff_curr_cmd(shell, ptr);
+	while (ptr)
+	{
 		if (ptr->is_redirect)
 			open_filenames_fd(ptr);
+		deff_curr_cmd(shell, ptr);
 		ptr = ptr->next;
 	}
 }

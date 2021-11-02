@@ -30,17 +30,19 @@
 # include <errno.h>
 
 # include "exceptions.h"
-//# include "my_readline.h"
+# include "my_readline.h"
 # include "libft.h"
 
 /*
  *:::::::::::::::::::::::::::::::::::::::::::	DEFINES
  */
-# define	BUFFER_SIZE 32
-# define	TRUE 1
-# define	FALSE 0
-# define	PARENT 1
-# define	CHILD 0
+# define	BUFFER_SIZE	32
+# define	PARENT	1
+# define	CHILD	0
+# define	REDIRECT_INPUT			1
+# define	REDIRECT_INPUT_HEREDOC	2
+# define	REDIRECT_OUTPUT			3
+# define	REDIRECT_OUTPUT_DOUBLE	4
 
 int	error_code;
 
@@ -80,6 +82,7 @@ struct s_env_list
 struct s_redir_list
 {
 	char		    *filename;
+	int				type;
 	t_redir_list	*next;
 };
 
@@ -157,7 +160,7 @@ char	**split_arguments(const char *command, char c);
  *................... work with redirects
  */
 void	refactor_redirects(char **line, t_redir_list **r_list);
-char    *cut_filenames(char **str, int *i, int len);
+char	*cut_filenames(char **str, int *i);
 
 /*
  * ............... work with $ and quotes

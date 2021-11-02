@@ -4,15 +4,44 @@
 
 #include "minishell.h"
 
+static int	define_redirect_type(char *filename)
+{
+	if (filename[0] == '>')
+	{
+		if (filename[0] == filename[1])
+			return (REDIRECT_OUTPUT_DOUBLE);
+		else
+			return (REDIRECT_OUTPUT);
+	}
+	else if (filename[0] == '<')
+	{
+		if (filename[0] == filename[1])
+			return (REDIRECT_INPUT_HEREDOC);
+		else
+			return (REDIRECT_INPUT);
+	}
+}
+
 static t_redir_list	*create_elem(char *filename)
 {
 	t_redir_list	*new;
+	int				i;
 
 	new = NULL;
 	new = malloc(sizeof(t_redir_list));
 	if (!new)
-		return (NULL);
-	new->filename = filename;
+		exception(NULL, NULL, MALLOC_ERROR);
+	new->type = define_redirect_type(filename);
+	i = 0;
+	while (filename[i] == '>' || filename[i] == '<' || filename[i] == ' ')
+		i++;
+	if (filename[i] == '\'' || filename[i] == '\"')
+		i++;
+	new->filename = ft_substr(filename, i, ft_strlen(filename) - i - \
+	(filename[i - 1] == '\'' || filename[i - 1] == '\"'));
+	if (!new->filename)
+		exception(NULL, NULL, MALLOC_ERROR);
+	free(filename);
 	new->next = NULL;
 	return (new);
 }
@@ -32,18 +61,20 @@ static void	add_back(t_redir_list **head, t_redir_list *new)
 	}
 }
 
-char	*cut_filenames(char **str, int *i, int len)
+char	*cut_filenames(char **str, int *i)
 {
 	char	*s;
 	char	*tmp;
 	char	*filename;
+	int		len;
 
 	s = *str;
+	len = 1;
 	len += (s[*i + len] && s[*i + len] == s[*i]);
 	while (s[*i + len] && s[*i + len] == ' ')
 		len++;
 	while (s[*i + len] && s[*i + len] != ' ' && s[*i + len] != '>' && \
-		s[*i + len] != '<' && s[*i + len] != '"' && s[*i + len] != '\'')
+	s[*i + len] != '<')
 		len++;
 	filename = ft_substr(s, *i, len);
 	if (!filename)
@@ -55,6 +86,10 @@ char	*cut_filenames(char **str, int *i, int len)
 	return (filename);
 }
 
+/**
+ * функция перемещает редиректы в отдельный лист редиректов
+ * и удаляет их из команды
+ */
 void	refactor_redirects(char **line, t_redir_list **r_list)
 {
 	char			*str;
@@ -73,7 +108,7 @@ void	refactor_redirects(char **line, t_redir_list **r_list)
 			switcher(str[i], &d_q_flag, &s_q_flag);
 		if ((str[i] == '>' || str[i] == '<') && !d_q_flag && !s_q_flag)
 		{
-			ptr = create_elem(cut_filenames(&str, &i, 1));
+			ptr = create_elem(cut_filenames(&str, &i));
 			add_back(r_list, ptr);
 		}
 	}
