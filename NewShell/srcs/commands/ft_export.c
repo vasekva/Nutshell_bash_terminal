@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static void	export_without_params(t_data *shell)
+static void	print_export_list(t_data *shell)
 {
 	t_env_list	*env_node;
 
@@ -37,12 +37,49 @@ static void	export_without_params(t_data *shell)
 }
 
 /**
+ * Вспомогательная функция для change_export_list(), которая выполняет
+ * основную логику замены, либо добавления узла в список.
+ *
+ * Сначала проверяется, если ли значение с таким ключом в списке, если нет, то
+ * в список добавляется новый узел, иначе при наличии символа '=' в строке
+ * импорта меняет значение в найденом узле.
+ */
+static void	define_how_to_add(t_data *shell, char *key, char *value, char *str)
+{
+	t_env_list	*check_ptr;
+	char		*tmp;
+
+	check_ptr = get_node_by_content(shell->env_node, key, 0);
+	if (!check_ptr)
+		push_back(&shell->env_node, key, value, str);
+	else
+	{
+		if (ft_strchr(str, '='))
+		{
+			tmp = check_ptr->value;
+			check_ptr->value = ft_strdup(value);
+			free(tmp);
+			tmp = check_ptr->str;
+			check_ptr->str = ft_strjoin(check_ptr->key, ft_strjoin("=",
+						check_ptr->value, -1), 1);
+			free(tmp);
+		}
+		free(key);
+		free(value);
+		free(str);
+	}
+}
+
+/**
  * Функция добавляет в список переменных окружения новый узел,
  * заполняя его значениями key, value и str.
  * Если в полученной строке есть символ '=', то value в узле
  * будет соответствовать оставшемуся значению строки после этого знака.
  * После этого '=' заменяется на '\0', тем самым ограничивая
  * получение значения key до этого символа.
+ *
+ * Если переменная с таким key уже есть в списке, то меняется
+ * только значение.
  *
  * @param shell: корневая структура, откуда берется
  * список строк, который задал пользователь для импорта.
@@ -58,7 +95,7 @@ static void	export_without_params(t_data *shell)
  * полученной строки из списка для импорта.
  *
  */
-static void	add_variables(t_data *shell, char *key, char *value, char *str)
+static void	change_export_list(t_data *shell, char *key, char *value, char *str)
 {
 	char	*var;
 	char	*ptr;
@@ -82,7 +119,7 @@ static void	add_variables(t_data *shell, char *key, char *value, char *str)
 		else
 			value = ft_strdup("");
 		key = ft_strdup(var);
-		push_back(&shell->env_node, key, value, str);
+		define_how_to_add(shell, key, value, str);
 	}
 }
 
@@ -100,8 +137,8 @@ void	ft_export(t_data *shell)
 			&& !ft_strlen(shell->list_cmds->command[1])
 			&& !shell->list_cmds->command[2]))
 	{
-		export_without_params(shell);
+		print_export_list(shell);
 		return ;
 	}
-	add_variables(shell, key, value, str);
+	change_export_list(shell, key, value, str);
 }
