@@ -33,7 +33,11 @@ static char	*define_of_dir(t_data *shell)
 	if (!shell->env_node)
 		return (NULL); //TODO оригинальный bash выводит "No such file or directory"
 	cmd_path = get_value_by_key(shell->env_node, "PATH");
+	if (!cmd_path)
+		return (NULL);
 	paths = ft_split(cmd_path, ':');
+	if (!paths)
+		return (NULL);
 	while (paths[++i])
 	{
 		cmd_path = check_directory(paths[i], shell->list_cmds->command[0]);
@@ -68,7 +72,7 @@ static char	**get_envp_copy(t_data *shell)
 	if (!shell->env_node)
 		return (NULL);
 	length = list_length(shell->env_node);
-	env_copy = (char **)malloc(sizeof(char*) * length + 1);
+	env_copy = (char **)malloc(sizeof(char *) * length + 1);
 	if (!env_copy)
 		exception(NULL, NULL, MALLOC_ERROR);
 	env_copy[length] = NULL;
@@ -84,13 +88,20 @@ static char	**get_envp_copy(t_data *shell)
 	return (env_copy);
 }
 
-static void	execute(t_data *shell, char *cmd_path, char **argv)
+static void	execute(t_data *shell, t_cmd *node, char *cmd_path, char **argv)
 {
 	pid_t	status;
 	char	**env_copy;
+	t_env_list *tmp_node;
 
-	status = fork();
 	env_copy = NULL;
+	tmp_node = get_node_by_content(shell->env_node, "PATH", 0);
+	if (!tmp_node)
+	{
+		exception(node->command[0], NULL, NO_FILE_OR_DIR);
+		return ;
+	}
+	status = fork();
 	if (status == 0)
 	{
 		env_copy = get_envp_copy(shell);
@@ -112,8 +123,8 @@ void	ft_execve(t_data *shell, t_cmd *node)
 	argv = node->command;
 	cmd_path = define_of_dir(shell);
 	if (cmd_path)
-		execute(shell, cmd_path, argv);
+		execute(shell, node, cmd_path, argv);
 	else
-		execute(shell, argv[0], argv);
+		execute(shell, node, argv[0], argv);
 	free(cmd_path);
 }
