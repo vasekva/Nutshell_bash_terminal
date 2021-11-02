@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static void delete_variable_from_list(t_data *shell, t_env_list *del_node)
+static void	delete_variable_from_list(t_data *shell, t_env_list *del_node)
 {
 	t_env_list	*tmp;
 
@@ -83,7 +83,7 @@ void	ft_unset(t_data *shell, t_cmd *cmd_node)
 				del_node = get_node_by_content(shell->env_node,
 						cmd_node->command[i], 1);
 				if (del_node && ((cmd_node->prev && i == 1) || !cmd_node->prev))
-					exception("unset", del_node->value, UNSET_ERR);
+					exception("unset", del_node->value, INVALID_IDENT);
 			}
 		}
 	}

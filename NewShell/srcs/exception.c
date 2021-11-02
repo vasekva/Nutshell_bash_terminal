@@ -22,11 +22,11 @@ int	syntax_error(char *variable)
 	return (0);
 }
 
-int	unset_err(char *command, char *variable)
+int	identifier_err(char *command, char *variable)
 {
 	char	c;
 
-	c = 39;
+	c = '\'';
 	write(2, command, ft_strlen(command));
 	write(2, ": ", 2);
 	if (variable)
@@ -54,9 +54,10 @@ int	command_error(char *command, char *variable)
 
 	str_err_code = NULL;
 
-	if (!ft_strncmp("unset", command, ft_strlen(command)))
+	if (!ft_strncmp("unset", command, ft_strlen(command))
+		|| !ft_strncmp("export", command, ft_strlen(command)))
 	{
-		unset_err(command, variable);
+		identifier_err(command, variable);
 	}
 	else
 	{

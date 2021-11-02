@@ -36,6 +36,25 @@ static void	print_export_list(t_data *shell)
 	}
 }
 
+static int	key_check(char *variable)
+{
+	int		i;
+	char	c;
+
+	i = -1;
+	c = 0;
+	while (variable[++i] && variable[i] != '=')
+	{
+		c = variable[i];
+		if (!ft_isdigit(c) && !ft_isalpha(c) && c != '_')
+		{
+			exception("export", variable, INVALID_IDENT);
+			return (-1);
+		}
+	}
+	return (1);
+}
+
 /**
  * Вспомогательная функция для change_export_list(), которая выполняет
  * основную логику замены, либо добавления узла в список.
@@ -104,11 +123,12 @@ static void	change_export_list(t_data *shell, char *key, char *value, char *str)
 	i = 0;
 	ptr = NULL;
 	var = NULL;
-	while (shell->list_cmds->command[++i])
+	while (shell->list_cmds->command[++i]
+		&& key_check(shell->list_cmds->command[i]) != -1)
 	{
 		var = shell->list_cmds->command[i];
 		ptr = ft_strchr(shell->list_cmds->command[i], '=');
-		str = ft_strdup(var);
+		str = ft_strdup(shell->list_cmds->command[i]);
 		if (ptr)
 		{
 			ptr[0] = '\0';

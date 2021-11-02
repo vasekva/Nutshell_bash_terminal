@@ -20,6 +20,8 @@ F_WALL			=	$(WALL)$(BOLD)
 B_WALL			=	$(WALL)$(NORM)
 
 SRCS_NAME			=	ft_calloc.c			\
+						ft_isalpha.c		\
+						ft_isdigit.c		\
 						ft_itoa.c			\
 						ft_split.c			\
 						ft_strchr.c			\

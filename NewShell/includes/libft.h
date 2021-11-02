@@ -17,6 +17,8 @@
 # include <stdlib.h>
 
 void	*ft_calloc(size_t count, size_t size);
+int		ft_isdigit(int c);
+int		ft_isalpha(int c);
 char	*ft_itoa(int n);
 char	**ft_split(char const *s, char c);
 char	*ft_strchr(const char *s, int c);

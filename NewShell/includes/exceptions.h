@@ -20,7 +20,7 @@
 # define CMD_NOT_FOUND	"command not found"
 # define SYNTAX_ERROR	"syntax error near unexpected token"
 # define EMPTYPOINTER	"Function has taken an empty pointer!"
-# define UNSET_ERR		"not a valid identifier"
+# define INVALID_IDENT	"not a valid identifier"
 # define EMPTYENV		"not set"
 # define CD_ACCESS		"Permission denied"
 # define CD_NOTDIR		"not a directory"
