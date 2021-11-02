@@ -94,7 +94,7 @@ void	exception(char *command, char *variable, char *message)
 {
 	write(2, "minishell: ", 12);
 //	printf("ERR CODE: %d\n", ERROR_CODE);
-	if (command == SYNTAX_ERROR)
+	if (!ft_strncmp(SYNTAX_ERROR, command, ft_strlen(command)))
 		syntax_error(variable);
 	else
 	{

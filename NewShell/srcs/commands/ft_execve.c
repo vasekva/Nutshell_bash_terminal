@@ -101,18 +101,20 @@ static void	execute(t_data *shell, t_cmd *node, char *cmd_path, char **argv)
 		exception(node->command[0], NULL, NO_FILE_OR_DIR);
 		return ;
 	}
-	status = fork();
-	if (status == 0)
+    set_signal_handler(CHILD);
+    status = fork();
+    if (status == 0)
 	{
-		env_copy = get_envp_copy(shell);
+        env_copy = get_envp_copy(shell);
 		if (!env_copy)
 			return ; // TODO: No such file or directory????
 		execve(cmd_path, argv, env_copy);
 		arr_free(env_copy);
 		exception(cmd_path, NULL, CMD_NOT_FOUND);
-		exit(1);
-	}
-	status = wait(&status);
+        exit(1);
+    }
+    status = wait(&status);
+    set_signal_handler(PARENT);
 }
 
 void	ft_execve(t_data *shell, t_cmd *node)

@@ -12,8 +12,6 @@
 
 #include "minishell.h"
 
-int	g_status = 0;
-
 void	ft_free_data(t_data *shell, char *line)
 {
 	t_cmd			*ptr;
@@ -56,13 +54,12 @@ int	main(int argc, char **argv, char **envp)
 
 	(void)argc;
 	(void)argv;
-	signal(SIGQUIT, SIG_IGN);
-	signal(SIGINT, signal_handler);
-//	rl_catch_signals = 0;
-	init_logs(&shell, envp);
-	while (1)
+    rl_outstream = stderr;
+    init_logs(&shell, envp);
+    set_signal_handler(PARENT);
+    while (1)
 	{
-		line = readline(shell.title);
+        line = readline(shell.title);
 		if (!line)
 			line = ft_strdup("exit");
 		if (line[0])

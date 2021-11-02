@@ -30,7 +30,7 @@
 # include <errno.h>
 
 # include "exceptions.h"
-# include "my_readline.h"
+//# include "my_readline.h"
 # include "libft.h"
 
 /*
@@ -39,6 +39,8 @@
 # define	BUFFER_SIZE 32
 # define	TRUE 1
 # define	FALSE 0
+# define	PARENT 1
+# define	CHILD 0
 
 int	error_code;
 
@@ -133,7 +135,7 @@ void	init_logs(t_data *shell, char *envp[]);
 /*
  * SIGNALS.C
  */
-void	signal_handler(int signal);
+void    set_signal_handler(int process_pid);
 
 /*
  * REDIRECTS.C
