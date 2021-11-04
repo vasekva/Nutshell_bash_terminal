@@ -175,5 +175,9 @@ void		switcher(char symbol, int *d_q_flag, int *s_q_flag);
 char		*ft_replace_dollar(const char *line, int i_left, int i_right, \
 																char *new);
 char		*ft_divide_by_quotes(const char *line, int i_left, int i_right);
+void		replace_line_by_key(t_env_list *env_node, char **line, \
+													int *index, int i_start);
+void		replace_line_by_nextchar(char **line, int index, int i_start, \
+																char nxt_c);
 
 #endif

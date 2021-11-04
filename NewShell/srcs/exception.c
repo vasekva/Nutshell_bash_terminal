@@ -18,7 +18,6 @@ int	syntax_error(char *variable)
 	write(2, " `", 2);
 	write(2, variable, ft_strlen(variable));
 	write(2, "\'", 1);
-
 	return (0);
 }
 
@@ -85,22 +84,23 @@ int	command_error(char *command, char *variable)
 
 void	deff_err_code(char *message)
 {
-	if (message == CMD_NOT_FOUND)
+	if (!ft_strncmp(CMD_NOT_FOUND, message, ft_strlen(message)))
 		g_err_code = 127;
-
+//	if (!ft_strncmp(SYNTAX_ERROR, message, ft_strlen(message)))
+//		g_err_code = 2;
 }
 
 void	exception(char *command, char *variable, char *message)
 {
 	write(2, "minishell: ", 12);
 //	printf("ERR CODE: %d\n", ERROR_CODE);
-	if (!ft_strncmp(SYNTAX_ERROR, command, ft_strlen(command)))
+	if (!ft_strncmp(SYNTAX_ERROR, message, ft_strlen(message)))
 		syntax_error(variable);
 	else
 	{
 		command_error(command, variable);
+		write(2, message, ft_strlen(message));
 	}
 	deff_err_code(message);
-	write(2, message, ft_strlen(message));
 	write(2, "\n", 1);
 }

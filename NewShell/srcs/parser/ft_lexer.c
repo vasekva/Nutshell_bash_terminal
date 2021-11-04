@@ -12,28 +12,6 @@
 
 #include "minishell.h"
 
-static void	replace_line_by_key(t_env_list *env_node, char **line, \
-											int *index, int i_start)
-{
-	char	*key;
-	char	*value;
-
-	while ((*line)[++(*index)])
-		if ((*line)[*index] == ' ' || (*line)[*index] == '"' || \
-		(*line)[*index] == '\'' || (*line)[*index] == '$' || \
-		(*line)[*index] == '?')
-			break ;
-	key = ft_substr(*line, i_start + 1, *index - i_start - 1);
-	if (!key)
-		exception(NULL, NULL, MALLOC_ERROR);
-	value = get_value_by_key(env_node, key);
-	if (value)
-		*line = ft_replace_dollar(*line, i_start, *index, value);
-	else
-		*line = ft_replace_dollar(*line, i_start, *index, "");
-	free(key);
-}
-
 /**
  * function replaces environment variable with its value in the line
  *
@@ -48,22 +26,23 @@ static void	replace_env_variable(t_env_list *env_node, char **line, \
 												int *index, int num_arg)
 {
 	int		i_start;
-	char	*value;
 	char	*tmp;
+	char	nxt_c;
 
-	if (!(*line)[*index + 1] || (*line)[*index + 1] == ' ')
+	if (!(*line)[*index + 1])
+		return ;
+	else
+		nxt_c = (*line)[*index + 1];
+	if (!ft_isdigit(nxt_c) && !ft_isalpha(nxt_c) && nxt_c != '_' && \
+	nxt_c != '?')
 		return ;
 	tmp = *line;
 	i_start = *index;
-	if ((*line)[*index + 1] == '?')
+	if (nxt_c == '?' || ft_isdigit(nxt_c))
 	{
-		if (!num_arg)
+		if (nxt_c == '?' && !num_arg)
 			return ;
-		value = ft_itoa(g_err_code);
-		if (!value)
-			exception(NULL, NULL, MALLOC_ERROR);
-		*line = ft_replace_dollar(*line, i_start, *index + 2, value);
-		free(value);
+		replace_line_by_nextchar(line, *index, i_start, nxt_c);
 	}
 	else
 		replace_line_by_key(env_node, line, index, i_start);

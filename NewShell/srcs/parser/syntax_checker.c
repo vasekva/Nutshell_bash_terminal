@@ -19,13 +19,13 @@ static int	ft_check_redirect(const char *line, int index, char symbol)
 			break ;
 	if (!line[index])
 	{
-		exception(SYNTAX_ERROR, "newline", NULL);
+		exception(NULL, "newline", SYNTAX_ERROR);
 		return (1);
 	}
 	if ((line[index] == '<' && symbol == '>') || \
 	(line[index] == '>' && symbol == '<'))
 	{
-		exception(SYNTAX_ERROR, (char *)&(line[index]), NULL);
+		exception(NULL, (char *)&(line[index]), SYNTAX_ERROR);
 		return (1);
 	}
 	return (0);
@@ -41,7 +41,7 @@ static int	ft_check_pipe(const char *line, int index_forward)
 			break ;
 	if (!line[index_back])
 	{
-		exception(SYNTAX_ERROR, "|", NULL);
+		exception(NULL, "|", SYNTAX_ERROR);
 		return (1);
 	}
 	while (line[++(index_forward)])
@@ -49,7 +49,12 @@ static int	ft_check_pipe(const char *line, int index_forward)
 			break ;
 	if (!line[index_forward])
 	{
-		exception(SYNTAX_ERROR, "newline", NULL);
+		exception(NULL, "newline", SYNTAX_ERROR);
+		return (1);
+	}
+	if (line[index_forward] == '|')
+	{
+		exception(NULL, "|", SYNTAX_ERROR);
 		return (1);
 	}
 	return (0);
@@ -62,7 +67,7 @@ static int	ft_check_pair(const char *line, int *index, char symbol)
 			break ;
 	if (!line[*index])
 	{
-		exception(SYNTAX_ERROR, "unclosed quote", NULL);
+		exception(NULL, "unclosed quote", SYNTAX_ERROR);
 		return (1);
 	}
 	return (0);
@@ -87,7 +92,7 @@ int	syntax_check(const char *line)
 	{
 		if (line[index] == '"' || line[index] == '\'')
 			switcher(line[index], &d_q_flag, &s_q_flag);
-		if (line[index] == '|')
+		if (line[index] == '|' && !d_q_flag && !s_q_flag)
 			if (ft_check_pipe(line, index))
 				return (1);
 		if ((line[index] == '>' || line[index] == '<') && \

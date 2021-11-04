@@ -167,7 +167,7 @@ int	ft_cd(t_data *shell, t_cmd *node)
 	}
 	else if (!cd_cmd || !ft_strncmp("--", cd_cmd, len_of_cmd))
 	{
-		change_value(shell, "HOME", "PWD");
+		change_value(shell, "HOME", "PWD"); //TODO: doesn't work
 	}
 	else if (!ft_strncmp("-", cd_cmd, len_of_cmd))
 	{

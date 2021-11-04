@@ -66,3 +66,39 @@ char	*ft_divide_by_quotes(const char *line, int i_left, int i_right)
 		exception(NULL, NULL, MALLOC_ERROR);
 	return (result_line);
 }
+
+void	replace_line_by_key(t_env_list *env_node, char **line, \
+										int *index, int i_start)
+{
+	char	*key;
+	char	*value;
+
+	while ((*line)[++(*index)])
+		if (!ft_isdigit((*line)[*index]) && !ft_isalpha((*line)[*index]) && \
+		(*line)[*index] != '_')
+			break ;
+	key = ft_substr(*line, i_start + 1, *index - i_start - 1);
+	if (!key)
+		exception(NULL, NULL, MALLOC_ERROR);
+	value = get_value_by_key(env_node, key);
+	if (value)
+		*line = ft_replace_dollar(*line, i_start, *index, value);
+	else
+		*line = ft_replace_dollar(*line, i_start, *index, "");
+	free(key);
+}
+
+void	replace_line_by_nextchar(char **line, int index, int i_start, \
+															char nxt_c)
+{
+	char	*value;
+
+	if (nxt_c == '?')
+		value = ft_itoa(g_err_code);
+	else
+		value = ft_strdup("");
+	if (!value)
+		exception(NULL, NULL, MALLOC_ERROR);
+	*line = ft_replace_dollar(*line, i_start, index + 2, value);
+	free(value);
+}
