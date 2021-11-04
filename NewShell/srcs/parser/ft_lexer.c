@@ -1,8 +1,38 @@
-//
-// Created by Achiote Tory on 9/9/21.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_lexer.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: atory <atory@student.21-school.ru>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/11/04 19:41:43 by atory             #+#    #+#             */
+/*   Updated: 2021/11/04 20:21:19 by atory            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	replace_line_by_key(t_env_list *env_node, char **line, \
+											int *index, int i_start)
+{
+	char	*key;
+	char	*value;
+
+	while ((*line)[++(*index)])
+		if ((*line)[*index] == ' ' || (*line)[*index] == '"' || \
+		(*line)[*index] == '\'' || (*line)[*index] == '$' || \
+		(*line)[*index] == '?')
+			break ;
+	key = ft_substr(*line, i_start + 1, *index - i_start - 1);
+	if (!key)
+		exception(NULL, NULL, MALLOC_ERROR);
+	value = get_value_by_key(env_node, key);
+	if (value)
+		*line = ft_replace_dollar(*line, i_start, *index, value);
+	else
+		*line = ft_replace_dollar(*line, i_start, *index, "");
+	free(key);
+}
 
 /**
  * function replaces environment variable with its value in the line
@@ -14,10 +44,10 @@
  * @return 	returns formatted string
  * @error	calls exception func in case of malloc error
  */
-static void	replace_env_variable(t_env_list *env_node, char **line, int *index, int num_arg)
+static void	replace_env_variable(t_env_list *env_node, char **line, \
+												int *index, int num_arg)
 {
 	int		i_start;
-	char	*key;
 	char	*value;
 	char	*tmp;
 
@@ -29,27 +59,14 @@ static void	replace_env_variable(t_env_list *env_node, char **line, int *index, 
 	{
 		if (!num_arg)
 			return ;
-		value = ft_itoa(error_code);
+		value = ft_itoa(g_err_code);
 		if (!value)
 			exception(NULL, NULL, MALLOC_ERROR);
 		*line = ft_replace_dollar(*line, i_start, *index + 2, value);
 		free(value);
 	}
 	else
-	{
-		while ((*line)[++(*index)])
-			if ((*line)[*index] == ' ' || (*line)[*index] == '"' || (*line)[*index] == '\'' || (*line)[*index] == '$' || (*line)[*index] == '?')
-				break ;
-		key = ft_substr(*line, i_start + 1, *index - i_start - 1);
-		if (!key)
-			exception(NULL, NULL, MALLOC_ERROR);
-		value = get_value_by_key(env_node, key);
-		if (value)
-			*line = ft_replace_dollar(*line, i_start, *index, value);
-		else
-			*line = ft_replace_dollar(*line, i_start, *index, "");
-		free(key);
-	}
+		replace_line_by_key(env_node, line, index, i_start);
 	*index = i_start - 1;
 	free(tmp);
 }
@@ -67,7 +84,8 @@ static void	replace_env_variable(t_env_list *env_node, char **line, int *index, 
  * 			or 0 if quote is unclosed
  * @error	calls exception function if malloc fails
  */
-static int	remove_double_quotes(t_env_list *env_node, char **line, int *index, int num_arg)
+static int	remove_double_quotes(t_env_list *env_node, char **line, \
+												int *index, int num_arg)
 {
 	int		i_start;
 	char	*tmp;

@@ -64,7 +64,7 @@ void	init_logs(t_data *shell, char **envp)
 	shell->past_dir = ft_strdup(shell->curr_dir);
 	if (!shell->title)
 		exception(NULL, NULL, MALLOC_ERROR);
-    shell->env_node = NULL;
+	shell->env_node = NULL;
 	copy_env_to_list(shell, envp);
-    shell->list_cmds = NULL;
+	shell->list_cmds = NULL;
 }

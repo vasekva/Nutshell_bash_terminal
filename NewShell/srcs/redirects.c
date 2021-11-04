@@ -1,6 +1,14 @@
-//
-// Created by Achiote Tory on 10/25/21.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redirects.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: atory <atory@student.21-school.ru>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/11/04 20:22:34 by atory             #+#    #+#             */
+/*   Updated: 2021/11/04 20:23:26 by atory            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "fcntl.h"
 #include "minishell.h"
@@ -10,11 +18,10 @@ static void	heredoc_redirect(t_cmd *node, t_redir_list *rdr)
 	printf("{heredoc}\n");
 }
 
-static void classic_redirect(t_cmd *node, t_redir_list *rdr)
+static void	classic_redirect(t_cmd *node, t_redir_list *rdr)
 {
 	int	fd;
 
-	printf("%s\n", rdr->filename);
 	if (rdr->type == REDIRECT_INPUT)
 	{
 		fd = open(rdr->filename, O_CREAT | O_RDONLY, 0664);
@@ -38,7 +45,7 @@ static void classic_redirect(t_cmd *node, t_redir_list *rdr)
 	}
 }
 
-void	open_filenames_fd(t_cmd *node) // не обработаны кейсы 2>&1
+void	open_filenames_fd(t_cmd *node)
 {
 	t_redir_list	*ptr;
 

@@ -12,11 +12,25 @@
 
 #include "minishell.h"
 
+static void	ft_free_r_list(t_redir_list	*r_list)
+{
+	t_redir_list	*tmp_redir;
+
+	while (r_list)
+	{
+		free(r_list->filename);
+		tmp_redir = r_list;
+		r_list = r_list->next;
+		tmp_redir->next = NULL;
+		free(tmp_redir);
+		tmp_redir = NULL;
+	}
+}
+
 void	ft_free_data(t_data *shell, char *line)
 {
 	t_cmd			*ptr;
 	t_cmd			*tmp;
-	t_redir_list	*tmp_redir;
 
 	free(line);
 	line = NULL;
@@ -25,18 +39,7 @@ void	ft_free_data(t_data *shell, char *line)
 	{
 		arr_free(ptr->command);
 		ptr->num_args = 0;
-		ptr->fd_input = 0;
-		ptr->fd_output = 1;
-		ptr->is_redirect = 0;
-		while (ptr->r_list)
-		{
-			free(ptr->r_list->filename);
-			tmp_redir = ptr->r_list;
-			ptr->r_list = ptr->r_list->next;
-			tmp_redir->next = NULL;
-			free(tmp_redir);
-			tmp_redir = NULL;
-		}
+		ft_free_r_list(shell->list_cmds->r_list);
 		tmp = ptr;
 		ptr = ptr->next;
 		tmp->next = NULL;
@@ -54,14 +57,18 @@ int	main(int argc, char **argv, char **envp)
 
 	(void)argc;
 	(void)argv;
-    rl_outstream = stderr;
-    init_logs(&shell, envp);
-    set_signal_handler(PARENT);
-    while (1)
+	rl_outstream = stderr;
+	init_logs(&shell, envp);
+	set_signal_handler(PARENT);
+	while (1)
 	{
-        line = readline(shell.title);
+		line = readline(shell.title);
 		if (!line)
+		{
 			line = ft_strdup("exit");
+			if (!line)
+				exception(NULL, NULL, MALLOC_ERROR);
+		}
 		if (line[0])
 			add_history(line);
 		if (!syntax_check(line))
@@ -69,9 +76,8 @@ int	main(int argc, char **argv, char **envp)
 			preparser(&shell, line);
 			ft_start_shell(&shell);
 		}
-        ft_free_data(&shell, line);
+		ft_free_data(&shell, line);
 	}
-	return (0);
 }
 
 //TODO: env_get_value_by_key() теперь возвращает указатель на строку, (node->value)

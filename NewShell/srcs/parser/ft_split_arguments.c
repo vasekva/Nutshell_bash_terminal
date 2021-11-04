@@ -1,6 +1,14 @@
-//
-// Created by Achiote Tory on 10/12/21.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_split_arguments.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: atory <atory@student.21-school.ru>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/11/04 20:21:45 by atory             #+#    #+#             */
+/*   Updated: 2021/11/04 20:21:48 by atory            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "minishell.h"
 
@@ -62,7 +70,7 @@ static void	ft_free_words(char **matrix, size_t num)
 
 static	void	ft_do_words(const char *s, char c, int i, char **matrix)
 {
-	size_t	array_index;
+	int		array_index;
 	int		len;
 	int		s_q_flag;
 	int		d_q_flag;
@@ -78,13 +86,12 @@ static	void	ft_do_words(const char *s, char c, int i, char **matrix)
 		while (s[i + len] != '\0' && (s[i + len] != c || \
 		(s[i + len] == c && (s_q_flag || d_q_flag))))
 			switcher(s[i + len++], &d_q_flag, &s_q_flag);
-		matrix[array_index] = ft_substr(s, i, len);
-		if (!matrix[array_index])
+		matrix[array_index++] = ft_substr(s, i, len);
+		if (!matrix[array_index - 1])
 		{
-			ft_free_words(matrix, array_index);
+			ft_free_words(matrix, array_index - 1);
 			return ;
 		}
-		array_index++;
 		i += len;
 	}
 	matrix[array_index] = NULL;

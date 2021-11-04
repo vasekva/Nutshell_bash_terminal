@@ -65,7 +65,7 @@ int	command_error(char *command, char *variable)
 		{
 			if (!ft_strncmp("$?", command, ft_strlen(command)))
 			{
-				str_err_code = ft_itoa(error_code);
+				str_err_code = ft_itoa(g_err_code);
 				write(2, str_err_code, ft_strlen(str_err_code));
 				free(str_err_code);
 			}
@@ -86,7 +86,7 @@ int	command_error(char *command, char *variable)
 void	deff_err_code(char *message)
 {
 	if (message == CMD_NOT_FOUND)
-		error_code = 127;
+		g_err_code = 127;
 
 }
 
