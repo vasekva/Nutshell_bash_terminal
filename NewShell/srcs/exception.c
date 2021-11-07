@@ -84,10 +84,17 @@ int	command_error(char *command, char *variable)
 
 void	deff_err_code(char *message)
 {
+	if (!ft_strncmp(EXIT_TOO_MANY_ARGS, message, ft_strlen(message)) || \
+	!ft_strncmp(NO_FILE_OR_DIR, message, ft_strlen(message)) || \
+	!ft_strncmp(CD_NOTDIR, message, ft_strlen(message)))
+		g_err_code = 1;
 	if (!ft_strncmp(CMD_NOT_FOUND, message, ft_strlen(message)))
 		g_err_code = 127;
-//	if (!ft_strncmp(SYNTAX_ERROR, message, ft_strlen(message)))
-//		g_err_code = 2;
+	if (!ft_strncmp(SYNTAX_ERROR, message, ft_strlen(message)))
+		g_err_code = 2;
+	if (!ft_strncmp(EXIT_NON_NUMERIC, message, ft_strlen(message)))
+		g_err_code = 255;
+
 }
 
 void	exception(char *command, char *variable, char *message)
@@ -101,6 +108,7 @@ void	exception(char *command, char *variable, char *message)
 		command_error(command, variable);
 		write(2, message, ft_strlen(message));
 	}
-	deff_err_code(message);
+//	deff_err_code(message);
 	write(2, "\n", 1);
+	deff_err_code(message);
 }

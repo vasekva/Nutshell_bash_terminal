@@ -31,6 +31,7 @@ SRCS_NAME			=	ft_calloc.c			\
 						ft_strncmp.c		\
 						ft_strncmp_old.c	\
 						ft_substr.c			\
+						ft_atoi.c			\
 
 OBJS_NAME			=	$(SRCS_NAME:.c=.o)
 

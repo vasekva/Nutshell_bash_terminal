@@ -27,5 +27,7 @@
 # define NO_FILE_OR_DIR "No such file or directory"
 # define OPEN_FD_ERROR	"couldn't open file descriptor"
 # define COPY_VAR_ERR	"error while copying a variable"
+# define EXIT_TOO_MANY_ARGS	"too many arguments"
+# define EXIT_NON_NUMERIC	"numeric argument required"
 
 #endif

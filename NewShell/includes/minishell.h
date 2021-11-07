@@ -112,7 +112,7 @@ void		change_dirs(t_data *shell, char *new_path, char *dst_path_key);
 int			ft_echo(t_cmd *node);
 void		ft_env(t_data *shell);
 void		ft_execve(t_data *shell, t_cmd *node);
-void		ft_exit(t_data *shell);
+int			ft_exit(t_data *shell, t_cmd *node);
 void		ft_export(t_data *shell);
 void		ft_pwd(void);
 void		ft_unset(t_data *shell, t_cmd *cmd_node);

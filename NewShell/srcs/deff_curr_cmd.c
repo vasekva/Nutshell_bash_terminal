@@ -49,7 +49,7 @@ int	deff_curr_cmd(t_data *shell, t_cmd *node)
 		if (ft_strncmp(cmd, "export", ft_strlen(cmd)) == 0)
 			ft_export(shell);
 		if (ft_strncmp(cmd, "exit", ft_strlen(cmd)) == 0)
-			ft_exit(shell);
+			ft_exit(shell, node);
 		return (1);
 	}
 	else
