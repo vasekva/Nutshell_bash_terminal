@@ -111,6 +111,22 @@ static int	remove_single_quotes(char **line, int *index)
 	return (1);
 }
 
+static void	replace_tilda(char *home, char **line, int *index)
+{
+	int		i_start;
+	char	*tmp;
+
+	i_start = *index;
+	if (((*line)[i_start + 1] && (*line)[i_start + 1] != ' ' && \
+		(*line)[i_start + 1] != '/') || ((*line)[i_start - 1] && \
+			(*line)[i_start - 1] != ' '))
+		return ;
+	tmp = *line;
+	*line = ft_replace_dollar(*line, i_start, i_start + 1, home);
+	free(tmp);
+	*index -= 1;
+}
+
 char	*lexer(t_data *shell, char *line, int num_arg)
 {
 	int		index;
@@ -126,6 +142,8 @@ char	*lexer(t_data *shell, char *line, int num_arg)
 			remove_double_quotes(shell->env_node, &line_ptr, &index, num_arg);
 		if (line_ptr[index] == '\'')
 			remove_single_quotes(&line_ptr, &index);
+		if (line_ptr[index] == '~')
+			replace_tilda(shell->home, &line_ptr, &index);
 		if (line_ptr[index] == '$')
 			replace_env_variable(shell->env_node, &line_ptr, &index, num_arg);
 	}

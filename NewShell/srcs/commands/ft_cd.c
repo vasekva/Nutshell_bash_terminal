@@ -168,31 +168,30 @@ int	ft_cd(t_data *shell, t_cmd *node)
 	cd_cmd = NULL;
 	if (node->command[1])
 	{
-		if (node->command[1][0] == '~' && ft_strlen(node->command[1]) > 1)
-		{
-			char	*tmp;
-
-			tmp = NULL;
-			tmp = node->command[1];
-			node->command[1] = ft_strjoin(shell->home, node->command[1] + 1, -1);
-			free(tmp);
-			tmp = shell->curr_dir;
-			shell->curr_dir = ft_strdup(node->command[1]);
-			free(tmp);
-			if (!ft_strncmp(shell->past_dir, shell->curr_dir, ft_strlen(shell->curr_dir)))
-			{
-				tmp = shell->past_dir;
-				shell->past_dir = ft_strdup(shell->curr_dir);
-				free(tmp);
-			}
-		}
+//		if (node->command[1][0] == '~' && ft_strlen(node->command[1]) > 1)
+//		{
+//			char	*tmp;
+//
+//			tmp = NULL;
+//			tmp = node->command[1];
+//			node->command[1] = ft_strjoin(shell->home, node->command[1] + 1, -1);
+//			free(tmp);
+//			tmp = shell->curr_dir;
+//			shell->curr_dir = ft_strdup(node->command[1]);
+//			free(tmp);
+//			if (!ft_strncmp(shell->past_dir, shell->curr_dir, ft_strlen(shell->curr_dir)))
+//			{
+//				tmp = shell->past_dir;
+//				shell->past_dir = ft_strdup(shell->curr_dir);
+//				free(tmp);
+//			}
+//		}
 		cd_cmd = node->command[1];
 		len_of_cmd = ft_strlen(cd_cmd);
 	}
 	if (cd_cmd
 		&& (ft_strncmp("-", cd_cmd, len_of_cmd)
-			&& (ft_strncmp("--", cd_cmd, len_of_cmd))
-			&& (ft_strncmp("~", cd_cmd, len_of_cmd))))
+			&& (ft_strncmp("--", cd_cmd, len_of_cmd))))
 		deff_change_path(shell, node);
 	else if (!shell->env_node)
 	{
@@ -202,16 +201,9 @@ int	ft_cd(t_data *shell, t_cmd *node)
 			exception("cd", "OLDPWD", EMPTYENV);
 		return (0);
 	}
-	else if (!cd_cmd || !ft_strncmp("--", cd_cmd, len_of_cmd)
-		|| !ft_strncmp("~", cd_cmd, len_of_cmd))
+	else if (!cd_cmd || !ft_strncmp("--", cd_cmd, len_of_cmd))
 	{
-		if (!ft_strncmp("~", cd_cmd, len_of_cmd))
-		{
-			change_dirs(shell, shell->home, "PWD");
-			ret = 1;
-		}
-		else
-			ret = change_value(shell, "HOME", "PWD"); //TODO: doesn't work
+		ret = change_value(shell, "HOME", "PWD"); //TODO: doesn't work
 	}
 	else if (!ft_strncmp("-", cd_cmd, len_of_cmd))
 	{
