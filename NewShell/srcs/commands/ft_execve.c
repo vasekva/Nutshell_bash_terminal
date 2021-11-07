@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_execve.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jberegon <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/11/06 23:34:35 by jberegon          #+#    #+#             */
+/*   Updated: 2021/11/06 23:34:37 by jberegon         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static char	*check_directory(char *path, char *cmd)
@@ -14,7 +26,7 @@ static char	*check_directory(char *path, char *cmd)
 		if (ft_strncmp(dir_file->d_name, cmd, ft_strlen(cmd) + 4) == 0)
 		{
 			closedir(direct);
-			return (ft_strjoin("/", dir_file->d_name, -1)); //todo: возможно лики
+			return (ft_strjoin("/", dir_file->d_name, -1));
 		}
 		dir_file = readdir(direct);
 	}
@@ -102,25 +114,25 @@ static void	execute(t_data *shell, t_cmd *node, char *cmd_path, char **argv)
 		return ;
 	}
 	set_signal_handler(CHILD); // TODO: ПОСМОТРЕТЬ СЮДА
-    status = fork();
-    if (status == 0)
+	status = fork();
+	if (status == 0)
 	{
-        env_copy = get_envp_copy(shell);
+		env_copy = get_envp_copy(shell);
 		if (!env_copy)
 			return ; // TODO: No such file or directory????
 		execve(cmd_path, argv, env_copy);
 		arr_free(env_copy);
 		exception(cmd_path, NULL, CMD_NOT_FOUND);
-        exit(1);
-    }
-    status = wait(&status);
-    set_signal_handler(PARENT); // TODO: ПОСМОТРЕТЬ СЮДА
+		exit(1);
+	}
+	status = wait(&status);
+	set_signal_handler(PARENT); // TODO: ПОСМОТРЕТЬ СЮДА
 }
 
 void	ft_execve(t_data *shell, t_cmd *node)
 {
 	char	*cmd_path;
-	char 	**argv;
+	char	**argv;
 
 	argv = node->command;
 	cmd_path = define_of_dir(shell);

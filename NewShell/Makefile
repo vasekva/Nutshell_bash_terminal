@@ -33,8 +33,9 @@ SRCS_NAME		=	exception.c			\
 					redirects.c			\
 					pipes.c				\
 
-COMMAND_SRCS	=	ft_cd.c				\
-                 	ft_cd_cut_path.c	\
+COMMAND_SRCS	=	cmds_utils.c		\
+					ft_cd.c				\
+                 	relative_path.c		\
                  	ft_cd_updir.c		\
                  	ft_echo.c			\
                   	ft_pwd.c			\

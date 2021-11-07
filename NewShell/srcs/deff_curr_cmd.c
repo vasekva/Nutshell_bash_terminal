@@ -49,12 +49,10 @@ int	deff_curr_cmd(t_data *shell, t_cmd *node)
 		if (ft_strncmp(cmd, "export", ft_strlen(cmd)) == 0)
 			ft_export(shell);
 		if (ft_strncmp(cmd, "exit", ft_strlen(cmd)) == 0)
-			ft_exit(shell); //todo: определить с каким кодом должна закрываться программа
+			ft_exit(shell);
 		return (1);
 	}
 	else
-	{
 		ft_execve(shell, node);
-	}
 	return (0);
 }

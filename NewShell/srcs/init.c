@@ -60,10 +60,19 @@ void	copy_env_to_list(t_data *shell, char **envp)
 void	init_logs(t_data *shell, char **envp)
 {
 	shell->title = ft_strjoin(getenv("LOGNAME"), "/minishell/$> ", -1);
+	if (!shell->title)
+		exception(NULL, NULL, COPY_VAR_ERR);
+	shell->home = ft_strdup(getenv("HOME"));
+	if (ft_strlen(shell->home) == 0)
+	{
+		free(shell->home);
+		exception(NULL, NULL, COPY_VAR_ERR);
+		shell->home = ft_strjoin("/Users/", getenv("LOGNAME"), -1);
+		if (!shell->home)
+			exception(NULL, NULL, COPY_VAR_ERR);
+	}
 	shell->curr_dir = getcwd(NULL, 0);
 	shell->past_dir = ft_strdup(shell->curr_dir);
-	if (!shell->title)
-		exception(NULL, NULL, MALLOC_ERROR);
 	shell->env_node = NULL;
 	copy_env_to_list(shell, envp);
 	shell->list_cmds = NULL;

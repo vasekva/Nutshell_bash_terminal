@@ -80,7 +80,7 @@ static int	remove_double_quotes(t_env_list *env_node, char **line, \
 	tmp = *line;
 	*line = ft_divide_by_quotes(*line, i_start, *index);
 	free(tmp);
-	*index -= 2;
+	*index -= 1; //TODO: WWWWTWWTTTFFFFFF two to one and one to two
 	return (1);
 }
 

@@ -114,7 +114,7 @@ int	ft_echo(t_cmd *node)
 	// Если введена команда echo -n
 	if ((first_arg[0] == '-' && first_arg[1] == 'n')
 		&& s_cmd->num_args == 2)
-		return 1;
+		return (1);
 	// Если задана команда 'echo -n ...'
 	if (first_arg[0] == '-' && first_arg[1] == 'n')
 	{

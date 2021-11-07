@@ -14,7 +14,8 @@
 
 void	ft_pwd(void)
 {
-	char		*path;
+	char	*path;
+	
 	path = getcwd(NULL, 0);
 	printf("%s\n", path);
 	free(path);

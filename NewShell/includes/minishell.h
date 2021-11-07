@@ -89,6 +89,7 @@ struct s_redir_list
 struct s_data
 {
 	char		*title;
+	char		*home;
 
 	char		*curr_dir;
 	char		*past_dir;
@@ -104,7 +105,7 @@ void		exception(char *command, char *variable, char *message);
 
 int			ft_cd(t_data *shell, t_cmd *node);
 void		ft_cd_updir(t_data *shell);
-void		ft_cd_cut_path(t_data *shell, t_cmd *s_cmd);
+void		relative_path(t_data *shell, t_cmd *s_cmd);
 
 void		change_dirs(t_data *shell, char *new_path, char *dst_path_key);
 
@@ -115,6 +116,11 @@ void		ft_exit(t_data *shell);
 void		ft_export(t_data *shell);
 void		ft_pwd(void);
 void		ft_unset(t_data *shell, t_cmd *cmd_node);
+
+/*
+ * CMDS_UTILS.C
+ */
+int	has_file(char *path);
 
 /*
  *....... UTILS_FOR_ARRAY_1.C

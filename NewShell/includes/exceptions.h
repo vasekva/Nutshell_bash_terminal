@@ -26,5 +26,6 @@
 # define CD_NOTDIR		"not a directory"
 # define NO_FILE_OR_DIR "No such file or directory"
 # define OPEN_FD_ERROR	"couldn't open file descriptor"
+# define COPY_VAR_ERR	"error while copying a variable"
 
 #endif
