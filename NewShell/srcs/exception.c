@@ -84,15 +84,22 @@ int	command_error(char *command, char *variable)
 
 void	deff_err_code(char *message)
 {
-	if (!ft_strncmp(EXIT_TOO_MANY_ARGS, message, ft_strlen(message)) || \
-	!ft_strncmp(NO_FILE_OR_DIR, message, ft_strlen(message)) || \
-	!ft_strncmp(CD_NOTDIR, message, ft_strlen(message)))
+	int	len;
+
+	len = ft_strlen(message);
+	if (!ft_strncmp(EXIT_TOO_MANY_ARGS, message, len) || \
+	!ft_strncmp(NO_FILE_OR_DIR, message, len) || \
+	!ft_strncmp(CD_NOTDIR, message, len) || \
+	!ft_strncmp(INVALID_IDENT, message, len) || \
+	!ft_strncmp(EMPTYENV, message, len) || \
+	!ft_strncmp(CD_ACCESS, message, len) || \
+	!ft_strncmp(CD_NOTDIR, message, len))
 		g_err_code = 1;
-	if (!ft_strncmp(CMD_NOT_FOUND, message, ft_strlen(message)))
+	if (!ft_strncmp(CMD_NOT_FOUND, message, len))
 		g_err_code = 127;
-	if (!ft_strncmp(SYNTAX_ERROR, message, ft_strlen(message)))
+	if (!ft_strncmp(SYNTAX_ERROR, message, len))
 		g_err_code = 2;
-	if (!ft_strncmp(EXIT_NON_NUMERIC, message, ft_strlen(message)))
+	if (!ft_strncmp(EXIT_NON_NUMERIC, message, len))
 		g_err_code = 255;
 
 }
