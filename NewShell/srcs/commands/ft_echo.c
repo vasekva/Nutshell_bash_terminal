@@ -93,7 +93,7 @@ static int	ft_echo_execute(t_cmd *node, const char *first_arg)
 	flag = 0;
 	if ((first_arg[0] == '-' && first_arg[1] == 'n')
 		&& node->num_args == 2)
-		return (1);
+		return (0);
 	if (first_arg[0] == '-' && first_arg[1] == 'n')
 	{
 		ind = has_delete_nline(node);
@@ -103,7 +103,7 @@ static int	ft_echo_execute(t_cmd *node, const char *first_arg)
 	if (ind < 0)
 		ind = 1;
 	write_lines(node, ind, flag);
-	return (1);
+	return (0);
 }
 
 int	ft_echo(t_cmd *node)
@@ -114,7 +114,7 @@ int	ft_echo(t_cmd *node)
 	if (!s_cmd->command[1])
 	{
 		write(s_cmd->fd_output, "\n", 1);
-		return (1);
+		return (0);
 	}
 	return (ft_echo_execute(node, s_cmd->command[1]));
 }

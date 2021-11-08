@@ -52,6 +52,23 @@ static void	delete_variable(t_data *shell, t_env_list *del_node)
 		delete_variable_from_list(shell, del_node);
 }
 
+static void	del_node(t_data *shell, t_cmd *cmd_node, int i, int *res)
+{
+	t_env_list	*del_node;
+
+	del_node = NULL;
+	del_node = get_node_by_content(shell->env_node, cmd_node->command[i], 0);
+	if (del_node && !cmd_node->next && !cmd_node->prev)
+		delete_variable(shell, del_node);
+	else
+	{
+		del_node = get_node_by_content(shell->env_node, \
+												cmd_node->command[i], 1);
+		if (del_node && ((cmd_node->prev && i == 1) || !cmd_node->prev))
+			*res = exception("unset", del_node->value, INVALID_IDENT);
+	}
+}
+
 /**
  * Функция проходит по списку полученных значений и, если в
  * переменных окружения есть значение с таким ключом -
@@ -61,30 +78,22 @@ static void	delete_variable(t_data *shell, t_env_list *del_node)
  * @param cmd_node:	узел с полученными входными значениями команды
  *
  */
-void	ft_unset(t_data *shell, t_cmd *cmd_node)
+int	ft_unset(t_data *shell, t_cmd *cmd_node)
 {
-	t_env_list	*del_node;
-	int			i;
+	int	i;
+	int	res;
 
+	res = 0;
 	if (!shell->env_node || !cmd_node->command[1])
-		return ;
+		return (res);
 	i = 0;
-	del_node = NULL;
 	while (cmd_node->command[++i])
 	{
-		if (ft_strlen(cmd_node->command[i]))
+		if (ft_strlen(cmd_node->command[i]) \
+		&& key_check("unset", cmd_node->command[i], &res) == 0)
 		{
-			del_node = get_node_by_content(shell->env_node,
-					cmd_node->command[i], 0);
-			if (del_node && !cmd_node->next && !cmd_node->prev)
-				delete_variable(shell, del_node);
-			else
-			{
-				del_node = get_node_by_content(shell->env_node,
-						cmd_node->command[i], 1);
-				if (del_node && ((cmd_node->prev && i == 1) || !cmd_node->prev))
-					exception("unset", del_node->value, INVALID_IDENT);
-			}
+			del_node(shell, cmd_node, i, &res);
 		}
 	}
+	return (res);
 }

@@ -76,11 +76,12 @@ void	new_change_path(t_data *shell, t_cmd *s_cmd,
 	free(new_path);
 }
 
-void	relative_path(t_data *shell, t_cmd *s_cmd)
+int	relative_path(t_data *shell, t_cmd *s_cmd)
 {
 	int		res;
 
 	res = has_file(s_cmd->command[1]);
-	if (res == 1)
+	if (res == 0)
 		new_change_path(shell, s_cmd, shell->curr_dir, s_cmd->command[1]);
+	return (res);
 }

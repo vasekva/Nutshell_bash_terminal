@@ -36,24 +36,6 @@ static void	print_export_list(t_data *shell, t_cmd *node)
 	}
 }
 
-static int	key_check(char *variable)
-{
-	int		i;
-	char	c;
-
-	i = -1;
-	while (variable[++i] && variable[i] != '=')
-	{
-		c = variable[i];
-		if (ft_isdigit(c) || (!ft_isalpha(c) && c != '_'))
-		{
-			exception("export", variable, INVALID_IDENT);
-			return (-1);
-		}
-	}
-	return (1);
-}
-
 /**
  * Вспомогательная функция для change_export_list(), которая выполняет
  * основную логику замены, либо добавления узла в список.
@@ -113,7 +95,7 @@ static void	define_how_to_add(t_data *shell, char *key, char *value, char *str)
  * полученной строки из списка для импорта.
  *
  */
-static void	change_export_list(t_data *shell, char *key, char *value, char *str)
+static int	change_export_list(t_data *shell, char *value, char *str, int res)
 {
 	char	*var;
 	char	*ptr;
@@ -122,7 +104,7 @@ static void	change_export_list(t_data *shell, char *key, char *value, char *str)
 	i = 0;
 	while (shell->list_cmds->command[++i])
 	{
-		if (key_check(shell->list_cmds->command[i]) != -1)
+		if (key_check("export", shell->list_cmds->command[i], &res) == 0)
 		{
 			var = shell->list_cmds->command[i];
 			ptr = ft_strchr(shell->list_cmds->command[i], '=');
@@ -136,19 +118,17 @@ static void	change_export_list(t_data *shell, char *key, char *value, char *str)
 			}
 			else
 				value = ft_strdup("");
-			key = ft_strdup(var);
-			define_how_to_add(shell, key, value, str);
+			define_how_to_add(shell, ft_strdup(var), value, str);
 		}
 	}
+	return (res);
 }
 
-void	ft_export(t_data *shell, t_cmd *node)
+int	ft_export(t_data *shell, t_cmd *node)
 {
-	char	*key;
 	char	*value;
 	char	*str;
 
-	key = NULL;
 	value = NULL;
 	str = NULL;
 	if (!shell->list_cmds->command[1]
@@ -157,7 +137,7 @@ void	ft_export(t_data *shell, t_cmd *node)
 			&& !shell->list_cmds->command[2]))
 	{
 		print_export_list(shell, node);
-		return ;
+		return (0);
 	}
-	change_export_list(shell, key, value, str);
+	return (change_export_list(shell, value, str, 0));
 }

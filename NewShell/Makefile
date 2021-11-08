@@ -1,8 +1,8 @@
-NAME		=	minishell
+NAME			=	minishell
 
 INCLUDES		=	-I ./includes/
 
-READLINE_LIB = -lreadline -L ~/.brew/opt/readline/lib
+READLINE_LIB	= -lreadline -L ~/.brew/opt/readline/lib
 
 READLINE_INCLUDE = -I ~/.brew/opt/readline/include
 
@@ -30,8 +30,10 @@ ROOF			=	$(BOLD)$(WALL)===============================================$(WALL)
 SRCS_NAME		=	exception.c			\
 					main.c				\
 					deff_curr_cmd.c		\
+					deff_err_code.c		\
 					utils_for_array.c	\
 					utils_for_list.c	\
+					utils_for_list2.c	\
 					init.c				\
 					signals.c			\
 					redirects.c			\

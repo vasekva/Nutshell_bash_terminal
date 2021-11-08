@@ -96,7 +96,7 @@ static char	**get_envp_copy(t_data *shell)
 	return (env_copy);
 }
 
-static void	execute(t_data *shell, t_cmd *node, char *cmd_path, char **argv)
+static int	execute(t_data *shell, t_cmd *node, char *cmd_path, char **argv)
 {
 	pid_t		status;
 	char		**env_copy;
@@ -105,39 +105,37 @@ static void	execute(t_data *shell, t_cmd *node, char *cmd_path, char **argv)
 	env_copy = NULL;
 	tmp_node = get_node_by_content(shell->env_node, "PATH", 0);
 	if (!tmp_node)
-	{
-		exception(node->command[0], NULL, NO_FILE_OR_DIR);
-		return ;
-	}
-	set_signal_handler(CHILD); // TODO: ПОСМОТРЕТЬ СЮДА
+		return (exception(node->command[0], NULL, EMPTYENV));
 	status = fork();
+	set_signal_handler(CHILD);
 	if (status == 0)
 	{
 		env_copy = get_envp_copy(shell);
-		if (!env_copy)
-			return ; // TODO: No such file or directory????
 		execve(cmd_path, argv, env_copy);
 		arr_free(env_copy);
-		exception(cmd_path, NULL, CMD_NOT_FOUND);
-		exit(1);
+		exit(exception(cmd_path, NULL, CMD_NOT_FOUND));
 	}
-	status = wait(&status);
-	set_signal_handler(PARENT); // TODO: ПОСМОТРЕТЬ СЮДА
+	wait(&status);
+	set_signal_handler(PARENT);
+	if (WIFEXITED(status))
+		g_err_code = WEXITSTATUS(status);
+	return (g_err_code);
 }
 
-void	ft_execve(t_data *shell, t_cmd *node)
+int	ft_execve(t_data *shell, t_cmd *node)
 {
 	char	*cmd_path;
 	char	**argv;
+	int		res;
 
 	if (!shell->env_node)
-		return (exception(node->command[0],
-				NULL, NO_FILE_OR_DIR));
+		return (exception(node->command[0], NULL, NO_FILE_OR_DIR));
 	argv = node->command;
 	cmd_path = define_of_dir(shell);
 	if (cmd_path)
-		execute(shell, node, cmd_path, argv);
+		res = execute(shell, node, cmd_path, argv);
 	else
-		execute(shell, node, argv[0], argv);
+		res = execute(shell, node, argv[0], argv);
 	free(cmd_path);
+	return (res);
 }

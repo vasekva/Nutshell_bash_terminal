@@ -20,7 +20,7 @@ static int	is_file(char *path)
 	if (directory != NULL)
 	{
 		closedir(directory);
-		return (1);
+		return (0);
 	}
 	if (errno == ENOTDIR)
 		return (-1);
@@ -35,11 +35,11 @@ int	has_file(char *path)
 
 	res = is_file(path);
 	if (res == -1)
-		exception("cd", path, CD_NOTDIR);
+		return (exception("cd", path, CD_NOTDIR));
 	if (res == -2)
-		exception("cd", path, CD_ACCESS);
+		return (exception("cd", path, CD_ACCESS));
 	if (res == -3)
-		exception("cd", path, NO_FILE_OR_DIR);
+		return (exception("cd", path, NO_FILE_OR_DIR));
 	return (res);
 }
 
@@ -54,4 +54,22 @@ void	ft_putstr_fd(int fd, char *str, int flag)
 	}
 	if (flag)
 		write(fd, "\n", 1);
+}
+
+int	key_check(char *command, char *variable, int *res)
+{
+	int		i;
+	char	c;
+
+	i = -1;
+	while (variable[++i] && variable[i] != '=')
+	{
+		c = variable[i];
+		if (ft_isdigit(c) || (!ft_isalpha(c) && c != '_'))
+		{
+			*res = exception(command, variable, INVALID_IDENT);
+			return (*res);
+		}
+	}
+	return (0);
 }

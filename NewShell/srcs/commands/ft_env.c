@@ -12,21 +12,15 @@
 
 #include "minishell.h"
 
-void	ft_env(t_data *shell, t_cmd *node)
+int	ft_env(t_data *shell, t_cmd *node)
 {
 	t_env_list	*env_node;
 
 	if (!shell->env_node)
-	{
-		exception("env", NULL, NO_FILE_OR_DIR);
-		return ;
-	}
+		return (exception("env", NULL, EMPTYENV));
 	env_node = get_node_by_content(shell->env_node, "PATH", 0);
 	if (!env_node)
-	{
-		exception("env", NULL, NO_FILE_OR_DIR);
-		return ;
-	}
+		return (exception("env", NULL, NO_FILE_OR_DIR));
 	env_node = shell->env_node;
 	while (env_node)
 	{
@@ -34,4 +28,5 @@ void	ft_env(t_data *shell, t_cmd *node)
 			ft_putstr_fd(node->fd_output, env_node->str, 1);
 		env_node = env_node->next;
 	}
+	return (0);
 }

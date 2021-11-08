@@ -13,74 +13,6 @@
 #include "minishell.h"
 
 /**
- * Функция возвращает указатель на
- * последний элемент списка.
- *
- * @return
- * Возвращает указатель на последний
- * элемент списка.\n
- * Если список равен NULL - возвращается NULL.
- */
-t_env_list	*get_last(t_env_list *env_node)
-{
-	if (!env_node)
-		return (NULL);
-	while (env_node->next)
-		env_node = env_node->next;
-	return (env_node);
-}
-
-/**
- * Функция создает новый элемент с
- * переданными в параметрах значениями и
- * вставляет его в конец списка.
- *
- * Если список пуст - создает первый узел
- * с пустыми указателями на предыдущий и следующий узлы.
- *
- * В новом элементе сохраняется указатель
- * на предыдущее значение и устанавливается
- * NULL для следующего.
- *
- * @param env_node: Список(**), в который
- * производится вставка.
- *
- * @param key: Значение до знака '='.
- *
- * @param value: Значение после знака '='.
- *
- * @param str: Переменная окружения в виде (key)=(value)
- */
-void	push_back(t_env_list **env_node, char *key, char *value, char *str)
-{
-	t_env_list	*last;
-	t_env_list	*tmp;
-
-	last = get_last(*env_node);
-	if (!key || !value || !str)
-		exception(NULL, NULL, EMPTYPOINTER);
-	if (!last)
-	{
-		(*env_node) = (t_env_list *)malloc(sizeof(t_env_list));
-		(*env_node)->key = key;
-		(*env_node)->value = value;
-		(*env_node)->str = str;
-		(*env_node)->next = NULL;
-		(*env_node)->past = NULL;
-	}
-	else
-	{
-		tmp = (t_env_list *)malloc(sizeof(t_env_list));
-		tmp->key = key;
-		tmp->value = value;
-		tmp->str = str;
-		tmp->next = NULL;
-		tmp->past = last;
-		last->next = tmp;
-	}
-}
-
-/**
  * Функция проходится по элементам списка и ищет в узлах совпадения по ключу
  *
  * @param list:	список, в котором производится поиск
@@ -118,29 +50,29 @@ char	*get_value_by_key(t_env_list *list, char *key)
  */
 t_env_list	*get_node_by_content(t_env_list *list, char *content, int flag)
 {
-	t_env_list	*env_node;
+	t_env_list	*e_node;
 
 	if (!list)
 		return (NULL);
-	env_node = list;
-	while (env_node)
+	e_node = list;
+	while (e_node)
 	{
 		if (flag == 0)
 		{
-			if (!ft_strncmp(content, env_node->key, ft_strlen(env_node->key)))
-				return (env_node);
+			if (!ft_strncmp(content, e_node->key, ft_strlen(e_node->key)))
+				return (e_node);
 		}
 		else if (flag == 1)
 		{
-			if (!ft_strncmp(content, env_node->value, ft_strlen(env_node->value)))
-				return (env_node);
+			if (!ft_strncmp(content, e_node->value, ft_strlen(e_node->value)))
+				return (e_node);
 		}
 		else if (flag == 2)
 		{
-			if (!ft_strncmp(content, env_node->str, ft_strlen(env_node->str)))
-				return (env_node);
+			if (!ft_strncmp(content, e_node->str, ft_strlen(e_node->str)))
+				return (e_node);
 		}
-		env_node = env_node->next;
+		e_node = e_node->next;
 	}
 	return (NULL);
 }
@@ -175,23 +107,6 @@ static	void	swap_list_values(t_env_list *a, t_env_list *b)
 	b->value = value;
 }
 
-/**
- * Функция возвращает
- * длину полученного списка.
- */
-int	list_length(const t_env_list *list)
-{
-	int	length;
-
-	length = 0;
-	while (list)
-	{
-		list = list->next;
-		length++;
-	}
-	return (length);
-}
-
 void	list_sort(t_env_list *list)
 {
 	t_env_list	*external_node;
@@ -209,7 +124,8 @@ void	list_sort(t_env_list *list)
 		{
 			internal_str = internal_node->str;
 			external_str = external_node->str;
-			if (ft_strncmp_old(internal_str, external_str, ft_strlen(external_str)) == -1)
+			if (ft_strncmp_old(internal_str, external_str, \
+								ft_strlen(external_str)) == -1)
 			{
 				swap_list_values(external_node, internal_node);
 			}

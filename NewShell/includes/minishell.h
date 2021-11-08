@@ -40,7 +40,6 @@
 /*
  * ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  DEFINES  :::::
  */
-# define BUFFER_SIZE	32
 # define PARENT	1
 # define CHILD	0
 # define REDIRECT_INPUT			1
@@ -105,28 +104,30 @@ struct s_data
  * :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  FUNCTIONS  :::::
  */
 int			deff_curr_cmd(t_data *shell, t_cmd *node);
-void		exception(char *command, char *variable, char *message);
+int			deff_err_code(char *message);
+int			exception(char *command, char *variable, char *message);
 
 int			ft_cd(t_data *shell, t_cmd *node);
 int			ft_cd_replace_paths(t_data *shell);
 void		ft_cd_updir(t_data *shell);
-void		relative_path(t_data *shell, t_cmd *s_cmd);
+int			relative_path(t_data *shell, t_cmd *s_cmd);
 
 void		change_dirs(t_data *shell, char *new_path, char *dst_path_key);
 
 int			ft_echo(t_cmd *node);
-void		ft_env(t_data *shell, t_cmd *node);
-void		ft_execve(t_data *shell, t_cmd *node);
+int			ft_env(t_data *shell, t_cmd *node);
+int			ft_execve(t_data *shell, t_cmd *node);
 int			ft_exit(t_data *shell, t_cmd *node);
-void		ft_export(t_data *shell, t_cmd *node);
-void		ft_pwd(t_cmd *node);
-void		ft_unset(t_data *shell, t_cmd *cmd_node);
+int			ft_export(t_data *shell, t_cmd *node);
+int			ft_pwd(t_cmd *node);
+int			ft_unset(t_data *shell, t_cmd *cmd_node);
 
 /*
  * UTILS.C
  */
-int		has_file(char *path);
-void	ft_putstr_fd(int fd, char *str, int flag);
+int			has_file(char *path);
+void		ft_putstr_fd(int fd, char *str, int flag);
+int			key_check(char *command, char *variable, int *res);
 
 /*
  *....... UTILS_FOR_ARRAY_1.C

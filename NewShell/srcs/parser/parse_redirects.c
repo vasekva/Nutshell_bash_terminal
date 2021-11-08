@@ -28,6 +28,7 @@ static int	define_redirect_type(char *filename)
 		else
 			return (REDIRECT_INPUT);
 	}
+	return (0);
 }
 
 static t_redir_list	*create_elem(char *filename)

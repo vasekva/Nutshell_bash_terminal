@@ -59,6 +59,7 @@ void	copy_env_to_list(t_data *shell, char **envp)
 
 void	init_logs(t_data *shell, char **envp)
 {
+	rl_outstream = stderr;
 	shell->title = ft_strjoin(getenv("LOGNAME"), "/minishell/$> ", -1);
 	if (!shell->title)
 		exception(NULL, NULL, COPY_VAR_ERR);

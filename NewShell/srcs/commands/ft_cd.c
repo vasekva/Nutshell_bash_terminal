@@ -82,7 +82,7 @@ static int	change_value(t_data *shell, char *src_key, char *dst_key)
 	src_node = get_node_by_content(shell->env_node, src_key, 0);
 	if (!src_node)
 	{
-		exception("cd", src_key, EMPTYENV);
+		exception("cd", src_key, EMPTYVAR);
 		return (1);
 	}
 	else
@@ -92,7 +92,7 @@ static int	change_value(t_data *shell, char *src_key, char *dst_key)
 	}
 }
 
-static void	change_curr_path(t_data *shell, t_cmd *s_cmd)
+static int	change_curr_path(t_data *shell, t_cmd *s_cmd)
 {
 	int	ret;
 
@@ -108,14 +108,15 @@ static void	change_curr_path(t_data *shell, t_cmd *s_cmd)
 			{
 				s_cmd->command[1][ft_strlen(s_cmd->command[1]) - 1] = '\0';
 			}
-			if (ret == 1)
+			if (ret == 0)
 				change_dirs(shell, s_cmd->command[1], "PWD");
 		}
 	}
 	else if (!ft_strncmp("..", s_cmd->command[1], ft_strlen(s_cmd->command[1])))
 		ft_cd_updir(shell);
 	else
-		relative_path(shell, s_cmd);
+		ret = relative_path(shell, s_cmd);
+	return (ret);
 }
 
 static int	cd_execute(t_data *shell, t_cmd *node, char *cd_cmd, int len_of_cmd)
@@ -124,14 +125,13 @@ static int	cd_execute(t_data *shell, t_cmd *node, char *cd_cmd, int len_of_cmd)
 
 	if (cd_cmd && (ft_strncmp("-", cd_cmd, len_of_cmd)
 			&& (ft_strncmp("--", cd_cmd, len_of_cmd))))
-		change_curr_path(shell, node);
+		ret = change_curr_path(shell, node);
 	else if (!shell->env_node)
 	{
 		if (!cd_cmd || !ft_strncmp("--", cd_cmd, len_of_cmd))
-			exception("cd", "HOME", EMPTYENV);
+			ret = exception("cd", "HOME", EMPTYVAR);
 		else if (!ft_strncmp("-", cd_cmd, len_of_cmd))
-			exception("cd", "OLDPWD", EMPTYENV);
-		ret = 1;
+			ret = exception("cd", "OLDPWD", EMPTYVAR);
 	}
 	else if (!cd_cmd || !ft_strncmp("--", cd_cmd, len_of_cmd))
 		ret = change_value(shell, "HOME", "PWD");
@@ -154,7 +154,6 @@ int	ft_cd(t_data *shell, t_cmd *node)
 
 	if (!shell || !shell->list_cmds)
 		exception(NULL, NULL, EMPTYPOINTER);
-	ret = 0;
 	cd_cmd = NULL;
 	len_of_cmd = 0;
 	if (node->command[1])
