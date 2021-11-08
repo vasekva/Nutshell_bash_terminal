@@ -104,6 +104,7 @@ int			deff_curr_cmd(t_data *shell, t_cmd *node);
 void		exception(char *command, char *variable, char *message);
 
 int			ft_cd(t_data *shell, t_cmd *node);
+int			ft_cd_replace_paths(t_data *shell);
 void		ft_cd_updir(t_data *shell);
 void		relative_path(t_data *shell, t_cmd *s_cmd);
 

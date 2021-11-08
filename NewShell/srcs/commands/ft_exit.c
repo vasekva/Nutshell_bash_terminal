@@ -17,9 +17,9 @@ static int	overflow_value(char *exit_line)
 	size_t	i;
 
 	i = ft_strlen(exit_line);
-	if (i >= 21 || (i == 19 && (exit_line[i - 1] >= '8' || exit_line[i - 2] > '0'))
-	|| (i == 20 && (exit_line[i - 1] > '8' || \
-	exit_line[i - 2] > '0')) )
+	if (i >= 21 || (i == 19 && (exit_line[i - 1] >= '8'
+				|| exit_line[i - 2] > '0'))
+		|| (i == 20 && (exit_line[i - 1] > '8' || exit_line[i - 2] > '0')))
 		return (1);
 	return (0);
 }

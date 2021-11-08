@@ -15,8 +15,9 @@
 void	ft_pwd(void)
 {
 	char	*path;
-	
+
 	path = getcwd(NULL, 0);
-	printf("%s\n", path);
+	write(1, path, ft_strlen(path));
+	write(1, "\n", 1);
 	free(path);
 }

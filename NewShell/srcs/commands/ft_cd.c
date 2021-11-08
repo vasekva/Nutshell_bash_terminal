@@ -92,68 +92,58 @@ static int	change_value(t_data *shell, char *src_key, char *dst_key)
 	}
 }
 
-/**
- * При отсутствии переменной OLDPWD в списке переменных окружения
- * функция создает новый элемент, устанавливает ему значения на основе
- * ключа OLDPWD, а так же содержимого из корневой переменной past_dir
- * и добавляет новый узел в конец списка.
- * Иначе (при наличии переменной) просто обновляет ее значения.
- *
- * @param shell - корневая структура, откуда вытаскивается информация.
- */
-static void	create_old_pwd(t_data *shell)
+static void	change_curr_path(t_data *shell, t_cmd *s_cmd)
 {
-	t_env_list	*node;
-	char		*key;
-	char		*value;
-	char		*str;
-	char		*tmp;
+	int	ret;
 
-	tmp = NULL;
-	node = get_node_by_content(shell->env_node, "OLDPWD", 0);
-	if (!node)
-	{
-		key = ft_strdup("OLDPWD");
-		value = ft_strdup(shell->past_dir);
-		str = ft_strjoin(key, ft_strjoin("=", value, -1), 1);
-		push_back(&shell->env_node, key, value, str);
-	}
-	else
-	{
-		tmp = node->value;
-		node->value = ft_strdup(shell->past_dir);
-		free(tmp);
-		tmp = node->str;
-		node->str = ft_strjoin(node->key,
-				ft_strjoin("=", node->value, -1), 1);
-		free(tmp);
-	}
-}
-
-void	absolute_path(t_data *shell, t_cmd *s_cmd)
-{
-	int		res;
-
-	res = has_file(s_cmd->command[1]);
-	if (res == 1)
-		change_dirs(shell, s_cmd->command[1], "PWD");
-}
-
-void	deff_change_path(t_data *shell, t_cmd *s_cmd)
-{
+	ret = 0;
 	if (s_cmd->command[1][0] == '/')
 	{
 		if (ft_strlen(s_cmd->command[1]) == 1)
 			change_dirs(shell, "/", "PWD");
 		else
-			absolute_path(shell, s_cmd);
+		{
+			ret = has_file(s_cmd->command[1]);
+			if (s_cmd->command[1][ft_strlen(s_cmd->command[1]) - 1] == '/')
+			{
+				s_cmd->command[1][ft_strlen(s_cmd->command[1]) - 1] = '\0';
+			}
+			if (ret == 1)
+				change_dirs(shell, s_cmd->command[1], "PWD");
+		}
 	}
 	else if (!ft_strncmp("..", s_cmd->command[1], ft_strlen(s_cmd->command[1])))
-	{
 		ft_cd_updir(shell);
-	}
 	else
 		relative_path(shell, s_cmd);
+}
+
+static int	cd_execute(t_data *shell, t_cmd *node, char *cd_cmd, int len_of_cmd)
+{
+	int	ret;
+
+	if (cd_cmd && (ft_strncmp("-", cd_cmd, len_of_cmd)
+			&& (ft_strncmp("--", cd_cmd, len_of_cmd))))
+		change_curr_path(shell, node);
+	else if (!shell->env_node)
+	{
+		if (!cd_cmd || !ft_strncmp("--", cd_cmd, len_of_cmd))
+			exception("cd", "HOME", EMPTYENV);
+		else if (!ft_strncmp("-", cd_cmd, len_of_cmd))
+			exception("cd", "OLDPWD", EMPTYENV);
+		ret = 1;
+	}
+	else if (!cd_cmd || !ft_strncmp("--", cd_cmd, len_of_cmd))
+		ret = change_value(shell, "HOME", "PWD");
+	else if (!ft_strncmp("-", cd_cmd, len_of_cmd))
+	{
+		ret = change_value(shell, "OLDPWD", "PWD");
+		if (!ret)
+			printf("%s\n", shell->curr_dir);
+	}
+	if (ft_cd_replace_paths(shell))
+		ret = 1;
+	return (ret);
 }
 
 int	ft_cd(t_data *shell, t_cmd *node)
@@ -162,43 +152,16 @@ int	ft_cd(t_data *shell, t_cmd *node)
 	int			len_of_cmd;
 	int			ret;
 
-	ret = 0;
 	if (!shell || !shell->list_cmds)
 		exception(NULL, NULL, EMPTYPOINTER);
+	ret = 0;
 	cd_cmd = NULL;
+	len_of_cmd = 0;
 	if (node->command[1])
 	{
 		cd_cmd = node->command[1];
 		len_of_cmd = ft_strlen(cd_cmd);
 	}
-	if (cd_cmd
-		&& (ft_strncmp("-", cd_cmd, len_of_cmd)
-			&& (ft_strncmp("--", cd_cmd, len_of_cmd))))
-		deff_change_path(shell, node);
-	else if (!shell->env_node)
-	{
-		if (!cd_cmd || !ft_strncmp("--", cd_cmd, len_of_cmd))
-			exception("cd", "HOME", EMPTYENV);
-		else if (!ft_strncmp("-", cd_cmd, len_of_cmd))
-			exception("cd", "OLDPWD", EMPTYENV);
-		return (0);
-	}
-	else if (!cd_cmd || !ft_strncmp("--", cd_cmd, len_of_cmd))
-	{
-		ret = change_value(shell, "HOME", "PWD"); //TODO: doesn't work
-	}
-	else if (!ft_strncmp("-", cd_cmd, len_of_cmd))
-	{
-		ret = change_value(shell, "OLDPWD", "PWD");
-		if (!ret)
-			printf("%s\n", shell->curr_dir);
-	}
-	create_old_pwd(shell);
-	chdir(shell->curr_dir);
-	if (chdir(shell->curr_dir) < 0)
-	{
-		printf("BLYAAAAA: %d\n", errno);
-		perror(shell->curr_dir);
-	}
+	ret = cd_execute(shell, node, cd_cmd, len_of_cmd);
 	return (ret);
 }

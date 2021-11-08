@@ -33,17 +33,18 @@ SRCS_NAME		=	exception.c			\
 					redirects.c			\
 					pipes.c				\
 
-COMMAND_SRCS	=	cmds_utils.c		\
-					ft_cd.c				\
-                 	relative_path.c		\
-                 	ft_cd_updir.c		\
-                 	ft_echo.c			\
-                  	ft_pwd.c			\
-                  	ft_export.c			\
-					ft_unset.c			\
-					ft_env.c			\
-					ft_execve.c			\
-					ft_exit.c			\
+COMMAND_SRCS	=	ft_cd.c					\
+                 	ft_cd_relative_path.c	\
+					ft_cd_replace_paths.c	\
+                 	ft_cd_updir.c			\
+                 	ft_cd_utils.c			\
+                 	ft_echo.c				\
+                  	ft_pwd.c				\
+                  	ft_export.c				\
+					ft_unset.c				\
+					ft_env.c				\
+					ft_execve.c				\
+					ft_exit.c				\
 
 PARSER_SRCS		=	syntax_checker.c		\
 					ft_split_arguments.c	\
