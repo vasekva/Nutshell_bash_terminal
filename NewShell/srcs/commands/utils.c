@@ -42,3 +42,16 @@ int	has_file(char *path)
 		exception("cd", path, NO_FILE_OR_DIR);
 	return (res);
 }
+
+void	ft_putstr_fd(int fd, char *str, int flag)
+{
+	int	i;
+
+	i = -1;
+	while (str[++i])
+	{
+		write(fd, &str[i], 1);
+	}
+	if (flag)
+		write(1, "\n", 1);
+}

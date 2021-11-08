@@ -52,7 +52,7 @@ int	ft_exit(t_data *shell, t_cmd *node)
 {
 	unsigned char	exit_code;
 
-	write(2, "exit\n", 5);
+	ft_putstr_fd(2, "exit", 1); //TODO: почему в 2???
 	exit_code = 0;
 	if (node->num_args == 1)
 		exit(g_err_code);

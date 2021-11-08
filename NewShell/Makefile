@@ -37,11 +37,11 @@ COMMAND_SRCS	=	ft_cd.c					\
                  	ft_cd_relative_path.c	\
 					ft_cd_replace_paths.c	\
                  	ft_cd_updir.c			\
-                 	ft_cd_utils.c			\
                  	ft_echo.c				\
                   	ft_pwd.c				\
                   	ft_export.c				\
 					ft_unset.c				\
+                 	utils.c					\
 					ft_env.c				\
 					ft_execve.c				\
 					ft_exit.c				\
@@ -59,7 +59,7 @@ SRCS		=	$(addprefix $(SRCS_DIR), $(SRCS_NAME)) $(addprefix $(COMMANDS_DIR), $(CO
 OBJS		=	$(addprefix $(OBJS_DIR), $(OBJS_NAME))
 
 CC			=	gcc -g
-CFLAGS		=	-Wall -Wextra -Werror -g
+CFLAGS		=	-Wall -Wextra -Werror
 
 OS_NAME	= $(shell uname -s | tr A-Z a-z)
 

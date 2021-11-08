@@ -22,13 +22,13 @@ static void	print_export_list(t_data *shell)
 	list_sort(env_node);
 	while (env_node)
 	{
-		write(1, "declare -x ", 11);
-		write(1, env_node->key, ft_strlen(env_node->key));
+		ft_putstr_fd(1, "declare -x ", 0);
+		ft_putstr_fd(1, env_node->key, 0);
 		if (ft_strchr(env_node->str, '='))
 			write(1, "=", 1);
 		if (ft_strchr(env_node->str, '='))
 			write(1, "\"", 1);
-		write(1, env_node->value, ft_strlen(env_node->value));
+		ft_putstr_fd(1, env_node->value, 0);
 		if (ft_strchr(env_node->str, '='))
 			write(1, "\"", 1);
 		write(1, "\n", 1);

@@ -16,7 +16,7 @@
 /*
  * :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  INCLUDES  :::::
  */
-# include <stdio.h>
+//# include <stdio.h>
 # include <string.h>
 //# include <unistd.h>
 //# include <stdlib.h>
@@ -119,9 +119,10 @@ void		ft_pwd(void);
 void		ft_unset(t_data *shell, t_cmd *cmd_node);
 
 /*
- * CMDS_UTILS.C
+ * UTILS.C
  */
-int	has_file(char *path);
+int		has_file(char *path);
+void	ft_putstr_fd(int fd, char *str, int flag);
 
 /*
  *....... UTILS_FOR_ARRAY_1.C

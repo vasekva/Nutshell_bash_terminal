@@ -56,7 +56,6 @@ int	ft_cd_replace_paths(t_data *shell)
 	chdir(shell->curr_dir);
 	if (chdir(shell->curr_dir) < 0)
 	{
-		printf("BLYAAAAA: %d\n", errno); //TODO: удалить
 		perror(shell->curr_dir);
 		return (1);
 	}

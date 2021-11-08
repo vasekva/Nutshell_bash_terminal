@@ -17,7 +17,6 @@ void	ft_pwd(void)
 	char	*path;
 
 	path = getcwd(NULL, 0);
-	write(1, path, ft_strlen(path));
-	write(1, "\n", 1);
+	ft_putstr_fd(1, path, 1);
 	free(path);
 }
