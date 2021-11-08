@@ -53,5 +53,5 @@ void	ft_putstr_fd(int fd, char *str, int flag)
 		write(fd, &str[i], 1);
 	}
 	if (flag)
-		write(1, "\n", 1);
+		write(fd, "\n", 1);
 }

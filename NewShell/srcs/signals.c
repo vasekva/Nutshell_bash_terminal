@@ -40,7 +40,7 @@ void	child_signal_handler(int signal)
 
 void	set_signal_handler(int process_pid)
 {
-//    rl_catch_signals = 0;
+    rl_catch_signals = 0;
 	if (process_pid == PARENT)
 	{
 		signal(SIGQUIT, SIG_IGN);

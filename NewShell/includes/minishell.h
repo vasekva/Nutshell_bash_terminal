@@ -16,21 +16,25 @@
 /*
  * :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  INCLUDES  :::::
  */
-//# include <stdio.h>
+# include <unistd.h>
+# include <stdlib.h>
+# include <errno.h>
 # include <string.h>
-//# include <unistd.h>
-//# include <stdlib.h>
+# include <fcntl.h>
+# include <stdio.h>
+# include <signal.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# include <signal.h>
+# include <sys/types.h>
+# include <sys/stat.h>
 # include <dirent.h>
 
 # include <sys/stat.h>
 # include <sys/types.h>
 # include <errno.h>
+# include <fcntl.h>
 
 # include "exceptions.h"
-# include "my_readline.h"
 # include "libft.h"
 
 /*
@@ -111,11 +115,11 @@ void		relative_path(t_data *shell, t_cmd *s_cmd);
 void		change_dirs(t_data *shell, char *new_path, char *dst_path_key);
 
 int			ft_echo(t_cmd *node);
-void		ft_env(t_data *shell);
+void		ft_env(t_data *shell, t_cmd *node);
 void		ft_execve(t_data *shell, t_cmd *node);
 int			ft_exit(t_data *shell, t_cmd *node);
-void		ft_export(t_data *shell);
-void		ft_pwd(void);
+void		ft_export(t_data *shell, t_cmd *node);
+void		ft_pwd(t_cmd *node);
 void		ft_unset(t_data *shell, t_cmd *cmd_node);
 
 /*

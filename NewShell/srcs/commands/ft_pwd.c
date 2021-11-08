@@ -12,11 +12,11 @@
 
 #include "minishell.h"
 
-void	ft_pwd(void)
+void	ft_pwd(t_cmd *node)
 {
 	char	*path;
 
 	path = getcwd(NULL, 0);
-	ft_putstr_fd(1, path, 1);
+	ft_putstr_fd(node->fd_output, path, 1);
 	free(path);
 }

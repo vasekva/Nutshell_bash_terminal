@@ -139,7 +139,7 @@ static int	cd_execute(t_data *shell, t_cmd *node, char *cd_cmd, int len_of_cmd)
 	{
 		ret = change_value(shell, "OLDPWD", "PWD");
 		if (!ret)
-			ft_putstr_fd(1, shell->curr_dir, 0);
+			ft_putstr_fd(node->fd_output, shell->curr_dir, 1);
 	}
 	if (ft_cd_replace_paths(shell))
 		ret = 1;

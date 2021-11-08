@@ -52,17 +52,17 @@ int	ft_exit(t_data *shell, t_cmd *node)
 {
 	unsigned char	exit_code;
 
-	ft_putstr_fd(2, "exit", 1); //TODO: почему в 2???
+	ft_putstr_fd(node->fd_output, "exit", 1);
 	exit_code = 0;
 	if (node->num_args == 1)
 		exit(g_err_code);
+	if (!valid_exit_code(node))
+		exit(255);
 	if (node->num_args > 2)
 	{
 		exception("exit", NULL, EXIT_TOO_MANY_ARGS);
 		return (1);
 	}
-	if (!valid_exit_code(node))
-		exit(255);
 	exit_code = ft_atoi(node->command[1]);
 	exit(exit_code);
 }

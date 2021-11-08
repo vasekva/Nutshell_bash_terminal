@@ -20,28 +20,29 @@ static void	heredoc_redirect(t_cmd *node, t_redir_list *rdr)
 
 static void	classic_redirect(t_cmd *node, t_redir_list *rdr)
 {
-	int	fd;
-
 	if (rdr->type == REDIRECT_INPUT)
 	{
-		fd = open(rdr->filename, O_CREAT | O_RDONLY, 0664);
-		if (fd < 0)
+		if (node->fd_input != 0)
+			close(node->fd_input);
+		node->fd_input = open(rdr->filename, O_RDONLY, 0777);
+		if (node->fd_input < 0)
 			exception(NULL, NULL, OPEN_FD_ERROR);
-		node->fd_input = fd;
 	}
 	else if (rdr->type == REDIRECT_OUTPUT)
 	{
-		fd = open(rdr->filename, O_CREAT | O_WRONLY | O_TRUNC, 0664);
-		if (fd < 0)
+		if (node->fd_output != 1)
+			close(node->fd_output);
+		node->fd_output = open(rdr->filename, O_CREAT | O_WRONLY | O_TRUNC, 0664);
+		if (node->fd_output < 0)
 			exception(NULL, NULL, OPEN_FD_ERROR);
-		node->fd_output = fd;
 	}
 	else
 	{
-		fd = open(rdr->filename, O_CREAT | O_WRONLY | O_APPEND, 0664);
-		if (fd < 0)
+		if (node->fd_output != 1)
+			close(node->fd_output);
+		node->fd_output = open(rdr->filename, O_CREAT | O_WRONLY | O_APPEND, 0664);
+		if (node->fd_output < 0)
 			exception(NULL, NULL, OPEN_FD_ERROR);
-		node->fd_output = fd;
 	}
 }
 

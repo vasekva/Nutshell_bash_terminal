@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static void	print_export_list(t_data *shell)
+static void	print_export_list(t_data *shell, t_cmd *node)
 {
 	t_env_list	*env_node;
 
@@ -22,16 +22,16 @@ static void	print_export_list(t_data *shell)
 	list_sort(env_node);
 	while (env_node)
 	{
-		ft_putstr_fd(1, "declare -x ", 0);
-		ft_putstr_fd(1, env_node->key, 0);
+		ft_putstr_fd(node->fd_output, "declare -x ", 0);
+		ft_putstr_fd(node->fd_output, env_node->key, 0);
 		if (ft_strchr(env_node->str, '='))
-			write(1, "=", 1);
+			write(node->fd_output, "=", 1);
 		if (ft_strchr(env_node->str, '='))
-			write(1, "\"", 1);
-		ft_putstr_fd(1, env_node->value, 0);
+			write(node->fd_output, "\"", 1);
+		ft_putstr_fd(node->fd_output, env_node->value, 0);
 		if (ft_strchr(env_node->str, '='))
-			write(1, "\"", 1);
-		write(1, "\n", 1);
+			write(node->fd_output, "\"", 1);
+		write(node->fd_output, "\n", 1);
 		env_node = env_node->next;
 	}
 }
@@ -142,7 +142,7 @@ static void	change_export_list(t_data *shell, char *key, char *value, char *str)
 	}
 }
 
-void	ft_export(t_data *shell)
+void	ft_export(t_data *shell, t_cmd *node)
 {
 	char	*key;
 	char	*value;
@@ -156,7 +156,7 @@ void	ft_export(t_data *shell)
 			&& !ft_strlen(shell->list_cmds->command[1])
 			&& !shell->list_cmds->command[2]))
 	{
-		print_export_list(shell);
+		print_export_list(shell, node);
 		return ;
 	}
 	change_export_list(shell, key, value, str);

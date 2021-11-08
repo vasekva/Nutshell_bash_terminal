@@ -1,13 +1,17 @@
 NAME		=	minishell
 
 INCLUDES		=	-I ./includes/
+
+READLINE_LIB = -lreadline -L ~/.brew/opt/readline/lib
+
+READLINE_INCLUDE = -I ~/.brew/opt/readline/include
+
 LIBFT_DIR		=	./libft/
 LIBRARY			=	./libft/libft.a
 SRCS_DIR		=	./srcs/
 COMMANDS_DIR	=	./srcs/commands/
 PARSER_DIR		=	./srcs/parser/
 OBJS_DIR		=	./objs/
-
 BACK_GRAY		=	\033[47m
 NORM			=	\033[0m
 BOLD			=	\033[1m
@@ -77,12 +81,12 @@ $(NAME):		$(OBJS)
 				@echo	"$(ROOF)"
 				@echo	"$(F_WALL) $(YELLOW)COMPILATION MINISHELL...\t\t\t$(B_WALL)"
 				@$(MAKE)	-C			$(LIBFT_DIR)
-				@$(CC)	$(OBJS)	$(LIBRARY) -o $(NAME) $(RL_FLAGS)
+				@$(CC)	$(OBJS)	$(READLINE_LIB) $(LIBRARY) -o $(NAME) $(RL_FLAGS)
 				@echo	"$(ROOF)"
 				@echo	"$(F_WALL)$(PURPLE)======\t $(GREEN)MINISHELL IS READY TO LAUNCH$(PURPLE)\t =======$(B_WALL)"
 
 $(OBJS):		$(SRCS)
-				@$(CC)	$(INCLUDES)	-c	$(SRCS)
+				@$(CC)	$(INCLUDES)	-c	$(SRCS) $(READLINE_INCLUDE)
 				@mkdir	-p				$(OBJS_DIR)
 				@mv		$(OBJS_NAME)	$(OBJS_DIR)
 

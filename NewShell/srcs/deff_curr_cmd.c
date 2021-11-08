@@ -41,13 +41,13 @@ int	deff_curr_cmd(t_data *shell, t_cmd *node)
 		if (ft_strncmp(cmd, "cd", ft_strlen(cmd)) == 0)
 			ft_cd(shell, node);
 		if (ft_strncmp(cmd, "pwd", ft_strlen(cmd)) == 0)
-			ft_pwd();
+			ft_pwd(node);
 		if (ft_strncmp(cmd, "unset", ft_strlen(cmd)) == 0)
 			ft_unset(shell, node);
 		if (ft_strncmp(cmd, "env", ft_strlen(cmd)) == 0)
-			ft_env(shell);
+			ft_env(shell, node);
 		if (ft_strncmp(cmd, "export", ft_strlen(cmd)) == 0)
-			ft_export(shell);
+			ft_export(shell, node);
 		if (ft_strncmp(cmd, "exit", ft_strlen(cmd)) == 0)
 			ft_exit(shell, node);
 		return (1);

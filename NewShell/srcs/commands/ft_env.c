@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void	ft_env(t_data *shell)
+void	ft_env(t_data *shell, t_cmd *node)
 {
 	t_env_list	*env_node;
 
@@ -31,7 +31,7 @@ void	ft_env(t_data *shell)
 	while (env_node)
 	{
 		if (ft_strchr(env_node->str, '='))
-			ft_putstr_fd(1, env_node->str, 1);
+			ft_putstr_fd(node->fd_output, env_node->str, 1);
 		env_node = env_node->next;
 	}
 }

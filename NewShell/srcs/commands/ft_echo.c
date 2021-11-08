@@ -24,13 +24,13 @@ static void	write_lines(t_cmd *s_cmd, int ind, int flag)
 	while (ind < s_cmd->num_args)
 	{
 		str = s_cmd->command[ind];
-		ft_putstr_fd(1, str, 0);
+		ft_putstr_fd(s_cmd->fd_output, str, 0);
 		if (ind + 1 != s_cmd->num_args)
-			write(1, " ", 1);
+			write(s_cmd->fd_output, " ", 1);
 		ind++;
 	}
 	if (!flag)
-		write(1, "\n", 1);
+		write(s_cmd->fd_output, "\n", 1);
 }
 
 /*
@@ -113,7 +113,7 @@ int	ft_echo(t_cmd *node)
 	s_cmd = node;
 	if (!s_cmd->command[1])
 	{
-		write(1, "\n", 1);
+		write(s_cmd->fd_output, "\n", 1);
 		return (1);
 	}
 	return (ft_echo_execute(node, s_cmd->command[1]));
