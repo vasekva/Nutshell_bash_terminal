@@ -168,24 +168,6 @@ int	ft_cd(t_data *shell, t_cmd *node)
 	cd_cmd = NULL;
 	if (node->command[1])
 	{
-//		if (node->command[1][0] == '~' && ft_strlen(node->command[1]) > 1)
-//		{
-//			char	*tmp;
-//
-//			tmp = NULL;
-//			tmp = node->command[1];
-//			node->command[1] = ft_strjoin(shell->home, node->command[1] + 1, -1);
-//			free(tmp);
-//			tmp = shell->curr_dir;
-//			shell->curr_dir = ft_strdup(node->command[1]);
-//			free(tmp);
-//			if (!ft_strncmp(shell->past_dir, shell->curr_dir, ft_strlen(shell->curr_dir)))
-//			{
-//				tmp = shell->past_dir;
-//				shell->past_dir = ft_strdup(shell->curr_dir);
-//				free(tmp);
-//			}
-//		}
 		cd_cmd = node->command[1];
 		len_of_cmd = ft_strlen(cd_cmd);
 	}
@@ -213,5 +195,10 @@ int	ft_cd(t_data *shell, t_cmd *node)
 	}
 	create_old_pwd(shell);
 	chdir(shell->curr_dir);
+	if (chdir(shell->curr_dir) < 0)
+	{
+		printf("BLYAAAAA: %d\n", errno);
+		perror(shell->curr_dir);
+	}
 	return (ret);
 }
