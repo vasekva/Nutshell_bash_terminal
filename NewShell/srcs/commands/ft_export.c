@@ -42,11 +42,10 @@ static int	key_check(char *variable)
 	char	c;
 
 	i = -1;
-	c = 0;
 	while (variable[++i] && variable[i] != '=')
 	{
 		c = variable[i];
-		if (!ft_isdigit(c) && !ft_isalpha(c) && c != '_')
+		if (ft_isdigit(c) || (!ft_isalpha(c) && c != '_'))
 		{
 			exception("export", variable, INVALID_IDENT);
 			return (-1);
@@ -121,25 +120,25 @@ static void	change_export_list(t_data *shell, char *key, char *value, char *str)
 	int		i;
 
 	i = 0;
-	ptr = NULL;
-	var = NULL;
-	while (shell->list_cmds->command[++i]
-		&& key_check(shell->list_cmds->command[i]) != -1)
+	while (shell->list_cmds->command[++i])
 	{
-		var = shell->list_cmds->command[i];
-		ptr = ft_strchr(shell->list_cmds->command[i], '=');
-		str = ft_strdup(shell->list_cmds->command[i]);
-		if (ptr)
+		if (key_check(shell->list_cmds->command[i]) != -1)
 		{
-			ptr[0] = '\0';
-			if (ptr[1])
-				++ptr;
-			value = ft_strdup(ptr);
+			var = shell->list_cmds->command[i];
+			ptr = ft_strchr(shell->list_cmds->command[i], '=');
+			str = ft_strdup(shell->list_cmds->command[i]);
+			if (ptr)
+			{
+				ptr[0] = '\0';
+				if (ptr[1])
+					++ptr;
+				value = ft_strdup(ptr);
+			}
+			else
+				value = ft_strdup("");
+			key = ft_strdup(var);
+			define_how_to_add(shell, key, value, str);
 		}
-		else
-			value = ft_strdup("");
-		key = ft_strdup(var);
-		define_how_to_add(shell, key, value, str);
 	}
 }
 
