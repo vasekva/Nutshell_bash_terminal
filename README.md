@@ -1,11 +1,11 @@
 # Minishell
 
-<img src="./readmeFiles/demo.gif" width=100% height=100%/>
-
 ## Summary
 
 The objective of this project is for you to create a simple shell. \
 Yes, your little bash or zsh. You will learn a lot about processes and file descriptors.
+
+<img src="./readmeFiles/demo.gif" width=100% height=100%/>
 
 ## Installation & Usage
 
