@@ -41,4 +41,4 @@ After building the source, run `./minishell` from the project root.
 - Сheck the correctness of the input commands
 - Implement a series of builtins:  `cd`, `echo`, `env`, `exit`, `export`, `pwd`, `unset`
 - Manage the errors
-- Handle program interruption with singals (Ctrl+C, Ctrl+D)
+- Handle program interruption with signals (Ctrl+C, Ctrl+D)
